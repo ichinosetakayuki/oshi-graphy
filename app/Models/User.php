@@ -17,6 +17,12 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
+    ];
+    // $castsは特定の方に自動変換する。is_adminを数値0or1からtrue/falseへ
+
     protected $fillable = [
         'name',
         'email',
@@ -44,5 +50,10 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function diaries()
+    {
+        return $this->hasMany(Diary::class);
     }
 }
