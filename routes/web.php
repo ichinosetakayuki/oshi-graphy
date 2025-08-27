@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DiaryController;
+use App\Http\Controllers\DiaryPublicController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -15,6 +17,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('diaries', DiaryController::class);
+    Route::get('/public-diaries', [DiaryPublicController::class, 'index'])->name('public.diaries.index');
+    Route::get('/public-diaries/{diary}', [DiaryPublicController::class, 'show'])->name('public.diaries.show');
 });
 
 require __DIR__.'/auth.php';

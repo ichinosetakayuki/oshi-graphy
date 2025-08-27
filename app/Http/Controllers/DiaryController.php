@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diary;
+use App\Models\Artist;
 use Illuminate\Http\Request;
 
 class DiaryController extends Controller
@@ -10,9 +11,25 @@ class DiaryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $user = $request->user();
+
+        $year = $request->integer('year');
+        $artist = $request->integer('artist');
+
+        $diaries = $user->diaries()
+            ->with('artist')
+            // when:$yearがあれば、関数を実行。if($year)と同じ
+            ->when($year, fn($q)=>$q->where('happened_on', $year))
+            ->when($artist, fn($q) => $q->where('artist_id', $artist))
+            ->latest('happened_on')
+            ->get();
+
+        $years = range(now()->year, now()->year - 5);
+        $artists = Artist::orderBy('name')->get(['id', 'name']);
+
+        return view('diaries.index', compact('diaries', 'years', 'artists', 'year', 'artist'));
     }
 
     /**
