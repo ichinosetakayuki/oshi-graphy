@@ -11,7 +11,10 @@ class Diary extends Model
     use HasFactory;
 
     protected $fillable = ['user_id', 'artist_id', 'happened_on', 'body', 'is_public'];
-    protected $casts = ['is_public' => 'boolean']; // is_publicの値(0,1)をfalseやtrueに変換
+    protected $casts = [
+        'happened_on' => 'date',
+        'is_public' => 'boolean'
+    ]; // is_publicの値(0,1)をfalseやtrueに変換
 
     public function user()
     {
