@@ -6,7 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield('title','Oshi-Graphy')</title>
+    <title>{{ $title ?? 'Oshi Graphy' }}</title>
+
+    <!-- Favicon -->
+    <!-- asset()→public/以下のファイルへのURLを作るヘルパー関数 -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -18,7 +25,7 @@
 
 <body class="font-sans antialiased min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
     <!-- <div class="min-h-screen bg-gray-100 dark:bg-gray-900"> -->
-    @include('layouts.navigation') 
+    @include('layouts.navigation')
     <!-- <header class="bg-brand">
         <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between">
             <a href="{{ route('diaries.index') }}" class="font-bold text-xl">Oshi-Graphy</a>
@@ -46,10 +53,9 @@
 
     <!-- Page Content -->
     <main class="max-w-5xl mx-auto px-4 py-6 flex-1">
-        @yield('content')
-        {{-- $slot --}}
+        {{ $slot }}
     </main>
-    <!-- </div> -->
+    <!-- footer -->
     <footer class="bg-brand">
         <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-center">©️Oshi-Graphy</div>
     </footer>
