@@ -21,6 +21,8 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- ↓追加 -->
+    @stack('styles')
 </head>
 
 <body class="font-sans antialiased min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
@@ -59,6 +61,8 @@
     <footer class="bg-brand">
         <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-center">©️Oshi-Graphy</div>
     </footer>
+    <!-- ↓追加 -->
+     @stack('scripts')
 </body>
 
 </html>
