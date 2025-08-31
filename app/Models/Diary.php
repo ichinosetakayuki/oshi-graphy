@@ -25,4 +25,14 @@ class Diary extends Model
     {
         return $this->belongsTo(Artist::class)->withTrashed();
     }
+
+    public function images()
+    {
+        return $this->hasMany(DiaryImage::class)->orderBy('id');
+    }
+
+    public function coverImage()
+    {
+        return $this->images()->oldest('id')->first();
+    }
 }

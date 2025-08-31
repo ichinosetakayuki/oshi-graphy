@@ -7,7 +7,7 @@
         </x-slot>
 
 
-        <form method="post" action="{{ route('diaries.store') }}" class="flex-col flex-wrap items-center gap-3 mb-5">
+        <form method="post" action="{{ route('diaries.store') }}" enctype="multipart/form-data" class="flex-col flex-wrap items-center gap-3 mb-5">
             @csrf
             <div class="flex">
                 {{-- 日付 --}}
@@ -35,6 +35,13 @@
                 <x-input-label for="body" value="本文" />
                 <x-textarea name="body" id="body" rows="6" />
                 <x-input-error :messages="$errors->get('body')" />
+            </div>
+
+            {{-- AIアシスト下書きゾーン --}}
+            <div class="flex">
+                <x-input-label for="ai_assist" value="AIアシスト" />
+                <x-textarea id="ai_assist" name="ai_assist" rows="6" />
+                <x-input-error :messages="$errors->get('ai_assist')" />
             </div>
 
             {{-- 写真の登録 --}}
