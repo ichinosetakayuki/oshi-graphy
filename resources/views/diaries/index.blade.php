@@ -33,8 +33,8 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             @forelse($diaries as $d)
             <a href="{{ route('diaries.show', $d) }}" class="block bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
-                <!-- <img src="{{ $d->main_image_url ?? asset('images/placeholder.jpg')}}" class="w-full h-48 object-cover" alt=""> -->
-                <img src="{{ asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="ダミー画像">
+                <img src="{{ $d->coverImage ? Storage::url($d->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記メイン画像">
+                <!-- <img src="{{ asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="ダミー画像"> -->
                 <div class="p-3">
                     <div class="flex justify-between text-xs text-gray-600 mb-1">
                         <span>{{ $d->happened_on?->format('Y年n月j日') }}</span><!-- happened_onがnullなら空文字を返す -->

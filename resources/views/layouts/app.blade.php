@@ -38,6 +38,7 @@
         </div>
     </header> -->
 
+    {{-- フラッシュメッセージ --}}
     @if(session('status'))
     <div class="bg-green-100 text-green-800">
         <div class="max-w-5xl mx-auto px-4 py-2">{{ session('status') }}</div>

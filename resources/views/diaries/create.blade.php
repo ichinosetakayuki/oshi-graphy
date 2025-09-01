@@ -47,11 +47,13 @@
             {{-- 写真の登録 --}}
             <div class="flex">
                 <x-input-label for="images" value="写真" />
-                <input type="file" name="images" multiple>
+                <input type="file" name="images[]" accept="image/*" id="images" multiple>
+                <x-input-error :messages="$errors->get('images')" />
             </div>
 
             {{-- 公開設定 --}}
             <div class="mb-8">
+                <input type="hidden" name="is_public" value="0">
                 <label class="inline-flex items-center">
                     <input type="checkbox" name="is_public" value="1" class="rounded border-gray-300 text-indigo-600" @checked(old('is_public'))>
                     <span class="ml-2">公開する</span>

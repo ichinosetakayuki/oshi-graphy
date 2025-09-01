@@ -33,6 +33,6 @@ class Diary extends Model
 
     public function coverImage()
     {
-        return $this->images()->oldest('id')->first();
+        return $this->hasOne(DiaryImage::class)->oldestOfMany();
     }
 }
