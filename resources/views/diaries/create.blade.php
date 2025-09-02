@@ -19,7 +19,7 @@
                 {{-- アーティスト --}}
                 <div class="flex">
                     <x-input-label for="artist_id" value="アーティスト" />
-                    <select name="artist_id" id="artist_id" class="mt-1 border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 focus:border-indigo-500 focus:ring-indigo-500">
+                    <select name="artist_id" id="artist_id" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                         {{-- old() があれば初期optionを1つだけ指す (JSで選択状態に) --}}
                         @if(old(('artist_id') && old('artist_name')))
                         <option value="{{ old('artist_id') }}" selected>{{ old('artist_name') }}</option>
@@ -117,10 +117,10 @@
 
             // 選択変更時に hidden の artist_name へラベル名を入れる（バリデーション戻りで使える）
             $sel.on('select2:select', (e) => {
-                $("#artist_old_name").val(e.params.data.text || '');
+                $("#artist_name_old").val(e.params.data.text || '');
             });
             $sel.on('select2:clear', () => {
-                $("#artist_old_name").val('');
+                $("#artist_name_old").val('');
             });
         });
     </script>

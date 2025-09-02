@@ -24,7 +24,8 @@ class DiaryController extends Controller
             ->when($year, fn($q) => $q->whereYear('happened_on', $year))
             ->when($artist, fn($q) => $q->where('artist_id', $artist))
             // ->with('comments') // コメント実装後に追加
-            ->latest('happened_on')
+            ->orderBy('happened_on', 'desc') // まず日付の新しい順
+            ->orderBy('updated_at', 'desc') // 同じ日付の中で更新の新しい順
             ->paginate(6) // ページネーション付きで取得
             ->withQueryString(); // 次のページにも検索条件を引き継ぐ
 
@@ -74,7 +75,9 @@ class DiaryController extends Controller
 
         if($request->hasFile('images')) {
             foreach($request->file('images') as $imageFile) {
-                $path = $imageFile->store('diary_images', 'public');
+                $ext = strtolower($imageFile->getClientOriginalExtension());
+                $filename = $diary->id . '_' . now()->format('YmdHis') . '_' . uniqid() . '.' . $ext;
+                $path = $imageFile->storeAs('diary_images', $filename, 'public');
                 // storage/app/public/diary_imagesに保存
                 // storeは毎回ユニークなファイル名（ハッシュ由来+拡張子）を自動生成
                 $diary->images()->create(['path' => $path]);
@@ -92,7 +95,7 @@ class DiaryController extends Controller
      */
     public function show(Diary $diary)
     {
-        //
+        return view('diaries.show', compact('diary'));
     }
 
     /**
@@ -100,7 +103,7 @@ class DiaryController extends Controller
      */
     public function edit(Diary $diary)
     {
-        //
+        return view('diaries.edit', compact('diary'));
     }
 
     /**
