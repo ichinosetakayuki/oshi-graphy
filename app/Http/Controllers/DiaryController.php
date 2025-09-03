@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Diary;
 use App\Models\Artist;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DiaryController extends Controller
 {
@@ -60,9 +61,10 @@ class DiaryController extends Controller
             // exists:artists,id→存在しないartist_idが入らないようにする
             'artist_id' => 'required|integer|exists:artists,id',
             'body' => 'required|string',
+            'images' => 'nullable|array',
             // images.*とすることで,複数ファイル（配列）をチェック可能
             // image:画像かどうか、mimes:許可する拡張子、max:5120 5MB
-            'images.*' => 'nullable|image|mimes:jpeg,jpg,png,webP|max:5120',
+            'images.*' => 'image|mimes:jpeg,jpg,png,webp|max:5120',
             'is_public' => 'boolean'
         ]);
 
@@ -111,7 +113,51 @@ class DiaryController extends Controller
      */
     public function update(Request $request, Diary $diary)
     {
-        //
+        $validated = $request->validate([
+            'happened_on' => 'required|date',
+            // exists:artists,id→存在しないartist_idが入らないようにする
+            'artist_id' => 'required|integer|exists:artists,id',
+            'body' => 'required|string',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,jpg,png,webp|max:5120',
+            'is_public' => 'boolean',
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'integer|distinct|exists:diary_images,id',
+        ]);
+
+        $diary->update([
+            'happened_on' => $validated['happened_on'],
+            'artist_id' => $validated['artist_id'],
+            'body' => $validated['body'],
+            'is_public' => $validated['is_public'],
+        ]);
+
+        // 画像の物理削除とDBの削除
+        $deleteIds = $request->input('delete_images', []);
+        if(!empty($deleteIds)) {
+            $images = $diary->image()->whereIn('id', $deleteIds)->get();
+            foreach($images as $image) {
+                Storage::disk('public')->delete($image->path);
+                $image->delete();
+            }
+        }
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $imageFile) {
+                $ext = strtolower($imageFile->getClientOriginalExtension());
+                $filename = $diary->id . '_' . now()->format('YmdHis') . '_' . uniqid() . '.' . $ext;
+                $path = $imageFile->storeAs('diary_images', $filename, 'public');
+                // storage/app/public/diary_imagesに保存
+                // storeは毎回ユニークなファイル名（ハッシュ由来+拡張子）を自動生成
+                $diary->images()->create(['path' => $path]);
+            }
+        }
+        
+
+        return redirect()
+            ->route('diaries.show', $diary)
+            ->with('status', '日記を更新しました');
+        // セッションに一時的なデータ（フラッシュデータ）を保存するメソッド
     }
 
     /**

@@ -69,7 +69,7 @@
                 @forelse($diary->images as $i => $image)
                 <div>
                     <img src="{{ Storage::url($image->path) }}" alt="日記写真">
-                    <input type="checkbox" name="delete-image{{ $image->id }}" id="delete{{ $i }}" value="{{ $image->path }}">
+                    <input type="checkbox" name="delete_images[]" id="delete{{ $i }}" value="{{ $image->id}}">
                     <label for="delete{{ $i }}">削除する</label>
                 </div>
 
