@@ -4,7 +4,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <x-slot name="header">
-            <h2 class="text-2xl font-semibold mb-4">{{ auth()->user()->name }}さんの日記</h2>
+            <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記</h2>
         </x-slot>
 
         <form method="GET" class="flex flex-wrap items-center gap-3 mb-5">

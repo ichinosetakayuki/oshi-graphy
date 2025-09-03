@@ -19,6 +19,8 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <!-- Vendor CSS を先に -->
+    @stack('vendor-styles')
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <!-- ↓追加 -->
@@ -26,17 +28,8 @@
 </head>
 
 <body class="font-sans antialiased min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
-    <!-- <div class="min-h-screen bg-gray-100 dark:bg-gray-900"> -->
     @include('layouts.navigation')
-    <!-- <header class="bg-brand">
-        <div class="max-w-5xl mx-auto px-4 py-3 flex justify-between">
-            <a href="{{ route('diaries.index') }}" class="font-bold text-xl">Oshi-Graphy</a>
-            <nav class="flex gap-5">
-                <a href="{{ route('diaries.index') }}">マイページ</a>
-                <a href="{{ route('diaries.create') }}">日記作成</a>
-            </nav>
-        </div>
-    </header> -->
+
 
     {{-- フラッシュメッセージ --}}
     @if(session('status'))
@@ -48,14 +41,14 @@
     <!-- Page Heading -->
     @isset($header)
     <header class="bg-white dark:bg-gray-800 shadow">
-        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-5xl mx-auto py-2 px-2 sm:px-6 lg:px-8">
             {{ $header }}
         </div>
     </header>
     @endisset
 
     <!-- Page Content -->
-    <main class="max-w-5xl mx-auto px-4 py-6 flex-1">
+    <main class="max-w-5xl w-full mx-auto px-4 py-6 flex-1">
         {{ $slot }}
     </main>
     <!-- footer -->
@@ -63,7 +56,7 @@
         <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-center">©️Oshi-Graphy</div>
     </footer>
     <!-- ↓追加 -->
-     @stack('scripts')
+    @stack('scripts')
 </body>
 
 </html>
