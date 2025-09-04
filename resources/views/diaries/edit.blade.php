@@ -37,7 +37,7 @@
             {{-- 本文 --}}
             <div class="flex flex-col md:flex-row gap-2 mt-3">
                 <x-input-label for="body" value="本文" class="w-28" />
-                <x-textarea name="body" id="body" rows="6">{{ old('body', $diary->body )}}</x-textarea>
+                <x-textarea name="body" id="body" rows="6">{{ $diary->body }}</x-textarea>
                 <x-input-error :messages="$errors->get('body')" />
             </div>
 

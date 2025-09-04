@@ -6,6 +6,8 @@ use App\Models\Diary;
 use App\Models\Artist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class DiaryController extends Controller
 {
@@ -135,7 +137,7 @@ class DiaryController extends Controller
         // 画像の物理削除とDBの削除
         $deleteIds = $request->input('delete_images', []);
         if(!empty($deleteIds)) {
-            $images = $diary->image()->whereIn('id', $deleteIds)->get();
+            $images = $diary->images()->whereIn('id', $deleteIds)->get();
             foreach($images as $image) {
                 Storage::disk('public')->delete($image->path);
                 $image->delete();
@@ -165,6 +167,20 @@ class DiaryController extends Controller
      */
     public function destroy(Diary $diary)
     {
-        //
+        // 画像のパスだけを取り出す。all()は中身を素の配列に変換
+        $paths = $diary->images()->pluck('path')->all();
+        // 親を削除、画像はCASCADEで自動削除     
+        $diary->delete();
+
+        try {
+            Storage::disk('public')->delete($paths); // ファイルの物理削除
+        } catch (Throwable $e) { // 何かしらのエラーが起きた時だけ実行、例外＆エラーを開発車向けに表示
+            Log::warning('Failed deleting diary image files', [
+                'paths' => $paths,
+                'error' => $e->getMessage(),
+            ]);
+        }
+
+        return redirect()->route('diaries.index')->with('status', '日記を削除しました。');
     }
 }
