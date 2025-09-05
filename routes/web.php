@@ -20,8 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::resource('diaries', DiaryController::class);
-    Route::get('/public-diaries', [DiaryPublicController::class, 'index'])->name('public.diaries.index');
-    Route::get('/public-diaries/{diary}', [DiaryPublicController::class, 'show'])->name('public.diaries.show');
+    Route::get('/public_diaries', [DiaryPublicController::class, 'index'])->name('public.diaries.index');
+    Route::get('/public_diaries/{diary}', [DiaryPublicController::class, 'show'])->name('public.diaries.show');
     Route::get('/artists/search',[ArtistController::class, 'search'])->name('artists.search');
 });
 

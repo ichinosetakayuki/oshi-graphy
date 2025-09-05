@@ -7,6 +7,7 @@ use App\Models\Artist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Carbon;
 use Throwable;
 
 class DiaryController extends Controller
@@ -32,7 +33,10 @@ class DiaryController extends Controller
             ->paginate(6) // ページネーション付きで取得
             ->withQueryString(); // 次のページにも検索条件を引き継ぐ
 
-        $years = range(now()->year, now()->year - 5);
+        $minDate = Diary::min('happened_on');
+        // 日付を扱う時はCarbonが便利
+        $minYear = $minDate ? Carbon::parse($minDate)->year : 2021;
+        $years = range(now()->year, $minYear);
         // artist_tableからidがdiaries.artist_idに一致するものに絞り込む
         $artists = Artist::whereIn('id', function ($q)  use ($user) {
             $q->select('artist_id')

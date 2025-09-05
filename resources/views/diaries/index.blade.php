@@ -7,22 +7,26 @@
             <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記</h2>
         </x-slot>
 
-        <form method="GET" class="flex flex-wrap items-center gap-3 mb-5">
-            <label>年</label>
-            <select name="year" class="border rounded px-3 py-1">
-                <option value="">すべて</option>
-                @foreach($years as $y)
-                <option value="{{ $y }}" @selected($year==$y)>{{ $y }}年</option>
-                @endforeach
-            </select>
+        <form method="GET" class="flex flex-wrap items-center gap-3 mb-5 md:gap-5">
+            <div class="flex gap-3 items-center">
+                <label class="font-semibold">年</label>
+                <select name="year" class="border rounded px-3 py-1 w-24">
+                    <option value="">すべて</option>
+                    @foreach($years as $y)
+                    <option value="{{ $y }}" @selected($year==$y)>{{ $y }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="flex gap-3 items-center">
+                <label class="font-semibold">アーティスト</label>
+                <select name="artist" class="border rounded px-3 py-1">
+                    <option value="">すべて</option>
+                    @foreach($artists as $a)
+                    <option value="{{ $a->id }}" @selected($artist==$a->id)>{{ $a->name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-            <label class="ml-4">アーティスト</label>
-            <select name="artist" class="border rounded px-3 py-1">
-                <option value="">すべて</option>
-                @foreach($artists as $a)
-                <option value="{{ $a->id }}" @selected($artist==$a->id)>{{ $a->name }}</option>
-                @endforeach
-            </select>
 
             <button class="rounded px-4 py-1 bg-brand">絞り込み</button>
             @if($year || $artist)
@@ -32,7 +36,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             @forelse($diaries as $diary)
-            <a href="{{ route('diaries.show', $diary) }}" class="block bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
+            <a href="{{ route('diaries.show', $diary) }}" class="block bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition h-full">
                 <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記メイン画像">
                 <!-- <img src="{{ asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="ダミー画像"> -->
                 <div class="p-3">
