@@ -37,7 +37,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             @forelse($diaries as $diary)
             <a href="{{ route('diaries.show', $diary) }}" class="block bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition h-full">
-                <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記メイン画像">
+                <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
                 <!-- <img src="{{ asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="ダミー画像"> -->
                 <div class="p-3">
                     <div class="flex justify-between text-xs text-gray-600 mb-1">

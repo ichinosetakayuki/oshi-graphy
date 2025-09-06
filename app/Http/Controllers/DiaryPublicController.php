@@ -19,12 +19,14 @@ class DiaryPublicController extends Controller
         $year = $request->integer('year');
         $month = $request->integer('month');
         $artistId = $request->integer('artist_id');
+        $userId = $request->integer('user');
 
         $diaries =  Diary::query()
             ->where('is_public', true)
             ->when($year, fn($q) => $q->whereYear('happened_on', $year))
             ->when($month, fn($q) => $q->whereMonth('happened_on', $month)) 
             ->when($artistId, fn($q) => $q->where('artist_id', $artistId))
+            ->when($userId, fn($q) => $q->where('user_id', $userId))
             ->with(['artist', 'coverImage', 'user'])
             ->orderBy('happened_on', 'desc')
             ->orderBy('updated_at', 'desc')
@@ -39,5 +41,13 @@ class DiaryPublicController extends Controller
         $artistName = $artistId ? Artist::find($artistId)->name : null;
 
         return view('public_diaries.index', compact('diaries', 'years', 'months','year', 'month', 'artistId', 'artistName'));
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Diary $diary)
+    {
+        return view('public_diaries.show', compact('diary'));
     }
 }

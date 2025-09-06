@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="title">Oshi Graphy | 日記詳細</x-slot>
+    <x-slot name="title">Oshi Graphy | （マイページ）日記詳細</x-slot>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <x-slot name="header">
@@ -11,7 +11,7 @@
                 <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center align-middle">{{ $diary->happened_on->format('Y年n月j日') }}</span>
                 <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center">{{ $diary->artist->name }}</span>
                 @if(auth()->id() == $diary->user_id)
-                <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
+                <span class="{{ $diary->is_public ? 'bg-brand' : 'bg-gray-400' }} px-3 py-3 rounded-3xl font-semibold text-center">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
                 @endif
             </div>
             <div class="flex flex-col md:flex-row">
@@ -47,11 +47,6 @@
             @endforelse
         </div>
 
-
-
-
     </div>
-
-
 
 </x-app-layout>
