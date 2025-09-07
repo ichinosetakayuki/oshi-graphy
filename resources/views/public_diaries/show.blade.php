@@ -13,7 +13,7 @@
 
             </div>
             <div class="flex flex-col md:flex-row">
-                <x-secondary-button><a href="{{ route('public.diaries.index') }}">一覧に戻る</a></x-secondary-button>
+                <x-secondary-button><a href="{{ route('public.diaries.user', $diary->user) }}">一覧に戻る</a></x-secondary-button>
             </div>
         </div>
         <div class="flex mt-3 gap-4">

@@ -22,6 +22,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('diaries', DiaryController::class);
     Route::get('/public_diaries', [DiaryPublicController::class, 'index'])->name('public.diaries.index');
     Route::get('/public_diaries/{diary}', [DiaryPublicController::class, 'show'])->name('public.diaries.show');
+    Route::get('/public_diaries/users/{user}',[DiaryPublicController::class, 'user'])->name('public.diaries.user');
     Route::get('/artists/search',[ArtistController::class, 'search'])->name('artists.search');
 });
 
