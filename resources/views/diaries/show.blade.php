@@ -48,7 +48,37 @@
         </div>
 
         {{-- コメント部分 --}}
-        <h3 class="text-lg font-semibold mb-2">コメント({{ $diary->comments->count() }})</h3>
+        <h3 class="text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
+
+        {{-- コメント入力 →モーダルへ --}}
+        <form method="post" action="{{ route('comments.store', $diary) }}" class="mb-6">
+            @csrf
+            <x-textarea name="body" rows="3" placeholder="コメントを書く・・・" />
+            <x-input-error :messages="$errors->get('body')" />
+            <x-primary-button>送信</x-primary-button>
+        </form>
+
+        {{-- コメント一覧 --}}
+        <ul class="space-y-4">
+            @forelse($diary->comments as $comment)
+            <li>
+                <div>
+                    <span class="text-sm font-semibold">{{ $comment->user->name ?? '退会ユーザー' }}</span>
+                    <span class="text-xs ml-1">{{ $comment->updated_at->diffForHumans() }}</span>
+                </div>
+                <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
+                @if( auth()->id() === $comment->user_id )
+                <form method="post" action="{{ route('comments.destroy', $comment)} }">
+                    @csrf
+                    @method('DELETE')
+                    <x-secondary-button onclick="return confirm('このコメントを削除しますか？')">削除</x-secondary-button>
+                </form>
+                @endif
+            </li>
+            @empty
+            <li class="text-sm text-gray-500">まだコメントはありません</li>
+            @endforelse
+        </ul>
 
 
     </div>
