@@ -35,4 +35,9 @@ class Diary extends Model
     {
         return $this->hasOne(DiaryImage::class)->oldestOfMany();
     }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest();
+    }
 }

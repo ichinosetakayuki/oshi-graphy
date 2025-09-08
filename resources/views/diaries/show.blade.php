@@ -47,6 +47,10 @@
             @endforelse
         </div>
 
+        {{-- コメント部分 --}}
+        <h3 class="text-lg font-semibold mb-2">コメント({{ $diary->comments->count() }})</h3>
+
+
     </div>
 
 </x-app-layout>
