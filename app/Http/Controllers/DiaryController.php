@@ -27,7 +27,7 @@ class DiaryController extends Controller
             // when:$yearがあれば、関数を実行。if($year)と同じ
             ->when($year, fn($q) => $q->whereYear('happened_on', $year))
             ->when($artist, fn($q) => $q->where('artist_id', $artist))
-            ->with('comments') // コメント実装後に追加
+            ->withCount('comments') // コメント数
             ->orderBy('happened_on', 'desc') // まず日付の新しい順
             ->orderBy('updated_at', 'desc') // 同じ日付の中で更新の新しい順
             ->paginate(6) // ページネーション付きで取得

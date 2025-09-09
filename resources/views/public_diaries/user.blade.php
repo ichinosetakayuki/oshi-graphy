@@ -53,7 +53,7 @@
           </div>
           <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p><!-- line-clamp-2:テキストを２行で切り取り、あふれた分は...で省略 -->
           <div class="flex justify-between items-center">
-            <span class="text-sm">⭐️コメント(){{-- / {{ $diary->comments_count ?? 0 }} ←実装後に表示 --}}</span>
+            <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
           </div>
         </div>
       </article>

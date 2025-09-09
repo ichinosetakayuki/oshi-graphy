@@ -49,7 +49,7 @@
                         <span class="text-[11px] px-2 py-0.5 rounded {{ $diary->is_public ? 'bg-green-500 text-white' : 'bg-gray-400 text-white' }}">
                             {{ $diary->is_public ? '公開' : '非公開' }}
                         </span>
-                        <span class="text-sm">⭐️コメント({{ $diary->comments->count() }})</span>
+                        <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
                     </div>
                 </div>
             </a>
