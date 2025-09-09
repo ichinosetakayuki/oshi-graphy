@@ -35,6 +35,9 @@
         {{-- コメント部分 --}}
         <h3 class="text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
 
+        {{-- コメント入力ボタン＆モーダル本体 --}}
+        <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
+
         {{-- コメント一覧 --}}
         <ul class="space-y-4">
             @forelse($diary->comments as $comment)

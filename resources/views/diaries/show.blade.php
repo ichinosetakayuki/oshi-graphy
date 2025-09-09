@@ -48,13 +48,8 @@
         {{-- コメント部分 --}}
         <h3 class="text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
 
-        {{-- コメント入力 →モーダルへ --}}
-        <form method="post" action="{{ route('comments.store', $diary) }}" class="mb-6">
-            @csrf
-            <x-textarea name="body" rows="3" placeholder="コメントを書く・・・" />
-            <x-input-error :messages="$errors->get('body')" />
-            <x-primary-button>送信</x-primary-button>
-        </form>
+        {{-- コメント入力ボタン＆モーダル本体 --}}
+        <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
         {{-- コメント一覧 --}}
         <ul class="space-y-4">
@@ -78,7 +73,6 @@
             <li class="text-sm text-gray-500">まだコメントはありません</li>
             @endforelse
         </ul>
-
 
     </div>
 
