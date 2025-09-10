@@ -46,10 +46,13 @@
             </div>
 
             {{-- 写真の登録 --}}
-            <div class="flex flex-col md:flex-row gap-2 mt-3">
-                <x-input-label for="images" value="写真" class="w-28" />
-                <input type="file" name="images[]" accept="image/*" id="images" multiple>
+            <div class="flex flex-col gap-2 mt-3">
+                <div class="flex flex-col md:flex-row gap-2 mt-3">
+                    <x-input-label for="images" value="写真" class="w-28" />
+                    <input type="file" name="images[]" accept="image/*" id="images" multiple>
+                </div>
                 <x-input-error :messages="$errors->get('images')" />
+                <div id="preview" class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2"></div>
             </div>
 
             {{-- 公開設定 --}}
@@ -84,6 +87,7 @@
     @push('scripts')
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    {{-- select2でアーティストを呼び出すためのscript --}}
     <script>
         $(function() {
             const ARTIST_SEARCH_URL = @json(route('artists.search'));
@@ -128,6 +132,39 @@
             });
             $sel.on('select2:clear', () => {
                 $("#artist_name_old").val('');
+            });
+        });
+    </script>
+    {{-- 写真をプレビュー表示するscript --}}
+    <script>
+        $(function() {
+            const $input = $("#images");
+            const $preview = $("#preview");
+
+            function renderPreviews(files) {
+                $preview.empty(); // 以前のプレビューをクリア
+
+                Array.from(files).forEach(function(file) {
+                    if (!file.type.startsWith('image/')) return;
+
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const $img = $('<img>', {
+                            src: e.target.result,
+                            alt: file.name,
+                            class: 'w-full h-24 object-cover rounded border'
+                        });
+                        $preview.append($img);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+            // $input.on('click', function()  {
+            //     this.value = null;
+            // })
+
+            $input.on('change', function() {
+                renderPreviews(this.files);
             });
         });
     </script>
