@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AiDiaryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\DiaryPublicController;
@@ -29,6 +30,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/diaries/{diary}/comments', [CommentController::class, 'store'])->name('comments.store')
         ->middleware('throttle:20,1'); // 簡易スパム対策（1分20件）
     Route::delete('/comments/{comment}',[CommentController::class, 'destroy'])->name('comments.destroy');
+
+    Route::post('/ai/diary-suggest', [AiDiaryController::class, 'suggest'])->name('ai.diary.suggest');
+    Route::post('/ai/diary-reset', [AiDiaryController::class, 'reset'])->name('ai.dairy.reset');
 });
 
 require __DIR__.'/auth.php';
