@@ -8,7 +8,7 @@
 
     <div class="max-w-3xl mx-auto">
 
-        <form method="post" action="{{ route('diaries.store') }}" enctype="multipart/form-data" class="flex-col flex-wrap items-center gap-3 mb-5 w-full">
+        <form method="post" action="{{ route('diaries.store') }}" id="diary-form" enctype="multipart/form-data" class="flex-col flex-wrap items-center gap-3 mb-5 w-full">
             @csrf
             <div class="flex flex-col gap-3 md:flex-row md:gap-6">
                 {{-- 日付 --}}
@@ -21,6 +21,7 @@
                 <div class="flex flex-col md:flex-row gap-2">
                     <x-input-label for="artist_id" value="アーティスト" class="w-40" />
                     <select name="artist_id" id="artist_id" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                        <option value="">-- アーティストを選択 --</option>
                         {{-- old() があれば初期optionを1つだけ指す (JSで選択状態に) --}}
                         @if(old('artist_id') && old('artist_name'))
                         <option value="{{ old('artist_id') }}" selected>{{ old('artist_name') }}</option>
@@ -44,7 +45,7 @@
                 <!-- <h3 class="font-semibold text-lg">AIアシスト</h3> -->
                 <div class="flex flex-col md:flex-row gap-2 mt-3">
                     <label for="ai_prompt" class="text-sm pl-2 w-28">AIへの相談</label>
-                    <x-textarea id="ai_prompt" name="ai_prompt" rows="6" placeholder="キーワードなどを入力してください。" />
+                    <x-textarea id="ai_prompt" name="ai_prompt" rows="6" placeholder="文案作成に必要な情報（日時、場所、アーティスト、セトリ、感想など）を入力してください。" />
                 </div>
                 <div class="flex justify-end gap-2">
                     <button type="button" id="ai_send" class="px-3 py-2 rounded-md bg-brand text-black text-sm">AIに相談</button>
@@ -76,15 +77,19 @@
             {{-- 公開設定 --}}
             <div class="mb-6 mt-3">
                 <input type="hidden" name="is_public" value="0">
-                <label class="inline-flex items-center">
-                    <input type="checkbox" name="is_public" value="1" class="rounded border-gray-300 text-indigo-600" @checked(old('is_public'))>
-                    <span class="ml-2">公開する</span>
-                </label>
+                <div class="flex gap-2">
+                    <x-input-label class="w-28">公開設定</x-input-label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="is_public" value="1" class="rounded border-gray-300 text-indigo-600" @checked(old('is_public'))>
+                        <span class="ml-2 font-bold text-lg">公開する</span>
+                    </label>
+                </div>
                 <x-input-error :messages="$errors->get('is_public')" class="mt-2" />
             </div>
 
-            <div class="flex items-center">
+            <div class="flex items-center justify-center gap-3">
                 <x-primary-button type="submit">保存</x-primary-button>
+                <x-secondary-button type="button" id="form-clear-btn">キャンセル</x-secondary-button>
             </div>
 
             {{-- old('artist_name')を保存するための隠しフィールド（再描画用） --}}
@@ -112,7 +117,7 @@
 
             const $sel = $("#artist_id").select2({
                 width: '100%',
-                placeholder: 'アーティストを検索...',
+                placeholder: 'アーティストを選択...',
                 allowClear: true,
                 ajax: {
                     url: ARTIST_SEARCH_URL,
@@ -202,7 +207,7 @@
 
         function appendAnswer(text) {
             const html = `
-            <div class="bg-brand-light rounded-md p-2 shadow-sm">
+            <div class="bg-brand-light rounded-md mt-2 p-2 shadow-sm">
             <pre class="whitespace-pre-wrap break-words text-[13px]">${escapeHtml(text)}</pre>
             </div>`;
             $answers.append(html);
@@ -219,12 +224,12 @@
             $send.prop('disabled', true).text('生成中…');
 
             $.ajax({
-                url: '{{ route('ai.diary.suggest') }}',
-                method: 'POST',
-                data: {
-                    prompt: text,
-                     _token: '{{ csrf_token() }}'
-                }
+                    url: '{{ route('ai.diary.suggest') }}',
+                    method: 'POST',
+                    data: {
+                        prompt: text,
+                        _token: '{{ csrf_token() }}'
+                    }
                 })
                 .done(function(res) {
                     console.log('[OK] /ai/diary-suggest:', res); // ← 追加
@@ -248,8 +253,8 @@
         $reset.on('click', function() {
             if (!confirm('AIとの会話履歴をリセットしてよろしいですか？')) return;
             $.post('{{ route('ai.diary.reset') }}', {
-                     _token: '{{ csrf_token() }}'
-                })
+                        _token: '{{ csrf_token() }}'
+                    })
                 .done(function() {
                     $answers.empty();
                 })
@@ -267,6 +272,19 @@
             $body.val(text).trigger('input');
             // inputイベントで値が変わったことを検知する。
         });
+    </script>
+    {{-- キャンセルボタン --}}
+    <script>
+        // document.getElementById('form-clear-btn').addEventListener('click', function() {
+        //     const form = document.getElementById('diary-form');
+        //     form.reset();
+        // });
+        $("#form-clear-btn").on('click', function() {
+            $("#happened_on, #body, #ai_prompt, #images").val('');
+            $("#ai_answers, #preview").empty();
+            $("input[type=checkbox]").prop('checked', false);
+            $("#artist_id").val('').trigger('change');
+        })
     </script>
 
     @endpush

@@ -45,6 +45,7 @@
             @endforelse
         </div>
 
+        @if($diary->is_public)
         {{-- コメント部分 --}}
         <h3 class="text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
 
@@ -73,6 +74,7 @@
             <li class="text-sm text-gray-500">まだコメントはありません</li>
             @endforelse
         </ul>
+        @endif
 
     </div>
 
