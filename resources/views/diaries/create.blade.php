@@ -8,7 +8,7 @@
 
     <div class="max-w-3xl mx-auto">
 
-        <form method="post" action="{{ route('diaries.store') }}" enctype="multipart/form-data" class="flex-col flex-wrap items-center gap-3 mb-5 w-full">
+        <form method="post" action="{{ route('diaries.store') }}" id="diary-form" enctype="multipart/form-data" class="flex-col flex-wrap items-center gap-3 mb-5 w-full">
             @csrf
             <div class="flex flex-col gap-3 md:flex-row md:gap-6">
                 {{-- 日付 --}}
@@ -21,6 +21,7 @@
                 <div class="flex flex-col md:flex-row gap-2">
                     <x-input-label for="artist_id" value="アーティスト" class="w-40" />
                     <select name="artist_id" id="artist_id" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                        <option value="">-- アーティストを選択 --</option>
                         {{-- old() があれば初期optionを1つだけ指す (JSで選択状態に) --}}
                         @if(old('artist_id') && old('artist_name'))
                         <option value="{{ old('artist_id') }}" selected>{{ old('artist_name') }}</option>
@@ -39,11 +40,29 @@
             </div>
 
             {{-- AIアシスト下書きゾーン --}}
-            <div class="flex flex-col md:flex-row gap-2 mt-3">
-                <x-input-label for=" ai_assist" value="AIアシスト" class="w-28" />
-                <x-textarea id="ai_assist" name="ai_assist" rows="6" />
-                <x-input-error :messages="$errors->get('ai_assist')" />
+            <div class="flex flex-col gap-2 mt-3">
+                <x-input-label value="AIアシスト" class="w-28" />
+                <!-- <h3 class="font-semibold text-lg">AIアシスト</h3> -->
+                <div class="flex flex-col md:flex-row gap-2 mt-3">
+                    <label for="ai_prompt" class="text-sm pl-2 w-28">AIへの相談</label>
+                    <x-textarea id="ai_prompt" name="ai_prompt" rows="6" placeholder="文案作成に必要な情報（日時、場所、アーティスト、セトリ、感想など）を入力してください。" />
+                </div>
+                <div class="flex justify-end gap-2">
+                    <button type="button" id="ai_send" class="px-3 py-2 rounded-md bg-brand text-black text-sm">AIに相談</button>
+                    <button type="button" id="ai_reset" class="px-3 py-2 rounded-md bg-gray-200 text-sm">会話リセット</button>
+                </div>
+                <div class="flex flex-col md:flex-row gap-2 mt-3">
+                    <label class="text-sm pl-2 w-28">AIの回答欄</label>
+                    <div id="ai_answers" class="h-32 w-full overflow-y-auto rounded-md border-gray-300 p-3 bg-white text-gray-900 text-sm shadow-sm">
+                        {{-- AI回答がここに --}}
+                    </div>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" id="ai_copy_latest" class="px-3 py-1 rounded-md bg-gray-200 text-sm">本文にコピー</button>
+                </div>
+
             </div>
+
 
             {{-- 写真の登録 --}}
             <div class="flex flex-col gap-2 mt-3">
@@ -58,15 +77,19 @@
             {{-- 公開設定 --}}
             <div class="mb-6 mt-3">
                 <input type="hidden" name="is_public" value="0">
-                <label class="inline-flex items-center">
-                    <input type="checkbox" name="is_public" value="1" class="rounded border-gray-300 text-indigo-600" @checked(old('is_public'))>
-                    <span class="ml-2">公開する</span>
-                </label>
+                <div class="flex gap-2">
+                    <x-input-label class="w-28">公開設定</x-input-label>
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" name="is_public" value="1" class="rounded border-gray-300 text-indigo-600" @checked(old('is_public'))>
+                        <span class="ml-2 font-bold text-lg">公開する</span>
+                    </label>
+                </div>
                 <x-input-error :messages="$errors->get('is_public')" class="mt-2" />
             </div>
 
-            <div class="flex items-center">
+            <div class="flex items-center justify-center gap-3">
                 <x-primary-button type="submit">保存</x-primary-button>
+                <x-secondary-button type="button" id="form-clear-btn">キャンセル</x-secondary-button>
             </div>
 
             {{-- old('artist_name')を保存するための隠しフィールド（再描画用） --}}
@@ -94,7 +117,7 @@
 
             const $sel = $("#artist_id").select2({
                 width: '100%',
-                placeholder: 'アーティストを検索...',
+                placeholder: 'アーティストを選択...',
                 allowClear: true,
                 ajax: {
                     url: ARTIST_SEARCH_URL,
@@ -168,5 +191,101 @@
             });
         });
     </script>
+
+    {{-- AIアシスト機能のscript --}}
+    <script>
+        const $prompt = $("#ai_prompt");
+        const $answers = $("#ai_answers");
+        const $send = $("#ai_send");
+        const $reset = $("#ai_reset");
+        const $copy = $("#ai_copy_latest");
+        const $body = $("#body");
+
+        function escapeHtml(str) {
+            return $('<div>').text(str).html();
+        }
+
+        function appendAnswer(text) {
+            const html = `
+            <div class="bg-brand-light rounded-md mt-2 p-2 shadow-sm">
+            <pre class="whitespace-pre-wrap break-words text-[13px]">${escapeHtml(text)}</pre>
+            </div>`;
+            $answers.append(html);
+            $answers.scrollTop($answers[0].scrollHeight);
+        }
+
+        $send.on('click', function() {
+            const text = $prompt.val().trim();
+            if (!text) {
+                alert('キーワードなどを入力してください');
+                return;
+            }
+
+            $send.prop('disabled', true).text('生成中…');
+
+            $.ajax({
+                    url: '{{ route('ai.diary.suggest') }}',
+                    method: 'POST',
+                    data: {
+                        prompt: text,
+                        _token: '{{ csrf_token() }}'
+                    }
+                })
+                .done(function(res) {
+                    console.log('[OK] /ai/diary-suggest:', res); // ← 追加
+                    if (res.ok) {
+                        appendAnswer(res.reply);
+                        $prompt.val('');
+                    } else {
+                        alert(res.message || '生成に失敗しました。');
+                    }
+                })
+                .fail(function(xhr) {
+                    console.log('[NG] /ai/diary-suggest:', xhr.status, xhr.responseText); // ← 追加
+                    const msg = xhr.responseJSON?.message || '通信エラー';
+                    alert(msg);
+                })
+                .always(function() {
+                    $send.prop('disabled', false).text('AIに相談');
+                });
+        });
+
+        $reset.on('click', function() {
+            if (!confirm('AIとの会話履歴をリセットしてよろしいですか？')) return;
+            $.post('{{ route('ai.diary.reset') }}', {
+                        _token: '{{ csrf_token() }}'
+                    })
+                .done(function() {
+                    $answers.empty();
+                })
+                .fail(function() {
+                    alert('リセットに失敗しました');
+                });
+        });
+
+        $copy.on('click', function() {
+            const $last = $answers.children('.bg-brand-light').last();
+            if (!$last.length) {
+                alert('まだAIの回答がありません');
+            }
+            const text = $last.text().trim();
+            $body.val(text).trigger('input');
+            // inputイベントで値が変わったことを検知する。
+        });
+    </script>
+    {{-- キャンセルボタン --}}
+    <script>
+        // document.getElementById('form-clear-btn').addEventListener('click', function() {
+        //     const form = document.getElementById('diary-form');
+        //     form.reset();
+        // });
+        $("#form-clear-btn").on('click', function() {
+            $("#happened_on, #body, #ai_prompt, #images").val('');
+            $("#ai_answers, #preview").empty();
+            $("input[type=checkbox]").prop('checked', false);
+            $("#artist_id").val('').trigger('change');
+        })
+    </script>
+
     @endpush
 </x-app-layout>

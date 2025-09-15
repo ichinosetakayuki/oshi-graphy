@@ -21,7 +21,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'is_admin' => 'boolean',
     ];
-    // $castsは特定の方に自動変換する。is_adminを数値0or1からtrue/falseへ
+    // $castsは特定の型に自動変換する。is_adminを数値0or1からtrue/falseへ
 
     protected $fillable = [
         'name',
