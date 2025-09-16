@@ -52,6 +52,8 @@
         {{-- コメント入力ボタン＆モーダル本体 --}}
         <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
+        {{-- コメント削除確認モーダル --}}
+        <x-confirm-modal name="confirm-delete" title="コメント削除" message="本当に削除しますか？" maxWidth="md" />
         {{-- コメント一覧 --}}
         <ul class="space-y-4">
             @forelse($diary->comments as $comment)
@@ -63,11 +65,16 @@
                 </div>
                 <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
                 @if( auth()->id() === $comment->user_id )
-                <form method="post" action="{{ route('comments.destroy', $comment) }}">
-                    @csrf
-                    @method('DELETE')
-                    <x-secondary-button type="submit" onclick="return confirm('このコメントを削除しますか？')">削除</x-secondary-button>
-                </form>
+                <x-secondary-button type="button"
+                    x-data
+                    x-on:click="
+                        window.dispatchEvent(new CustomEvent('confirm-delete', {
+                        detail: {
+                            name:'confirm-delete',
+                            action: '{{ route('comments.destroy', $comment) }}',
+                            message: 'このコメントを削除します。よろしいですか？'
+                        }
+                    }))">削除</x-secondary-button>
                 @endif
             </li>
             @empty
