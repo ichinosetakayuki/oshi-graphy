@@ -61,4 +61,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    protected $appends = ['icon_url'];
+
+    public function getIconUrlAttribute(): string
+    {
+        return $this->icon_path
+            ? asset('storage/'.$this->icon_path)
+            : asset('images/icon_placeholder.png');
+    }
 }

@@ -5,11 +5,12 @@
 
 
 <div
-    x-data="{ action: '', msg: @js($message) }"
+    x-data="{ action: '', ttl: @js($title), msg: @js($message) }"
     x-on:confirm-delete.window="
         const d = $event.detail || {};
         if(d.name === '{{ $name }}') {
             action = d.action || '';
+            ttl = d.title ?? @js($title);
             msg = d.message ?? @js($message); 
             window.dispatchEvent(new CustomEvent('open-modal', {detail: '{{ $name }}' }));
         }
@@ -17,7 +18,7 @@
 
     <x-modal name="{{ $name }}" :show="false" :maxWidth="$maxWidth" focusable>
         <div class="p-6">
-            <h2 class="text-lg font-semibold mb-2">{{ $title }}</h2>
+            <h2 class="text-lg font-semibold mb-2" x-text="ttl"></h2>
             <p class="text-sm text-gray-600" x-text="msg"></p>
 
             <div class="mt-6 flex justify-end gap-3">
