@@ -2,6 +2,7 @@
     <x-slot name="title">Oshi Graphy | みんなの日記 詳細</x-slot>
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
         <x-slot name="header">
             <h2 class="text-2xl font-semibold">{{ $diary->user->name }}さんの日記詳細</h2>
         </x-slot>
@@ -13,7 +14,8 @@
 
             </div>
             <div class="flex flex-col md:flex-row">
-                <x-secondary-button><a href="{{ route('public.diaries.user', $diary->user) }}">一覧に戻る</a></x-secondary-button>
+                <x-secondary-button><a href="{{ route('public.diaries.user', $diary->user) }}">{{ $diary->user->name}}さんの日記一覧</a></x-secondary-button>
+                <x-secondary-button><a href="{{ route('public.diaries.index') }}">みんなの日記一覧</a></x-secondary-button>
             </div>
         </div>
         <div class="flex mt-3 gap-4">
@@ -38,6 +40,9 @@
         {{-- コメント入力ボタン＆モーダル本体 --}}
         <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
+        {{-- コメント削除確認モーダル --}}
+        <x-confirm-modal name="confirm-delete" title="確認" message="本当に削除しますか？" maxWidth="md" />
+
         {{-- コメント一覧 --}}
         <ul class="space-y-4">
             @forelse($diary->comments as $comment)
@@ -49,11 +54,17 @@
                 </div>
                 <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
                 @if( auth()->id() === $comment->user_id )
-                <form method="post" action="{{ route('comments.destroy', $comment) }}">
-                    @csrf
-                    @method('DELETE')
-                    <x-secondary-button type="submit" onclick="return confirm('このコメントを削除しますか？')">削除</x-secondary-button>
-                </form>
+                <x-secondary-button type="button"
+                    x-data
+                    x-on:click="
+                        window.dispatchEvent(new CustomEvent('confirm-delete', {
+                        detail: {
+                            name: 'confirm-delete',
+                            title: 'コメント削除',
+                            action: '{{ route('comments.destroy', $comment) }}',
+                            message: 'このコメントを削除します。よろしいですか？'
+                        }
+                    }))">削除</x-secondary-button>
                 @endif
             </li>
             @empty

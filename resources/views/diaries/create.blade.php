@@ -224,15 +224,15 @@
             $send.prop('disabled', true).text('生成中…');
 
             $.ajax({
-                    url: '{{ route('ai.diary.suggest') }}',
-                    method: 'POST',
+                    url: "{{ route('ai.diary.suggest') }}",
+                    method: "POST",
                     data: {
                         prompt: text,
-                        _token: '{{ csrf_token() }}'
+                        _token: "{{ csrf_token() }}"
                     }
                 })
                 .done(function(res) {
-                    console.log('[OK] /ai/diary-suggest:', res); // ← 追加
+                    // console.log('[OK] /ai/diary-suggest:', res); // ← 追加
                     if (res.ok) {
                         appendAnswer(res.reply);
                         $prompt.val('');
@@ -241,7 +241,7 @@
                     }
                 })
                 .fail(function(xhr) {
-                    console.log('[NG] /ai/diary-suggest:', xhr.status, xhr.responseText); // ← 追加
+                    // console.log('[NG] /ai/diary-suggest:', xhr.status, xhr.responseText); // ← 追加
                     const msg = xhr.responseJSON?.message || '通信エラー';
                     alert(msg);
                 })
@@ -252,9 +252,9 @@
 
         $reset.on('click', function() {
             if (!confirm('AIとの会話履歴をリセットしてよろしいですか？')) return;
-            $.post('{{ route('ai.diary.reset') }}', {
-                        _token: '{{ csrf_token() }}'
-                    })
+            $.post("{{ route('ai.diary.reset') }}", {
+                        _token: "{{ csrf_token() }}"
+                })
                 .done(function() {
                     $answers.empty();
                 })
@@ -275,10 +275,6 @@
     </script>
     {{-- キャンセルボタン --}}
     <script>
-        // document.getElementById('form-clear-btn').addEventListener('click', function() {
-        //     const form = document.getElementById('diary-form');
-        //     form.reset();
-        // });
         $("#form-clear-btn").on('click', function() {
             $("#happened_on, #body, #ai_prompt, #images").val('');
             $("#ai_answers, #preview").empty();
@@ -286,6 +282,5 @@
             $("#artist_id").val('').trigger('change');
         })
     </script>
-
     @endpush
 </x-app-layout>

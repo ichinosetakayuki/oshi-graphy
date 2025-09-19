@@ -49,7 +49,7 @@ class DiaryPublicController extends Controller
      */
     public function show(Diary $diary)
     {
-        $diary->load('comments');
+        $diary->load(['comments', 'user']);
         return view('public_diaries.show', compact('diary'));
     }
 

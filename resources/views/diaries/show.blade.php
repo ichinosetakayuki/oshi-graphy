@@ -24,11 +24,19 @@
             @if(auth()->id() == $diary->user_id)
             <div class="flex flex-col w-10 gap-2 mt-2">
                 <button class="bg-brand-light text-xs w-auto p-2 rounded text-blue-600 shadow-sm drop-shadow "><a href="{{ route('diaries.edit', $diary) }}">編集</a></button>
-                <form action="{{ route('diaries.destroy', $diary) }}" method="post" onsubmit="return confirm('本当に削除しますか？')" class="w-auto">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="bg-orange-200 text-xs w-full p-2 rounded text-red-500 shadow-sm drop-shadow">削除</button>
-                </form>
+                <button type="button"
+                    x-data
+                    x-on:click="
+                        window.dispatchEvent(new CustomEvent('confirm-delete', {
+                        detail: {
+                            name: 'confirm-delete',
+                            title: '日記の削除',
+                            action: '{{ route('diaries.destroy', $diary) }}',
+                            message: 'この日記を削除します。よろしいですか？'
+                        }
+                    }))"
+                    class="bg-orange-200 text-xs w-full p-2 rounded text-red-500 shadow-sm drop-shadow">
+                    削除</button>
             </div>
             @endif
         </div>
@@ -63,11 +71,17 @@
                 </div>
                 <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
                 @if( auth()->id() === $comment->user_id )
-                <form method="post" action="{{ route('comments.destroy', $comment) }}">
-                    @csrf
-                    @method('DELETE')
-                    <x-secondary-button type="submit" onclick="return confirm('このコメントを削除しますか？')">削除</x-secondary-button>
-                </form>
+                <x-secondary-button type="button"
+                    x-data
+                    x-on:click="
+                        window.dispatchEvent(new CustomEvent('confirm-delete', {
+                        detail: {
+                            name: 'confirm-delete',
+                            title: 'コメント削除',
+                            action: '{{ route('comments.destroy', $comment) }}',
+                            message: 'このコメントを削除します。よろしいですか？'
+                        }
+                    }))">削除</x-secondary-button>
                 @endif
             </li>
             @empty
@@ -75,6 +89,9 @@
             @endforelse
         </ul>
         @endif
+
+        {{-- 日記、コメント削除確認モーダル --}}
+        <x-confirm-modal name="confirm-delete" title="確認" message="本当に削除しますか？" maxWidth="md" />
 
     </div>
 
