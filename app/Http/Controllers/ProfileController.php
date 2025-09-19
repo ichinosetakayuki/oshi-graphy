@@ -100,7 +100,6 @@ class ProfileController extends Controller
         $user->save();
 
         return back()
-            ->with('status', $deleteIcon ? 'profile-icon-deleted' : 'profile-updated')
-            ->with('open_profile_modal', true);
+            ->with('status', $deleteIcon ? 'profile-icon-deleted' : 'profile-updated');
     }
 }
