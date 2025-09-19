@@ -19,14 +19,12 @@ class DiaryPublicController extends Controller
         $year = $request->integer('year');
         $month = $request->integer('month');
         $artistId = $request->integer('artist_id');
-        // $userId = $request->integer('user');
 
         $diaries =  Diary::query()
             ->where('is_public', true)
             ->when($year, fn($q) => $q->whereYear('happened_on', $year))
             ->when($month, fn($q) => $q->whereMonth('happened_on', $month)) 
             ->when($artistId, fn($q) => $q->where('artist_id', $artistId))
-            // ->when($userId, fn($q) => $q->where('user_id', $userId))
             ->with(['artist', 'coverImage', 'user'])
             ->withCount('comments')
             ->orderBy('happened_on', 'desc')

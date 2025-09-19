@@ -43,7 +43,6 @@
                     <!-- ラベルをボタン風にしてfileを開く -->
                     <label for="icon" class="inline-flex items-center px-3 py-2 rounded-lg border shadow-sm hover:bg-gray-50 cursor-pointer" :class="del ? 'pointer-events-none opacity-50' : ''">画像を選択</label>
                     <span class="text-sm text-gray-500" x-text="fileName ? fileName : '未選択' "></span>
-                    <!-- <span class="text-sm text-gray-500" x-text="del ? '（削除予定）' : (fileName || '未選択')"></span> -->
                 </div>
                 @error('icon')
                 <p class="text-red-600 text-sm">{{ $message }}</p>
