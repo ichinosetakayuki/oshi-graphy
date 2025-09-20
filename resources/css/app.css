@@ -12,12 +12,58 @@
   .og-select2-tall .select2-selection__rendered{ line-height: 2.75rem; }
   .og-select2-tall .select2-selection__arrow{ height: 2.75rem; }
   /* 高さをカスタマイズした select2 のクリアボタン調整 */
- .og-select2-tall .select2-selection__clear {
+  .og-select2-tall .select2-selection__clear {
     position: absolute;       /* 浮動配置ではなく絶対配置 */
     right: 0.5rem;           /* 右端からの余白（調整可） */
     top: 50%;                 /* 高さの中央 */
     transform: translateY(-50%);
     margin: 0;                /* デフォルト余白をリセット */
+  }
+
+  /* ヒーロー見出しのベース */
+  .hero-copy {
+    @apply font-extrabold leading-[1.15] tracking-tight text-gray-900 dark:text-gray-50;
+    /* フルイドに大きさを変える（28px〜60px） */
+    font-size: clamp(28px, 6vw, 60px);
+  }
+
+  /* 画面が広くなったら少しだけ大きく */
+  @screen md {
+    .hero-copy {
+      font-size: clamp(36px, 5vw, 72px);
+    }
+  }
+  @screen lg {
+    .hero-copy {
+      font-size: clamp(44px, 4vw, 84px);
+    }
+  }
+
+  /* 強調（下線風のハイライト帯） */
+  .em-highlight {
+    @apply relative inline-block font-black text-gray-900 dark:text-gray-50;
+  }
+  .em-highlight::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    /* 左右いっぱい */
+    bottom: 0.1em;
+    /* 文字の下に帯 */
+    height: 0.45em;
+    /* 帯の太さ */
+    /* brand色を半透明で */
+    background: color-mix(in oklab, var(--color-brand, #F8DE6F) 70%, transparent);
+    z-index: -1;
+    /* 文字の背面へ */
+    border-radius: 0.15em;
+  }
+}
+
+@layer utilities {
+  /* Safari/Chrome/Firefox で改行バランス */
+  .text-balance {
+    text-wrap: balance;
   }
 }
 
