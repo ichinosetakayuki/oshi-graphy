@@ -43,7 +43,7 @@
             @endif
         </form>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 motion-safe:animate-fade-up">
             @forelse($diaries as $diary)
             <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
                 <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">

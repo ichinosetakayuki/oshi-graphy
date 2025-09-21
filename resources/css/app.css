@@ -19,51 +19,24 @@
     transform: translateY(-50%);
     margin: 0;                /* デフォルト余白をリセット */
   }
+}
 
-  /* ヒーロー見出しのベース */
-  .hero-copy {
-    @apply font-extrabold leading-[1.15] tracking-tight text-gray-900 dark:text-gray-50;
-    /* フルイドに大きさを変える（28px〜60px） */
-    font-size: clamp(28px, 6vw, 60px);
-  }
-
-  /* 画面が広くなったら少しだけ大きく */
-  @screen md {
-    .hero-copy {
-      font-size: clamp(36px, 5vw, 72px);
-    }
-  }
-  @screen lg {
-    .hero-copy {
-      font-size: clamp(44px, 4vw, 84px);
-    }
-  }
-
-  /* 強調（下線風のハイライト帯） */
-  .em-highlight {
-    @apply relative inline-block font-black text-gray-900 dark:text-gray-50;
-  }
-  .em-highlight::after {
-    content: "";
-    position: absolute;
-    inset-inline: 0;
-    /* 左右いっぱい */
-    bottom: 0.1em;
-    /* 文字の下に帯 */
-    height: 0.45em;
-    /* 帯の太さ */
-    /* brand色を半透明で */
-    background: color-mix(in oklab, var(--color-brand, #F8DE6F) 70%, transparent);
-    z-index: -1;
-    /* 文字の背面へ */
-    border-radius: 0.15em;
+/* home.blade.phpのアニメーション設定 */
+@layer keyframes {
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 }
 
 @layer utilities {
-  /* Safari/Chrome/Firefox で改行バランス */
-  .text-balance {
-    text-wrap: balance;
+  .animate-fade-up {
+    animation: fade-up .6s ease-in both;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up { animation: none; opacity: 1; transform: none; }
   }
 }
 

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="title">Oshi Graphy | （マイページ）日記詳細</x-slot>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
         <x-slot name="header">
             <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記詳細</h2>
         </x-slot>

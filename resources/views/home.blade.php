@@ -100,23 +100,29 @@
     </nav>
 
     <!-- Page Content -->
-    <main class="max-w-5xl w-full mx-auto px-6 sm:px-10 py-10 flex-1">
-        <div class="grid grid-rows-2 lg:grid-rows-1 lg:grid-cols-2 gap-8">
-            
+    <main class="max-w-5xl w-full mx-auto px-6 sm:px-10 py-6 flex-1">
+        <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-4 motion-safe:animate-fade-up">
+
             {{-- 左カラム：ロゴ --}}
             <div class="flex items-center justify-center">
-                <img src="{{ asset('images/Oshi_Graphy_logo.png') }}" alt="アプリロゴ" class="w-40 sm:w-52 lg:w-64 max-w-full h-auto">
+                <img src="{{ asset('images/Oshi_Graphy_logo.png') }}" alt="アプリロゴ" class="w-full h-auto">
             </div>
 
             {{-- 右カラム：キャッチコピー --}}
-            <div class="flex items-center justify-center text-center lg:text-left">
-                <h1 class="hero-copy text-balance">
-                    <span class="block">おとなの</span>
-                    <span class="block">
-                        <span class="em-highlight">推し活</span>を記憶し
+            <div class="flex flex-col items-center justify-center py-6 lg:text-left">
+                <p class="text-gray-800 mb-2 sm:mb-4 tracking-wider text-lg sm:text-2xl">推しグラフィー</p>
+                <h1 class="font-extrabold text-xl sm:text-3xl lg:text-5xl tracking-wide">
+                    <span class="block py-2 md:py-4 lg:py-5">おとなの</span>
+                    <span class="block py-2 md:py-4 lg:py-5 pl-2 sm:pl-6">
+                        <span class="text-brand text-2xl sm:text-3xl lg:text-6xl" style="text-shadow: 2px 2px 2px gray;">推し活</span> を記憶し
                     </span>
-                    <span class="block">感動を共有しよう</span>
+                    <span class="block py-2 md:py-4 lg:py-5 pl-4 sm:pl-10">感動を共有しよう</span>
                 </h1>
+                <p class="text-xs lg:text-base text-gray-800 mt-4 md:mt-6">
+                    <span class="block">ライブ参戦・写真・メモをまとめて管理。</span>
+                    <span class="block">思い出を美しく残そう。</span>
+                </p>
+                <p class="text-xs text-gray-800 mt-4 md:mt-8 hover:cursor-pointer lg:hidden">新規登録は<a href="{{ route('register') }}">こちら</a></p>
             </div>
         </div>
 
