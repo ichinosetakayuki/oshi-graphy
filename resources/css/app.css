@@ -12,12 +12,31 @@
   .og-select2-tall .select2-selection__rendered{ line-height: 2.75rem; }
   .og-select2-tall .select2-selection__arrow{ height: 2.75rem; }
   /* 高さをカスタマイズした select2 のクリアボタン調整 */
- .og-select2-tall .select2-selection__clear {
+  .og-select2-tall .select2-selection__clear {
     position: absolute;       /* 浮動配置ではなく絶対配置 */
     right: 0.5rem;           /* 右端からの余白（調整可） */
     top: 50%;                 /* 高さの中央 */
     transform: translateY(-50%);
     margin: 0;                /* デフォルト余白をリセット */
+  }
+}
+
+/* home.blade.phpのアニメーション設定 */
+@layer keyframes {
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(32px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@layer utilities {
+  .animate-fade-up {
+    animation: fade-up .6s ease-in both;
+    will-change: transform, opacity;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-fade-up { animation: none; opacity: 1; transform: none; }
   }
 }
 

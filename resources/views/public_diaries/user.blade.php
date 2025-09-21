@@ -4,7 +4,7 @@
   {{-- プロフィールモーダルの呼び出し --}}
   <x-profile-modal :user="$user" :editable="false" name="profileModalUser" />
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
     <x-slot name="header">
       <h2 class="text-2xl font-semibold">{{ $user->name }}さんの日記一覧</h2>
       <a href="#" class="underline" x-data x-on:click.prevent="window.dispatchEvent(new CustomEvent('open-modal', {detail: 'profileModalUser'}))">プロフィールを見る</a>
