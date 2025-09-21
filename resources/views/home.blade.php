@@ -116,7 +116,7 @@
                     <span class="block py-2 md:py-4 lg:py-5 pl-2 sm:pl-6">
                         <span class="text-brand text-2xl sm:text-3xl lg:text-6xl" style="text-shadow: 2px 2px 2px gray;">推し活</span> を記憶し
                     </span>
-                    <span class="block py-2 md:py-4 lg:py-5 pl-4 sm:pl-10">感動を共有しよう</span>
+                    <span class="block py-2 md:py-4 lg:py-5 pl-4 sm:pl-12">感動を共有しよう</span>
                 </h1>
                 <p class="text-xs lg:text-base text-gray-800 mt-4 md:mt-6">
                     <span class="block">ライブ参戦・写真・メモをまとめて管理。</span>
