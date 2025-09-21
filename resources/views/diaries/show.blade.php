@@ -1,3 +1,36 @@
+@push('styles')
+<style>
+    @media print {
+        .no-print, header, button {
+            display: none;
+        }
+    }
+
+    /* A4縦に整える */
+    @page {
+        size: A4;
+        margin: 16mm;
+    }
+
+    body {
+        background: #fff !important;
+        color: #000;
+    }
+
+    /* 画像を収める 途中で切れないようにする*/
+    img {
+        max-width: 100% !important;
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
+
+    /* 改ページを入れたいところに<div class="page-break"></div>を置く */
+    .page-break {
+        page-break-before: always;
+    }
+</style>
+@endpush
+
 <x-app-layout>
     <x-slot name="title">Oshi Graphy | （マイページ）日記詳細</x-slot>
 
@@ -14,8 +47,8 @@
                 <span class="{{ $diary->is_public ? 'bg-brand' : 'bg-gray-400' }} px-3 py-3 rounded-3xl font-semibold text-center">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
                 @endif
             </div>
-            <div class="flex flex-col md:flex-row">
-                <x-primary-button>PDFにする</x-primary-button>
+            <div class="flex flex-col md:flex-row no-print">
+                <x-secondary-button onclick="window.print()">印刷／PDF</x-secondary-button>
                 <x-secondary-button><a href="{{ route('diaries.index') }}">一覧に戻る</a></x-secondary-button>
             </div>
         </div>
@@ -54,26 +87,27 @@
         </div>
 
         @if($diary->is_public)
-        {{-- コメント部分 --}}
-        <h3 class="text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
+        <div class="no-print">
+            {{-- コメント部分 --}}
+            <h3 class="text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
 
-        {{-- コメント入力ボタン＆モーダル本体 --}}
-        <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
+            {{-- コメント入力ボタン＆モーダル本体 --}}
+            <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
-        {{-- コメント一覧 --}}
-        <ul class="space-y-4">
-            @forelse($diary->comments as $comment)
-            <li>
-                <div>
-                    <span class="text-sm font-semibold">{{ $comment->user->name ?? '退会ユーザー' }}</span>
-                    <span class="text-xs ml-1">{{ $comment->updated_at->diffForHumans() }}</span>
-                    {{-- diffForHumans():人間感覚○分前などで表示 --}}
-                </div>
-                <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
-                @if( auth()->id() === $comment->user_id )
-                <x-secondary-button type="button"
-                    x-data
-                    x-on:click="
+            {{-- コメント一覧 --}}
+            <ul class="space-y-4">
+                @forelse($diary->comments as $comment)
+                <li>
+                    <div>
+                        <span class="text-sm font-semibold">{{ $comment->user->name ?? '退会ユーザー' }}</span>
+                        <span class="text-xs ml-1">{{ $comment->updated_at->diffForHumans() }}</span>
+                        {{-- diffForHumans():人間感覚○分前などで表示 --}}
+                    </div>
+                    <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
+                    @if( auth()->id() === $comment->user_id )
+                    <x-secondary-button type="button"
+                        x-data
+                        x-on:click="
                         window.dispatchEvent(new CustomEvent('confirm-delete', {
                         detail: {
                             name: 'confirm-delete',
@@ -82,12 +116,13 @@
                             message: 'このコメントを削除します。よろしいですか？'
                         }
                     }))">削除</x-secondary-button>
-                @endif
-            </li>
-            @empty
-            <li class="text-sm text-gray-500">まだコメントはありません</li>
-            @endforelse
-        </ul>
+                    @endif
+                </li>
+                @empty
+                <li class="text-sm text-gray-500">まだコメントはありません</li>
+                @endforelse
+            </ul>
+        </div>
         @endif
 
         {{-- 日記、コメント削除確認モーダル --}}
