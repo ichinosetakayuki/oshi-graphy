@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Alpine.jsのx-cloak用 */
+@layer base {
+  [x-cloak] {
+    display: none !important;
+  }
+}
+
 /* select2の高さをカスタマイズするcss */
 @layer components {
   .og-select2-tall.select2-selection--single{

@@ -68,7 +68,7 @@ class ProfileController extends Controller
 
         $deleteIcon = $request->boolean('delete_icon');
 
-        $data = $request->validate([
+        $data = $request->validateWithBag('profile', [
             'icon' => 'nullable|image|mimes:jpg,jpeg,png.webp|max:2048',
             'profile' => 'nullable|string|max:1000'
         ]);
@@ -100,6 +100,6 @@ class ProfileController extends Controller
         $user->save();
 
         return back()
-            ->with('status', $deleteIcon ? 'profile-icon-deleted' : 'profile-updated');
+            ->with('status', $deleteIcon ? 'アイコンが削除されました。' : 'プロフィールが更新されました。');
     }
 }

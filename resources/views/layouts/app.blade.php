@@ -31,12 +31,14 @@
     @include('layouts.navigation')
 
 
+    {{-- sessionメッセージのトースト表示 --}}
+    <x-toast :message="session('status')" :type="session('status_type', 'success')" />
     {{-- フラッシュメッセージ --}}
-    @if(session('status'))
+    <!-- @if(session('status'))
     <div class="bg-green-100 text-green-800">
         <div class="max-w-5xl mx-auto px-4 py-2">{{ session('status') }}</div>
     </div>
-    @endif
+    @endif -->
 
     <!-- Page Heading -->
     @isset($header)

@@ -2,16 +2,16 @@
     <div class="p-6"
         x-data
         x-init="
-        @if($editable && ($errors->any()))
+        @if($editable && ($errors->profile->any()))
         window.dispatchEvent(new CustomEvent('open-modal', {detail: '{{ $name}}' }));
         @endif
         ">
         <h2 class="text-lg font-semibold mb-4 border-l-8 border-brand pl-3">
             {{ $editable ? 'プロフィール編集' : " $user->name さんのプロフィール" }}
         </h2>
-        @if($editable && session('status') === 'profile-updated')
+        <!-- @if($editable && session('status') === 'profile-updated')
         <p class="text-green-600 text-sm mb-3">プロフィールを更新しました。</p>
-        @endif
+        @endif -->
 
         @if($editable)
         <form method="post" action="{{ route('profile.update.info') }}" enctype="multipart/form-data" class="space-y-4">
