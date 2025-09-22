@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AiDiaryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\DiaryPublicController;
 use App\Http\Controllers\ArtistController;
@@ -17,6 +18,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/me/profile/info', [ProfileController::class, 'updateProfileInfo'])->name('profile.update.info');
+
+    Route::get('/user_profile',[UserProfileController::class, 'show'])->name('user.profile.show');
+    Route::get('/user_profile',[UserProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::patch('/user_profile',[UserProfileController::class, 'update'])->name('user.profile.update');
 
     Route::resource('diaries', DiaryController::class);
     Route::get('/public_diaries', [DiaryPublicController::class, 'index'])->name('public.diaries.index');
