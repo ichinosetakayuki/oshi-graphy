@@ -1,4 +1,4 @@
-<x-modal name="{{ $name }}" maxWidth="lg">
+{{-- <x-modal name="{{ $name }}" maxWidth="lg">
     <div class="p-6"
         x-data
         x-init="
@@ -89,4 +89,4 @@
         </div>
         @endif
     </div>
-</x-modal>
+</x-modal> --}}

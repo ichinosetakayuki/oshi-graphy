@@ -2,7 +2,7 @@
   <x-slot name="title">Oshi Graphy | {{ $user->name }}さんの日記一覧</x-slot>
 
   {{-- プロフィールモーダルの呼び出し --}}
-  <x-profile-modal :user="$user" :editable="false" name="profileModalUser" />
+  {{-- <x-profile-modal :user="$user" :editable="false" name="profileModalUser" /> --}}
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
     <x-slot name="header">

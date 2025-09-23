@@ -19,7 +19,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::post('/me/profile/info', [ProfileController::class, 'updateProfileInfo'])->name('profile.update.info');
 
-    Route::get('/user_profile',[UserProfileController::class, 'show'])->name('user.profile.show');
+    Route::get('/users/{user}',[UserProfileController::class, 'show'])
+        ->whereNumber('user')->name('user.profile.show');
     Route::get('/user_profile',[UserProfileController::class, 'edit'])->name('user.profile.edit');
     Route::patch('/user_profile',[UserProfileController::class, 'update'])->name('user.profile.update');
 
