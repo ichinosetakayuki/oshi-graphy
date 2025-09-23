@@ -218,6 +218,7 @@ return [
         'group' => 'グループ',
         'happened_on' => '日付',
         'hour' => '時間',
+        'icon' => 'アイコン',
         'image' => '画像',
         'last_name' => '姓',
         'lesson' => 'レッスン',

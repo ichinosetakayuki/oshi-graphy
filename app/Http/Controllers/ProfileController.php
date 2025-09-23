@@ -69,7 +69,7 @@ class ProfileController extends Controller
         $deleteIcon = $request->boolean('delete_icon');
 
         $data = $request->validateWithBag('profile', [
-            'icon' => 'nullable|image|mimes:jpg,jpeg,png.webp|max:2048',
+            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'profile' => 'nullable|string|max:1000'
         ]);
 

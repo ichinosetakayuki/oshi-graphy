@@ -21,7 +21,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/users/{user}',[UserProfileController::class, 'show'])
         ->whereNumber('user')->name('user.profile.show');
-    Route::get('/user_profile',[UserProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::get('/user_profile/edit',[UserProfileController::class, 'edit'])->name('user.profile.edit');
     Route::patch('/user_profile',[UserProfileController::class, 'update'])->name('user.profile.update');
 
     Route::resource('diaries', DiaryController::class);

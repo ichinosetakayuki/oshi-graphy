@@ -42,7 +42,6 @@
             {{-- AIアシスト下書きゾーン --}}
             <div class="flex flex-col gap-2 mt-3">
                 <x-input-label value="AIアシスト" class="w-28" />
-                <!-- <h3 class="font-semibold text-lg">AIアシスト</h3> -->
                 <div class="flex flex-col md:flex-row gap-2 mt-3">
                     <label for="ai_prompt" class="text-sm pl-2 w-28">AIへの相談</label>
                     <x-textarea id="ai_prompt" name="ai_prompt" rows="6" placeholder="文案作成に必要な情報（日時、場所、アーティスト、セトリ、感想など）を入力してください。" />
@@ -182,9 +181,6 @@
                     reader.readAsDataURL(file);
                 });
             }
-            // $input.on('click', function()  {
-            //     this.value = null;
-            // })
 
             $input.on('change', function() {
                 renderPreviews(this.files);
@@ -232,7 +228,6 @@
                     }
                 })
                 .done(function(res) {
-                    // console.log('[OK] /ai/diary-suggest:', res); // ← 追加
                     if (res.ok) {
                         appendAnswer(res.reply);
                         $prompt.val('');
@@ -241,7 +236,6 @@
                     }
                 })
                 .fail(function(xhr) {
-                    // console.log('[NG] /ai/diary-suggest:', xhr.status, xhr.responseText); // ← 追加
                     const msg = xhr.responseJSON?.message || '通信エラー';
                     alert(msg);
                 })

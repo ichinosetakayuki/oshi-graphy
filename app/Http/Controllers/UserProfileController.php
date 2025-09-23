@@ -24,7 +24,7 @@ class UserProfileController extends Controller
 
         $data = $request->validateWithBag('profile', [
             'name' => 'required|string|max:255',
-            'icon' => 'nullable|image|mimes:jpg,jpeg,png.webp|max:2048',
+            'icon' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
             'profile' => 'nullable|string|max:1000'
         ]);
 
@@ -62,6 +62,10 @@ class UserProfileController extends Controller
 
     public function show(User $user)
     {
+
+        $user->loadCount([
+            'diaries as public_diaries_count' => fn($q) => $q->where('is_public', true)]);
+
         return view('user_profile.show', compact('user'));
     }
 }

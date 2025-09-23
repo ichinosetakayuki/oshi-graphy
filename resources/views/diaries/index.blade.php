@@ -38,13 +38,14 @@
             @forelse($diaries as $diary)
             <a href="{{ route('diaries.show', $diary) }}" class="block bg-white border border-gray-600 rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
                 <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
-                <!-- <img src="{{ asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="ダミー画像"> -->
                 <div class="p-3">
                     <div class="flex justify-between text-xs text-gray-600 mb-1">
-                        <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span><!-- happened_onがnullなら空文字を返す -->
+                        {{-- happened_onがnullなら空文字を返す↓ --}}
+                        <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span>
                         <span class="text-red-500">{{ $diary->artist->name ?? '-' }}</span>
                     </div>
-                    <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p><!-- line-clamp-2:テキストを２行で切り取り、あふれた分は...で省略 -->
+                    {{-- line-clamp-2:テキストを２行で切り取り、あふれた分は...で省略 --}}
+                    <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p>
                     <div class="flex justify-between items-center">
                         <span class="text-[11px] px-2 py-0.5 rounded {{ $diary->is_public ? 'bg-green-500 text-white' : 'bg-gray-400 text-white' }}">
                             {{ $diary->is_public ? '公開' : '非公開' }}

@@ -49,12 +49,12 @@
                 <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
                 <div class="p-3">
                     <div class="flex justify-between text-xs text-gray-600 mb-1">
-                        <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span><!-- happened_onがnullなら空文字を返す -->
+                        <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span>
                         <span class="text-red-500">{{ $diary->artist->name ?? '-' }}</span>
                     </div>
                     <div class="flex items-center"><a href="{{ route('public.diaries.user', $diary->user) }}" class="text-[11px] px-2 py-0.5 rounded bg-green-500 text-white hover:underline" @click.stop>{{ $diary->user->name }}</a>
                     </div>
-                    <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p><!-- line-clamp-2:テキストを２行で切り取り、あふれた分は...で省略 -->
+                    <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p>
                     <div class="flex justify-between items-center">
                         <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
                     </div>

@@ -43,9 +43,7 @@
                     <label for="icon" class="inline-flex items-center px-3 py-2 rounded-lg border shadow-sm bg-brand-light hover:bg-gray-50 cursor-pointer" :class="del ? 'pointer-events-none opacity-50' : ''">画像を選択</label>
                     <span class="text-base text-gray-500" x-text="fileName ? fileName : '未選択' "></span>
                 </div>
-                @error('icon')
-                <p class="text-red-600 text-sm">{{ $message }}</p>
-                @enderror
+                <x-input-error :messages="$errors->profile->get('icon')" />
 
                 {{-- 削除チェックで保存時に削除 --}}
                 <div class="flex justify-center sm:block">
@@ -61,10 +59,6 @@
                 <x-input-label for="profile">自己紹介</x-input-label>
                 <x-textarea name="profile" id="profile" rows="5" placeholder="自己紹介を入力してください。" class="w-full rounded border p-2 ml-2 sm:ml-4">{{ old('profile', $user->profile) }}</x-textarea>
                 <x-input-error :messages="$errors->profile->get('profile')" />
-            </div>
-
-            <div class="text-sm text-gray-500">
-                公開日記数：{{ $user->public_diaries_count }}
             </div>
 
             <div class="flex justify-end gap-2 pt-2">
