@@ -1,7 +1,10 @@
 @push('styles')
 <style>
     @media print {
-        .no-print, header, button {
+
+        .no-print,
+        header,
+        button {
             display: none;
         }
     }
@@ -41,10 +44,10 @@
 
         <div class="flex justify-between">
             <div class="flex gap-3">
-                <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center align-middle">{{ $diary->happened_on->format('Y年n月j日') }}</span>
-                <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center">{{ $diary->artist->name }}</span>
+                <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center align-middle shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
+                <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center shadow">{{ $diary->artist->name }}</span>
                 @if(auth()->id() == $diary->user_id)
-                <span class="{{ $diary->is_public ? 'bg-brand' : 'bg-gray-400' }} px-3 py-3 rounded-3xl font-semibold text-center">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
+                <span class="{{ $diary->is_public ? 'bg-brand' : 'bg-gray-400' }} px-3 py-3 rounded-3xl font-semibold text-center shadow">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
                 @endif
             </div>
             <div class="flex flex-col md:flex-row no-print">
@@ -52,11 +55,17 @@
                 <x-secondary-button><a href="{{ route('diaries.index') }}">一覧に戻る</a></x-secondary-button>
             </div>
         </div>
-        <div class="flex mt-3 gap-4">
-            <p class="flex-1 bg-brand-light p-2 rounded-lg m-2">{{ $diary->body }}</p>
+        <div class="flex mt-3">
+            <p class="flex-1 bg-brand-light p-2 m-2 rounded-lg shadow">{{ $diary->body }}</p>
+        </div>
+        <div class="flex justify-between">
+            <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
             @if(auth()->id() == $diary->user_id)
-            <div class="flex flex-col w-10 gap-2 mt-2">
-                <button class="bg-brand-light text-xs w-auto p-2 rounded text-blue-600 shadow-sm drop-shadow "><a href="{{ route('diaries.edit', $diary) }}">編集</a></button>
+            <div class="flex items-center gap-2 mr-2">
+                {{-- <button class="bg-brand-light text-xs w-auto p-2 rounded text-blue-600 shadow-sm drop-shadow "><a href="{{ route('diaries.edit', $diary) }}">編集</a></button> --}}
+                <a href="{{ route('diaries.edit', $diary) }}" title="編集">
+                    <x-icons.pencil-square size="w-4 h-4" class="text-brand-dark" /> {{-- 編集アイコン --}}
+                </a>
                 <button type="button"
                     x-data
                     x-on:click="
@@ -67,13 +76,12 @@
                             action: '{{ route('diaries.destroy', $diary) }}',
                             message: 'この日記を削除します。よろしいですか？'
                         }
-                    }))"
-                    class="bg-orange-200 text-xs w-full p-2 rounded text-red-500 shadow-sm drop-shadow">
-                    削除</button>
+                    }))" title="削除">
+                    <x-icons.trash size="w-4 h-4" class="text-brand-dark" /> {{-- 削除アイコン --}}
+                </button>
             </div>
             @endif
         </div>
-        <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-3">
             @forelse($diary->images as $image)
