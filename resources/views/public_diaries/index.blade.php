@@ -6,56 +6,64 @@
             <h2 class="text-2xl font-semibold">みんなの日記</h2>
         </x-slot>
 
-        <form method="GET" class="flex flex-wrap items-center gap-3 mb-5">
-            {{-- 年 --}}
-            <div class="flex gap-3 items-center">
-                <label class="font-semibold">年</label>
-                <select name="year" class="border rounded px-3 py-1 w-24">
-                    <option value="">すべて</option>
-                    @foreach($years as $y)
-                    <option value="{{ $y }}" @selected($year==$y)>{{ $y }}</option>
-                    @endforeach
-                </select>
+        <form method="GET" class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 mb-5">
+            <div class="flex gap-3">
+                {{-- 年 --}}
+                <div class="flex gap-3 items-center">
+                    <label for="year" class="font-semibold">年</label>
+                    <select id="year" name="year" class="border rounded px-3 py-1 w-24">
+                        <option value="">すべて</option>
+                        @foreach($years as $y)
+                        <option value="{{ $y }}" @selected($year==$y)>{{ $y }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                {{-- 月 --}}
+                <div class="flex gap-3 items-center">
+                    <label for="month" class="font-semibold">月</label>
+                    <select id="month" name="month" class="border rounded px-3 py-1 w-24">
+                        <option value="">すべて</option>
+                        @foreach($months as $m)
+                        <option value="{{ $m }}" @selected($month==$m)>{{ $m }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
-            {{-- 月 --}}
-            <div class="flex gap-3 items-center">
-                <label class="font-semibold">月</label>
-                <select name="month" class="border rounded px-3 py-1 w-24">
-                    <option value="">すべて</option>
-                    @foreach($months as $m)
-                    <option value="{{ $m }}" @selected($month==$m)>{{ $m }}</option>
-                    @endforeach
-                </select>
-            </div>
+
+
             {{-- アーティスト --}}
-            <div class="flex gap-3 items-center">
-                <label for="artist_id" class="w-40 font-semibold">アーティスト</label>
+            <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+                <label for="artist_id" class="w-28 sm:text-right font-semibold shrink-0">アーティスト</label>
                 <select name="artist_id" id="artist_id" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                     @if(!empty($artistId) && !empty($artistName))
                     <option value="{{ $artistId }}" selected>{{ $artistName }}</option>
                     @endif
                 </select>
             </div>
+            <div>
+                <button class="rounded px-4 py-1 bg-brand">絞り込み</button>
+                @if($year || $month || $artistName)
+                <a href="{{ route('public.diaries.index') }}" class="text-sm underline">条件クリア</a>
+                @endif
+            </div>
 
-            <button class="rounded px-4 py-1 bg-brand">絞り込み</button>
-            @if($year || $month || $artistName)
-            <a href="{{ route('public.diaries.index') }}" class="text-sm underline">条件クリア</a>
-            @endif
         </form>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 motion-safe:animate-fade-up">
             @forelse($diaries as $diary)
             <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
                 <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
-                <div class="p-3">
-                    <div class="flex justify-between text-xs text-gray-600 mb-1">
-                        <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span>
-                        <span class="text-red-500">{{ $diary->artist->name ?? '-' }}</span>
+                <div class="flex flex-col justify-between h-32 p-3">
+                    <div>
+                        <div class="flex justify-between text-xs text-gray-600 mb-1">
+                            <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span>
+                            <span class="text-red-500">{{ $diary->artist->name ?? '-' }}</span>
+                        </div>
+                        <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p>
                     </div>
-                    <div class="flex items-center"><a href="{{ route('public.diaries.user', $diary->user) }}" class="text-[11px] px-2 py-0.5 rounded bg-green-500 text-white hover:underline" @click.stop>{{ $diary->user->name }}</a>
-                    </div>
-                    <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p>
                     <div class="flex justify-between items-center">
+                        <div class="flex items-center"><a href="{{ route('public.diaries.user', $diary->user) }}" class="text-[11px] px-2 py-0.5 rounded bg-green-500 text-white hover:underline" @click.stop>{{ $diary->user->name }}</a>
+                        </div>
                         <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
                     </div>
                 </div>

@@ -2,24 +2,24 @@
     <x-slot name="title">Oshi Graphy | 日記作成</x-slot>
 
     <x-slot name="header">
-        <h2 class="text-2xl font-semibold">日記作成</h2>
+        <h2 class="text-2xl font-semibold">📝日記作成</h2>
     </x-slot>
 
 
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-3xl mx-auto border rounded-2xl p-3 md:p-4 lg:p-8 lg:shadow bg-white">
 
         <form method="post" action="{{ route('diaries.store') }}" id="diary-form" enctype="multipart/form-data" class="flex-col flex-wrap items-center gap-3 mb-5 w-full">
             @csrf
             <div class="flex flex-col gap-3 md:flex-row md:gap-6">
                 {{-- 日付 --}}
                 <div class="flex flex-col md:flex-row gap-2">
-                    <x-input-label for="happened_on" value="日付" class="w-28" />
+                    <x-form-label for="happened_on" value="日付" />
                     <x-text-input type="date" name="happened_on" id="happened_on" :value="old('happened_on')" />
                     <x-input-error :messages="$errors->get('happened_on')" />
                 </div>
                 {{-- アーティスト --}}
                 <div class="flex flex-col md:flex-row gap-2">
-                    <x-input-label for="artist_id" value="アーティスト" class="w-40" />
+                    <x-form-label for="artist_id" value="アーティスト" width="w-32" class="shrink-0" />
                     <select name="artist_id" id="artist_id" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                         <option value="">-- アーティストを選択 --</option>
                         {{-- old() があれば初期optionを1つだけ指す (JSで選択状態に) --}}
@@ -34,30 +34,30 @@
 
             {{-- 本文 --}}
             <div class="flex flex-col md:flex-row gap-2 mt-3">
-                <x-input-label for="body" value="本文" class="w-28" />
+                <x-form-label for="body" class="shrink-0" value="本文" />
                 <x-textarea name="body" id="body" rows="6" />
                 <x-input-error :messages="$errors->get('body')" />
             </div>
 
             {{-- AIアシスト下書きゾーン --}}
             <div class="flex flex-col gap-2 mt-3">
-                <x-input-label value="AIアシスト" class="w-28" />
+                <x-form-label value="AIアシスト" />
                 <div class="flex flex-col md:flex-row gap-2 mt-3">
-                    <label for="ai_prompt" class="text-sm pl-2 w-28">AIへの相談</label>
+                    <label for="ai_prompt" class="text-sm sm:text-right pl-2 sm:pr-2 w-28 shrink-0">AIへの相談</label>
                     <x-textarea id="ai_prompt" name="ai_prompt" rows="6" placeholder="文案作成に必要な情報（日時、場所、アーティスト、セトリ、感想など）を入力してください。" />
                 </div>
                 <div class="flex justify-end gap-2">
-                    <button type="button" id="ai_send" class="px-3 py-2 rounded-md bg-brand text-black text-sm">AIに相談</button>
-                    <button type="button" id="ai_reset" class="px-3 py-2 rounded-md bg-gray-200 text-sm">会話リセット</button>
+                    <button type="button" id="ai_send" class="px-3 py-2 rounded-md bg-brand text-black text-sm hover:bg-brand-dark">AIに相談</button>
+                    <button type="button" id="ai_reset" class="px-3 py-2 rounded-md bg-gray-200 text-sm hover:bg-gray-400">会話リセット</button>
                 </div>
                 <div class="flex flex-col md:flex-row gap-2 mt-3">
-                    <label class="text-sm pl-2 w-28">AIの回答欄</label>
-                    <div id="ai_answers" class="h-32 w-full overflow-y-auto rounded-md border-gray-300 p-3 bg-white text-gray-900 text-sm shadow-sm">
+                    <div class="text-sm sm:text-right pl-2 sm:pr-2 w-28 shrink-0">AIの回答欄</div>
+                    <div id="ai_answers" class="h-32 w-full overflow-y-auto rounded-md border border-gray-300 p-3 bg-white text-gray-900 text-sm shadow-sm">
                         {{-- AI回答がここに --}}
                     </div>
                 </div>
                 <div class="flex justify-end">
-                    <button type="button" id="ai_copy_latest" class="px-3 py-1 rounded-md bg-gray-200 text-sm">本文にコピー</button>
+                    <button type="button" id="ai_copy_latest" class="px-3 py-1 rounded-md bg-gray-200 text-sm hover:bg-gray-400">本文にコピー</button>
                 </div>
 
             </div>
@@ -66,7 +66,7 @@
             {{-- 写真の登録 --}}
             <div class="flex flex-col gap-2 mt-3">
                 <div class="flex flex-col md:flex-row gap-2 mt-3">
-                    <x-input-label for="images" value="写真" class="w-28" />
+                    <x-form-label for="images" value="写真" />
                     <input type="file" name="images[]" accept="image/*" id="images" multiple>
                 </div>
                 <x-input-error :messages="$errors->get('images')" />
@@ -77,7 +77,7 @@
             <div class="mb-6 mt-3">
                 <input type="hidden" name="is_public" value="0">
                 <div class="flex gap-2">
-                    <x-input-label class="w-28">公開設定</x-input-label>
+                    <x-form-label>公開設定</x-form-label>
                     <label class="inline-flex items-center">
                         <input type="checkbox" name="is_public" value="1" class="rounded border-gray-300 text-indigo-600" @checked(old('is_public'))>
                         <span class="ml-2 font-bold text-lg">公開する</span>
@@ -203,7 +203,7 @@
 
         function appendAnswer(text) {
             const html = `
-            <div class="bg-brand-light rounded-md mt-2 p-2 shadow-sm">
+            <div class="bg-gray-100 rounded-md mt-2 p-2 shadow-sm">
             <pre class="whitespace-pre-wrap break-words text-[13px]">${escapeHtml(text)}</pre>
             </div>`;
             $answers.append(html);
@@ -247,7 +247,7 @@
         $reset.on('click', function() {
             if (!confirm('AIとの会話履歴をリセットしてよろしいですか？')) return;
             $.post("{{ route('ai.diary.reset') }}", {
-                        _token: "{{ csrf_token() }}"
+                    _token: "{{ csrf_token() }}"
                 })
                 .done(function() {
                     $answers.empty();

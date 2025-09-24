@@ -94,8 +94,8 @@
     </nav>
 
     {{-- Page Content --}}
-    <main class="max-w-5xl w-full mx-auto px-6 sm:px-10 py-6 flex-1">
-        <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-4 motion-safe:animate-fade-up">
+    <main class="max-w-5xl w-full mx-auto px-6 sm:px-10 py-6 flex-1 flex items-center justify-center">
+        <div class="grid grid-cols-1 xl:grid-cols-2 lg:gap-4 motion-safe:animate-fade-up">
 
             {{-- 左カラム：ロゴ --}}
             <div class="flex items-center justify-center">
