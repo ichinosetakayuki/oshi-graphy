@@ -8,35 +8,31 @@
 
     <title>{{ $title ?? 'Oshi Graphy' }}</title>
 
-    <!-- Favicon -->
-    <!-- asset()→public/以下のファイルへのURLを作るヘルパー関数 -->
+    {{-- Favicon --}}
+    {{-- asset()→public/以下のファイルへのURLを作るヘルパー関数 --}}
     <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
 
-    <!-- Fonts -->
+    {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Vendor CSS を先に -->
+    {{-- Vendor CSS を先に --}}
     @stack('vendor-styles')
-    <!-- Scripts -->
+    {{-- Scripts --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- ↓追加 -->
+    {{-- ↓追加 --}}
     @stack('styles')
 </head>
 
-<body class="font-sans antialiased min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col">
+<body class="font-sans antialiased min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
     @include('layouts.navigation')
 
 
-    {{-- フラッシュメッセージ --}}
-    @if(session('status'))
-    <div class="bg-green-100 text-green-800">
-        <div class="max-w-5xl mx-auto px-4 py-2">{{ session('status') }}</div>
-    </div>
-    @endif
+    {{-- sessionメッセージのトースト表示 --}}
+    <x-toast :message="session('status')" :type="session('status_type', 'success')" />
 
     <!-- Page Heading -->
     @isset($header)
@@ -55,7 +51,7 @@
     <footer class="bg-brand">
         <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-center">©️Oshi-Graphy</div>
     </footer>
-    <!-- ↓追加 -->
+    {{-- ↓追加 --}}
     @stack('scripts')
 </body>
 

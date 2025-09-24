@@ -2,12 +2,19 @@
   <x-slot name="title">Oshi Graphy | {{ $user->name }}さんの日記一覧</x-slot>
 
   {{-- プロフィールモーダルの呼び出し --}}
-  <x-profile-modal :user="$user" :editable="false" name="profileModalUser" />
+  {{-- <x-profile-modal :user="$user" :editable="false" name="profileModalUser" /> --}}
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
     <x-slot name="header">
-      <h2 class="text-2xl font-semibold">{{ $user->name }}さんの日記一覧</h2>
-      <a href="#" class="underline" x-data x-on:click.prevent="window.dispatchEvent(new CustomEvent('open-modal', {detail: 'profileModalUser'}))">プロフィールを見る</a>
+      <div class="flex flex-col sm:flex-row items-center sm:gap-3">
+        <div class="flex items-center gap-1">
+          <img src="{{ $user->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
+          <h2 class="text-2xl font-semibold">{{ $user->name }}さんの日記一覧</h2>
+        </div>
+        <div>
+          <a href="{{ route('user.profile.show', $user) }}" class="underline">プロフィールを見る</a>
+        </div>
+      </div>
     </x-slot>
 
     {{-- パンくず／戻るリンク --}}
@@ -48,15 +55,18 @@
       @forelse($diaries as $diary)
       <article onclick="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
         <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
-        <div class="p-3">
-          <div class="flex justify-between text-xs text-gray-600 mb-1">
-            <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span><!-- happened_onがnullなら空文字を返す -->
-            <span class="text-red-500">{{ $diary->artist->name ?? '-' }}</span>
+        <div class="flex flex-col justify-between h-32 p-3">
+          <div>
+            <div class="flex justify-between text-xs text-gray-600 mb-1">
+              <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span>
+              <span class="text-red-500">{{ $diary->artist->name ?? '-' }}</span>
+            </div>
+            <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p>
           </div>
-          <div class="flex items-center"><span class="text-[11px] px-2 py-0.5 rounded bg-green-500 text-white">{{ $diary->user->name }}</span>
-          </div>
-          <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p><!-- line-clamp-2:テキストを２行で切り取り、あふれた分は...で省略 -->
           <div class="flex justify-between items-center">
+            <div class="flex items-center">
+              <span class="text-[11px] px-2 py-0.5 rounded bg-green-500 text-white">{{ $diary->user->name }}</span>
+            </div>
             <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
           </div>
         </div>
@@ -76,9 +86,6 @@
       <a href="{{ route('public.diaries.index') }}"
         class="inline-block px-4 py-2 bg-gray-100 rounded hover:bg-gray-200">みんなの日記に戻る</a>
     </div>
-
   </div>
-
-
 
 </x-app-layout>

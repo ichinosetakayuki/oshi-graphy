@@ -46,9 +46,8 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-                        <x-dropdown-link href="#"
-                            x-data
-                            x-on:click.prevent="window.dispatchEvent(new CustomEvent('open-modal', {detail: 'profileModalMe'}))">
+
+                        <x-dropdown-link :href="route('user.profile.edit')">
                             プロフィール編集
                         </x-dropdown-link>
 
@@ -106,9 +105,8 @@
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
-                <x-responsive-nav-link href="#"
-                    x-data
-                    x-on:click.prevent="window.dispatchEvent(new CustomEvent('open-modal', { detail: 'profileModalMe'}))">
+                
+                <x-responsive-nav-link :href="route('user.profile.edit')">
                     プロフィール編集
                 </x-responsive-nav-link>
 
@@ -125,6 +123,4 @@
             </div>
         </div>
     </div>
-    {{-- プロフィールモーダル呼び出し --}}
-    <x-profile-modal :user="auth()->user()" :editable="true" name="profileModalMe" />
 </nav>
