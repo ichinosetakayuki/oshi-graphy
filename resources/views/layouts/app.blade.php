@@ -44,7 +44,8 @@
     @endisset
 
     <!-- Page Content -->
-    <main class="max-w-5xl w-full mx-auto px-4 py-6 flex-1">
+    {{-- <main class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6 flex-1"> --}}
+    <main class="flex-1">
         {{ $slot }}
     </main>
     <!-- footer -->

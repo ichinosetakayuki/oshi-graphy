@@ -1,28 +1,26 @@
 <x-app-layout>
   <x-slot name="title">Oshi Graphy | {{ $user->name }}さんの日記一覧</x-slot>
 
-  {{-- プロフィールモーダルの呼び出し --}}
-  {{-- <x-profile-modal :user="$user" :editable="false" name="profileModalUser" /> --}}
-
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
-    <x-slot name="header">
-      <div class="flex flex-col sm:flex-row items-center sm:gap-3">
-        <div class="flex items-center gap-1">
-          <img src="{{ $user->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
-          <h2 class="text-2xl font-semibold">{{ $user->name }}さんの日記一覧</h2>
-        </div>
-        <div>
-          <a href="{{ route('user.profile.show', $user) }}" class="underline">プロフィールを見る</a>
-        </div>
+  <x-slot name="header">
+    <div class="flex flex-col sm:flex-row items-center sm:gap-3">
+      <div class="flex items-center gap-1">
+        <img src="{{ $user->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
+        <h2 class="text-2xl font-semibold">{{ $user->name }}さんの日記一覧</h2>
       </div>
-    </x-slot>
+      <div>
+        <a href="{{ route('user.profile.show', $user) }}" class="underline">プロフィールを見る</a>
+      </div>
+    </div>
+  </x-slot>
 
-    {{-- パンくず／戻るリンク --}}
-    <nav class="text-sm text-gray-600 mb-3">
-      <a href="{{ route('public.diaries.index') }}" class="hover:underline">みんなの日記</a>
-      <span class="mx-1">/</span>
-      <span>{{ $user->name }}さん</span>
-    </nav>
+  {{-- パンくず --}}
+  <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 sm:text-base px-4 my-3 sm:my-5">
+    <a href="{{ route('public.diaries.index') }}" class="hover:underline">みんなの日記</a>
+    <span class="mx-1">/</span>
+    <span>{{ $user->name }}さん</span>
+  </nav>
+
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-4 sm:pb-6">
 
     <form method="GET" class="flex flex-wrap items-center gap-3 mb-5 md:gap-5">
       <div class="flex gap-3 items-center">
@@ -51,9 +49,9 @@
       @endif
     </form>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 motion-safe:animate-fade-up">
       @forelse($diaries as $diary)
-      <article onclick="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
+      <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-lime-50/30 border border-lime-400 rounded-2xl shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-xl">
         <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
         <div class="flex flex-col justify-between h-32 p-3">
           <div>
@@ -81,11 +79,6 @@
       {{ $diaries->links() }} {{-- ページネーション --}}
     </div>
 
-    {{-- 明確な「全体へ戻る」ボタン --}}
-    <div class="mt-6">
-      <a href="{{ route('public.diaries.index') }}"
-        class="inline-block px-4 py-2 bg-gray-100 rounded hover:bg-gray-200">みんなの日記に戻る</a>
-    </div>
   </div>
 
 </x-app-layout>

@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="title">Oshi Graphy | マイページ（日記一覧）</x-slot>
 
+    <x-slot name="header">
+        <div class="flex items-center gap-1">
+            <img src="{{ auth()->user()->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
+            <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記</h2>
+        </div>
+    </x-slot>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <x-slot name="header">
-            <div class="flex items-center gap-1">
-                <img src="{{ auth()->user()->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
-                <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記</h2>
-            </div>
-        </x-slot>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
 
         <form method="GET" class="flex flex-wrap items-center gap-3 mb-5 md:gap-5">
             <div class="flex gap-3 items-center">
@@ -39,7 +39,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 motion-safe:animate-fade-up">
             @forelse($diaries as $diary)
-            <article onclick="window.location='{{ route('diaries.show', $diary) }}'" class="bg-white border border-gray-600 rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
+            <article x-data @click="window.location='{{ route('diaries.show', $diary) }}'" class="bg-slate-50 border border-gray-600 rounded-2xl shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-xl">
                 <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
                 <div class="flex flex-col justify-between h-32 p-3">
                     <div>
