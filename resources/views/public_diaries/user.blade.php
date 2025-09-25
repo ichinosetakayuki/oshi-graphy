@@ -1,9 +1,6 @@
 <x-app-layout>
   <x-slot name="title">Oshi Graphy | {{ $user->name }}さんの日記一覧</x-slot>
 
-  {{-- プロフィールモーダルの呼び出し --}}
-  {{-- <x-profile-modal :user="$user" :editable="false" name="profileModalUser" /> --}}
-
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
     <x-slot name="header">
       <div class="flex flex-col sm:flex-row items-center sm:gap-3">
@@ -17,7 +14,7 @@
       </div>
     </x-slot>
 
-    {{-- パンくず／戻るリンク --}}
+    {{-- パンくず --}}
     <nav class="text-sm text-gray-600 mb-3">
       <a href="{{ route('public.diaries.index') }}" class="hover:underline">みんなの日記</a>
       <span class="mx-1">/</span>
@@ -53,7 +50,7 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       @forelse($diaries as $diary)
-      <article onclick="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
+      <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-lime-50/30 border border-lime-400 rounded-2xl shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-xl">
         <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
         <div class="flex flex-col justify-between h-32 p-3">
           <div>

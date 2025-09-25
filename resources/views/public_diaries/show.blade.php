@@ -1,25 +1,28 @@
 <x-app-layout>
     <x-slot name="title">Oshi Graphy | みんなの日記 詳細</x-slot>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
+    <x-slot name="header">
+        <h2 class="text-2xl font-semibold">{{ $diary->user->name }}さんの日記詳細</h2>
+    </x-slot>
 
-        <x-slot name="header">
-            <h2 class="text-2xl font-semibold">{{ $diary->user->name }}さんの日記詳細</h2>
-        </x-slot>
+    {{-- パンくず --}}
+    <nav class="flex items-center text-xs sm:text-base mb-3 sm:mb-5">
+        <a href="{{ route('public.diaries.index') }}" class="underline">みんなの日記</a>
+        <span class="mx-1">/</span>
+        <a href="{{ route('public.diaries.user', $diary->user) }}" class="underline">{{ $diary->user->name }}さん</a>
+        <span class="mx-1">/</span>
+        <span>{{ $diary->happened_on->format('Y年n月j日') }}の日記</span>
+    </nav>
 
-        <div class="flex justify-between">
-            <div class="flex gap-3">
-                <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center align-middle">{{ $diary->happened_on->format('Y年n月j日') }}</span>
-                <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center">{{ $diary->artist->name }}</span>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
 
-            </div>
-            <div class="flex flex-col md:flex-row">
-                <x-secondary-button><a href="{{ route('public.diaries.user', $diary->user) }}">{{ $diary->user->name}}さんの日記一覧</a></x-secondary-button>
-                <x-secondary-button><a href="{{ route('public.diaries.index') }}">みんなの日記一覧</a></x-secondary-button>
-            </div>
+        <div class="flex flex-wrap items-center gap-3">
+            <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base text-center shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
+            <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base text-center shadow">{{ $diary->artist->name }}</span>
         </div>
-        <div class="flex mt-3 gap-4">
-            <p class="flex-1 bg-brand-light p-2 rounded-lg m-2">{{ $diary->body }}</p>
+
+        <div class="flex mt-3">
+            <p class="flex-1 bg-brand-light p-2 my-2 rounded-lg shadow">{{ $diary->body }}</p>
         </div>
         <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
 
@@ -48,6 +51,7 @@
             @forelse($diary->comments as $comment)
             <li>
                 <div>
+                    <img src="{{ $comment->user->icon_url ?? asset('images/icon_placeholder.png') }}" alt="アイコン" class="inline-block size-5 rounded-full object-cover border align-middle">
                     <span class="text-sm font-semibold">{{ $comment->user->name ?? '退会ユーザー' }}</span>
                     <span class="text-xs ml-1">{{ $comment->updated_at->diffForHumans() }}</span>
                     {{-- diffForHumans():人間感覚○分前などで表示 --}}

@@ -3,7 +3,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <x-slot name="header">
-            <h2 class="text-2xl font-semibold">みんなの日記</h2>
+            <h2 class="text-2xl font-semibold">📖 みんなの日記</h2>
         </x-slot>
 
         <form method="GET" class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 mb-5">
@@ -51,7 +51,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 motion-safe:animate-fade-up">
             @forelse($diaries as $diary)
-            <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-white rounded-2xl shadow overflow-hidden hover:shadow-lg transition">
+            <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-amber-50 border border-brand-dark rounded-2xl shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-xl ">
                 <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
                 <div class="flex flex-col justify-between h-32 p-3">
                     <div>

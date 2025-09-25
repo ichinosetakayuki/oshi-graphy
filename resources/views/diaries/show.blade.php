@@ -37,32 +37,34 @@
 <x-app-layout>
     <x-slot name="title">Oshi Graphy | （マイページ）日記詳細</x-slot>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
-        <x-slot name="header">
-            <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記詳細</h2>
-        </x-slot>
+    <x-slot name="header">
+        <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記詳細</h2>
+    </x-slot>
 
-        <div class="flex justify-between">
-            <div class="flex gap-3">
-                <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center align-middle shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
-                <span class="bg-brand px-3 py-3 rounded-3xl font-semibold text-center shadow">{{ $diary->artist->name }}</span>
-                @if(auth()->id() == $diary->user_id)
-                <span class="{{ $diary->is_public ? 'bg-brand' : 'bg-gray-400' }} px-3 py-3 rounded-3xl font-semibold text-center shadow">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
-                @endif
-            </div>
-            <div class="flex flex-col md:flex-row no-print">
-                <x-secondary-button onclick="window.print()">印刷／PDF</x-secondary-button>
-                <x-secondary-button><a href="{{ route('diaries.index') }}">一覧に戻る</a></x-secondary-button>
-            </div>
+    {{-- パンくず --}}
+    <nav class="flex items-center text-xs sm:text-base mb-3 sm:mb-5 no-print">
+        <a href="{{ route('diaries.index') }}" class="underline">マイページ</a>
+        <span class="mx-1">/</span>
+        <span>{{ $diary->happened_on->format('Y年n月j日') }}の日記</span>
+    </nav>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 motion-safe:animate-fade-up">
+
+        <div class="flex flex-wrap items-center gap-3">
+            <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base text-center shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
+            <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base text-center shadow">{{ $diary->artist->name }}</span>
+            @if(auth()->id() == $diary->user_id)
+            <span class="{{ $diary->is_public ? 'bg-green-500' : 'bg-gray-400' }} px-2 py-2 rounded-lg font-semibold text-xs sm:text-base text-white text-center shadow">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
+            @endif
         </div>
+
         <div class="flex mt-3">
-            <p class="flex-1 bg-brand-light p-2 m-2 rounded-lg shadow">{{ $diary->body }}</p>
+            <p class="flex-1 bg-brand-light p-2 my-2 rounded-lg shadow">{{ $diary->body }}</p>
         </div>
         <div class="flex justify-between">
             <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
             @if(auth()->id() == $diary->user_id)
             <div class="flex items-center gap-2 mr-2">
-                {{-- <button class="bg-brand-light text-xs w-auto p-2 rounded text-blue-600 shadow-sm drop-shadow "><a href="{{ route('diaries.edit', $diary) }}">編集</a></button> --}}
                 <a href="{{ route('diaries.edit', $diary) }}" title="編集">
                     <x-icons.pencil-square size="w-4 h-4" class="text-brand-dark" /> {{-- 編集アイコン --}}
                 </a>
@@ -107,6 +109,7 @@
                 @forelse($diary->comments as $comment)
                 <li>
                     <div>
+                        <img src="{{ $comment->user->icon_url ?? asset('images/icon_placeholder.png') }}" alt="アイコン画像" class="inline-block size-5 rounded-full object-cover border">
                         <span class="text-sm font-semibold">{{ $comment->user->name ?? '退会ユーザー' }}</span>
                         <span class="text-xs ml-1">{{ $comment->updated_at->diffForHumans() }}</span>
                         {{-- diffForHumans():人間感覚○分前などで表示 --}}
