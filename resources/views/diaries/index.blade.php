@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="title">Oshi Graphy | マイページ（日記一覧）</x-slot>
 
+    <x-slot name="header">
+        <div class="flex items-center gap-1">
+            <img src="{{ auth()->user()->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
+            <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記</h2>
+        </div>
+    </x-slot>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <x-slot name="header">
-            <div class="flex items-center gap-1">
-                <img src="{{ auth()->user()->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
-                <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記</h2>
-            </div>
-        </x-slot>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
 
         <form method="GET" class="flex flex-wrap items-center gap-3 mb-5 md:gap-5">
             <div class="flex gap-3 items-center">

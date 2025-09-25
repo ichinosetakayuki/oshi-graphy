@@ -1,10 +1,11 @@
 <x-app-layout>
     <x-slot name="title">Oshi Graphy | みんなの日記</x-slot>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <x-slot name="header">
-            <h2 class="text-2xl font-semibold">📖 みんなの日記</h2>
-        </x-slot>
+    <x-slot name="header">
+        <h2 class="text-2xl font-semibold">📖 みんなの日記</h2>
+    </x-slot>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
 
         <form method="GET" class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 mb-5">
             <div class="flex gap-3">
