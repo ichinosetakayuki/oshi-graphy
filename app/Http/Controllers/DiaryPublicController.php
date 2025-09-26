@@ -27,6 +27,7 @@ class DiaryPublicController extends Controller
             ->when($artistId, fn($q) => $q->where('artist_id', $artistId))
             ->with(['artist', 'coverImage', 'user'])
             ->withCount('comments')
+            ->withCount('likes')
             ->orderBy('happened_on', 'desc')
             ->orderBy('updated_at', 'desc')
             ->paginate(12)
@@ -48,6 +49,7 @@ class DiaryPublicController extends Controller
     public function show(Diary $diary)
     {
         $diary->load(['comments', 'user']);
+        $diary->loadCount('likes');
         return view('public_diaries.show', compact('diary'));
     }
 
@@ -66,6 +68,7 @@ class DiaryPublicController extends Controller
             ->when($artist, fn($q) => $q->where('artist_id', $artist))
             ->with(['artist', 'coverImage', 'user'])
             ->withCount('comments')
+            ->withCount('likes')
             ->orderBy('happened_on', 'desc')
             ->orderBy('updated_at', 'desc')
             ->paginate(6)

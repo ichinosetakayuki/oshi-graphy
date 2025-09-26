@@ -7,6 +7,7 @@ use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\DiaryPublicController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DiaryLikeController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
@@ -36,6 +37,9 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/ai/diary-suggest', [AiDiaryController::class, 'suggest'])->name('ai.diary.suggest');
     Route::post('/ai/diary-reset', [AiDiaryController::class, 'reset'])->name('ai.diary.reset');
+
+    Route::post('/diaries/{diary}/like', [DiaryLikeController::class], 'store')->name('diaries.like.store');
+    Route::delete('/diaries/{diary}/like', [DiaryLikeController::class], 'destroy')->name('diaries.like.destroy');
 });
 
 

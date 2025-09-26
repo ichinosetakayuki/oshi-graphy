@@ -63,6 +63,7 @@
             </div>
             <div class="flex justify-between">
                 <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
+                <x-like-button :diary="$diary" :liked="$diary->likedBy(auth()->user())" :count="$diary->likes_count" />
                 @if(auth()->id() == $diary->user_id)
                 <div class="flex items-center gap-2 mr-2">
                     <a href="{{ route('diaries.edit', $diary) }}" title="編集">
