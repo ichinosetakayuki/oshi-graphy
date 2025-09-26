@@ -16,7 +16,7 @@
                 ⭐️公開日記数：{{ $user->public_diaries_count }}
             </div>
             <div class="flex justify-end">
-                <a x-data @click="location.href='{{ route('public.diaries.user', $user) }}'" class="underline text-gray-600 text-xs sm:text-base">{{ $user->name }}さんの日記一覧に戻る</a>
+                <a x-data @click="location.href='{{ route('public.diaries.user', $user) }}'" class="underline text-gray-600 text-xs sm:text-base cursor-pointer">{{ $user->name }}さんの日記一覧に戻る</a>
             </div>
         </div>
     </div>

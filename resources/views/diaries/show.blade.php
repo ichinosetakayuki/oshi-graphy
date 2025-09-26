@@ -42,14 +42,14 @@
     </x-slot>
 
     {{-- パンくず --}}
-    <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 sm:text-base px-4 my-3 sm:my-5 no-print">
+    <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 sm:text-base px-4 mt-3 sm:mt-5 no-print">
         <a href="{{ route('diaries.index') }}" class="underline">マイページ</a>
         <span class="mx-1">/</span>
         <span>{{ $diary->happened_on->format('Y年n月j日') }}の日記</span>
     </nav>
 
     <div class="motion-safe:animate-fade-up">
-        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
+        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex flex-wrap items-center gap-3">
                 <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base text-center shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
                 <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base text-center shadow">{{ $diary->artist->name }}</span>
@@ -98,45 +98,52 @@
         </section>
 
         @if($diary->is_public)
-        <section class="bg-slate-100 py-6">
+        <section class="bg-slate-100 py-6 no-print">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="no-print">
-                    {{-- コメント部分 --}}
-                    <h3 class="text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
+                {{-- コメント部分 --}}
+                <h3 class="text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
 
-                    {{-- コメント入力ボタン＆モーダル本体 --}}
-                    <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
+                {{-- コメント入力ボタン＆モーダル本体 --}}
+                <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
-                    {{-- コメント一覧 --}}
-                    <ul class="space-y-4">
-                        @forelse($diary->comments as $comment)
-                        <li>
+                {{-- コメント一覧 --}}
+                <ul class="space-y-4">
+                    @forelse($diary->comments as $comment)
+                    <li>
+                        <div class="flex justify-between">
                             <div>
                                 <img src="{{ $comment->user->icon_url ?? asset('images/icon_placeholder.png') }}" alt="アイコン画像" class="inline-block size-5 rounded-full object-cover border">
                                 <span class="text-sm font-semibold">{{ $comment->user->name ?? '退会ユーザー' }}</span>
                                 <span class="text-xs ml-1">{{ $comment->updated_at->diffForHumans() }}</span>
                                 {{-- diffForHumans():人間感覚○分前などで表示 --}}
                             </div>
-                            <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
                             @if( auth()->id() === $comment->user_id )
-                            <x-secondary-button type="button"
+                            <button
+                                type="button"
                                 x-data
                                 x-on:click="
-                        window.dispatchEvent(new CustomEvent('confirm-delete', {
-                        detail: {
-                            name: 'confirm-delete',
-                            title: 'コメント削除',
-                            action: '{{ route('comments.destroy', $comment) }}',
-                            message: 'このコメントを削除します。よろしいですか？'
-                        }
-                    }))">削除</x-secondary-button>
+                                    window.dispatchEvent(new CustomEvent('confirm-delete', {
+                                        detail: {
+                                            name: 'confirm-delete',
+                                            title: 'コメント削除',
+                                            action: '{{ route('comments.destroy', $comment) }}',
+                                            message: 'このコメントを削除します。よろしいですか？'
+                                        }
+                                    }))"
+                                title="削除"
+                                class="flex items-end"
+                            >
+                                <x-icons.trash size="w-4 h-4" class="text-brand-dark" />
+                            </button>
                             @endif
-                        </li>
-                        @empty
-                        <li class="text-sm text-gray-500">まだコメントはありません</li>
-                        @endforelse
-                    </ul>
-                </div>
+                        </div>
+                        <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
+
+                    </li>
+                    @empty
+                    <li class="text-sm text-gray-500">まだコメントはありません</li>
+                    @endforelse
+                </ul>
             </div>
         </section>
         @endif
