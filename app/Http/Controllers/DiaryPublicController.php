@@ -26,7 +26,8 @@ class DiaryPublicController extends Controller
             ->when($month, fn($q) => $q->whereMonth('happened_on', $month)) 
             ->when($artistId, fn($q) => $q->where('artist_id', $artistId))
             ->with(['artist', 'coverImage', 'user'])
-            ->withCount('comments')
+            ->withCount(['comments', 'likes'])
+            ->withExists(['likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id())])
             ->orderBy('happened_on', 'desc')
             ->orderBy('updated_at', 'desc')
             ->paginate(12)
@@ -47,7 +48,10 @@ class DiaryPublicController extends Controller
      */
     public function show(Diary $diary)
     {
-        $diary->load(['comments', 'user']);
+        $diary->load(['user', 'comments.user'])
+            ->loadCount(['likes', 'comments'])
+            ->loadExists(['likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id())]);
+
         return view('public_diaries.show', compact('diary'));
     }
 
@@ -65,7 +69,8 @@ class DiaryPublicController extends Controller
             ->when($year, fn($q) => $q->whereYear('happened_on', $year))
             ->when($artist, fn($q) => $q->where('artist_id', $artist))
             ->with(['artist', 'coverImage', 'user'])
-            ->withCount('comments')
+            ->withCount(['comments', 'likes'])
+            ->withExists(['likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id())])
             ->orderBy('happened_on', 'desc')
             ->orderBy('updated_at', 'desc')
             ->paginate(6)

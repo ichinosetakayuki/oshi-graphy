@@ -7,7 +7,7 @@
 
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
 
-        <form method="GET" class="flex flex-col sm:flex-row sm:flex-wrap sm:items-center gap-3 mb-5">
+        <form method="GET" class="flex flex-col lg:flex-row lg:flex-wrap lg:items-center gap-3 mb-5">
             <div class="flex gap-3">
                 {{-- 年 --}}
                 <div class="flex gap-3 items-center">
@@ -32,20 +32,24 @@
             </div>
 
 
-            {{-- アーティスト --}}
-            <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
-                <label for="artist_id" class="w-28 sm:text-right font-semibold shrink-0">アーティスト</label>
-                <select name="artist_id" id="artist_id" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                    @if(!empty($artistId) && !empty($artistName))
-                    <option value="{{ $artistId }}" selected>{{ $artistName }}</option>
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3">
+                {{-- アーティスト --}}
+                <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+                    <label for="artist_id" class="w-28 lg:text-right font-semibold shrink-0">アーティスト</label>
+                    <div class="w-full md:w-64">
+                        <select name="artist_id" id="artist_id" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            @if(!empty($artistId) && !empty($artistName))
+                            <option value="{{ $artistId }}" selected>{{ $artistName }}</option>
+                            @endif
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <button class="rounded px-4 py-1 bg-brand">絞り込み</button>
+                    @if($year || $month || $artistName)
+                    <a href="{{ route('public.diaries.index') }}" class="text-sm underline">条件クリア</a>
                     @endif
-                </select>
-            </div>
-            <div>
-                <button class="rounded px-4 py-1 bg-brand">絞り込み</button>
-                @if($year || $month || $artistName)
-                <a href="{{ route('public.diaries.index') }}" class="text-sm underline">条件クリア</a>
-                @endif
+                </div>
             </div>
 
         </form>
@@ -65,7 +69,10 @@
                     <div class="flex justify-between items-center">
                         <div class="flex items-center"><a href="{{ route('public.diaries.user', $diary->user) }}" class="text-[11px] px-2 py-0.5 rounded bg-green-500 text-white hover:underline" @click.stop>{{ $diary->user->name }}</a>
                         </div>
-                        <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
+                        <div class="flex items-center gap-1">
+                            <x-like-button :diary="$diary" :liked="$diary->liked_by_me" :count="$diary->likes_count" />
+                            <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
+                        </div>
                     </div>
                 </div>
             </article>

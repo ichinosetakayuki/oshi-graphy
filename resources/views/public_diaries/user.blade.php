@@ -14,7 +14,7 @@
   </x-slot>
 
   {{-- パンくず --}}
-  <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 sm:text-base px-4 my-3 sm:my-5">
+  <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 sm:text-base px-4 sm:px-6 lg:px-8 my-3 sm:my-5">
     <a href="{{ route('public.diaries.index') }}" class="hover:underline">みんなの日記</a>
     <span class="mx-1">/</span>
     <span>{{ $user->name }}さん</span>
@@ -65,7 +65,10 @@
             <div class="flex items-center">
               <span class="text-[11px] px-2 py-0.5 rounded bg-green-500 text-white">{{ $diary->user->name }}</span>
             </div>
-            <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
+            <div class="flex items-center gap-1">
+              <x-like-button :diary="$diary" :liked="$diary->liked_by_me" :count="$diary->liked_count" />
+              <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
+            </div>
           </div>
         </div>
       </article>

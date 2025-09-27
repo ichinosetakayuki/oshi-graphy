@@ -70,4 +70,13 @@ class User extends Authenticatable
             ? asset('storage/'.$this->icon_path)
             : asset('images/icon_placeholder.png');
     }
+
+    /**
+     * このユーザーがつけた「いいね」の一覧
+     * 戻り値はDiaryLikeのモデルコレクション
+     */
+    public function diaryLikes()
+    {
+        return $this->hasMany(DiaryLike::class);
+    }
 }

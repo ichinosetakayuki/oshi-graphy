@@ -42,27 +42,30 @@
     </x-slot>
 
     {{-- パンくず --}}
-    <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 sm:text-base px-4 mt-3 sm:mt-5 no-print">
+    <nav class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 mt-3 sm:mt-5 flex items-center text-xs text-gray-600 sm:text-base no-print">
         <a href="{{ route('diaries.index') }}" class="underline">マイページ</a>
         <span class="mx-1">/</span>
         <span>{{ $diary->happened_on->format('Y年n月j日') }}の日記</span>
     </nav>
 
     <div class="motion-safe:animate-fade-up">
-        <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div class="flex flex-wrap items-center gap-3">
-                <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base text-center shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
-                <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base text-center shadow">{{ $diary->artist->name }}</span>
+                <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
+                <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->artist->name }}</span>
                 @if(auth()->id() == $diary->user_id)
-                <span class="{{ $diary->is_public ? 'bg-green-500' : 'bg-gray-400' }} px-2 py-2 rounded-lg font-semibold text-xs sm:text-base text-white text-center shadow">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
+                <span class="{{ $diary->is_public ? 'bg-green-500' : 'bg-gray-400' }} px-2 py-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-white text-center shadow">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
                 @endif
             </div>
 
             <div class="flex mt-3">
-                <p class="flex-1 bg-brand-light p-2 my-2 rounded-lg shadow">{{ $diary->body }}</p>
+                <p class="flex-1 bg-brand-light p-4 my-2 rounded-lg shadow lg:text-lg">{{ $diary->body }}</p>
             </div>
             <div class="flex justify-between">
-                <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
+                <div class="flex items-center gap-1">
+                    <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
+                    <x-like-button :diary="$diary" :liked="$diary->likedBy(auth()->user())" :count="$diary->likes_count" />
+                </div>
                 @if(auth()->id() == $diary->user_id)
                 <div class="flex items-center gap-2 mr-2">
                     <a href="{{ route('diaries.edit', $diary) }}" title="編集">
@@ -99,7 +102,7 @@
 
         @if($diary->is_public)
         <section class="bg-slate-100 py-6 no-print">
-            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                 {{-- コメント部分 --}}
                 <h3 class="text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
 
@@ -131,8 +134,7 @@
                                         }
                                     }))"
                                 title="削除"
-                                class="flex items-end"
-                            >
+                                class="flex items-end">
                                 <x-icons.trash size="w-4 h-4" class="text-brand-dark" />
                             </button>
                             @endif
