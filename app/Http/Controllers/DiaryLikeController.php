@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\DiaryLike;
 use App\Models\Diary;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class DiaryLikeController extends Controller

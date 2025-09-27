@@ -260,7 +260,7 @@
         });
 
         $copy.on('click', function() {
-            const $last = $answers.children('.bg-brand-light').last();
+            const $last = $answers.children('.bg-gray-100').last();
             if (!$last.length) {
                 alert('まだAIの回答がありません');
             }

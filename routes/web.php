@@ -38,8 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/ai/diary-suggest', [AiDiaryController::class, 'suggest'])->name('ai.diary.suggest');
     Route::post('/ai/diary-reset', [AiDiaryController::class, 'reset'])->name('ai.diary.reset');
 
-    Route::post('/diaries/{diary}/like', [DiaryLikeController::class], 'store')->name('diaries.like.store');
-    Route::delete('/diaries/{diary}/like', [DiaryLikeController::class], 'destroy')->name('diaries.like.destroy');
+    Route::post('/diaries/{diary}/like', [DiaryLikeController::class, 'store'])->name('diaries.like.store');
+    Route::delete('/diaries/{diary}/like', [DiaryLikeController::class, 'destroy'])->name('diaries.like.destroy');
 });
 
 

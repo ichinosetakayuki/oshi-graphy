@@ -27,8 +27,7 @@ class DiaryController extends Controller
             // when:$yearがあれば、関数を実行。if($year)と同じ
             ->when($year, fn($q) => $q->whereYear('happened_on', $year))
             ->when($artist, fn($q) => $q->where('artist_id', $artist))
-            ->withCount('comments') // コメント数
-            ->withCount('likes') // いいね数
+            ->withCount(['comments', 'likes']) // コメント数、いいね数
             ->withExists(['likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id())])
             ->orderBy('happened_on', 'desc') // まず日付の新しい順
             ->orderBy('updated_at', 'desc') // 同じ日付の中で更新の新しい順
@@ -105,8 +104,11 @@ class DiaryController extends Controller
      */
     public function show(Diary $diary)
     {
-        $diary->load('comments.user');
-        $diary->loadCount('likes');
+        $diary->load(['user', 'comments.user'])
+            ->loadCount(['comments','likes'])
+            ->loadExists([
+                'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id())
+            ]);
 
         return view('diaries.show', compact('diary'));
     }

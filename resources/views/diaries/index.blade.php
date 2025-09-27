@@ -21,8 +21,8 @@
                 </select>
             </div>
             <div class="flex gap-3 items-center">
-                <label class="font-semibold">アーティスト</label>
-                <select name="artist" class="border rounded px-3 py-1">
+                <label class="font-semibold" for="artist">アーティスト</label>
+                <select name="artist" class="border rounded px-3 py-1" id="artist">
                     <option value="">すべて</option>
                     @foreach($artists as $a)
                     <option value="{{ $a->id }}" @selected($artist==$a->id)>{{ $a->name }}</option>

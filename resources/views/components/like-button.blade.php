@@ -45,9 +45,9 @@ $unlikeUrl= route('diaries.like.destroy', $diary);
   }"
   class="inline-flex items-center"
 >
-  <button x-on:click="toggle" :disabled="busy" class="focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed">
+  <button type="button" x-on:click.stop="toggle" :disabled="busy" class="focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" title="いいね！">
     <x-icons.heart x-show="!liked" size="size-5" class="text-gray-400" />
-    <x-icons.heart-filled x-show="liked" size="size-5" class="text-pink-500" />
+    <x-icons.heart-filled x-show="liked" size="size-5" class="text-pink-400" />
   </button>
   <span x-text="count" class="text-sm"></span>
 
