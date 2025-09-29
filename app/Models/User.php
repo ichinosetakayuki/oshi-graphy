@@ -27,6 +27,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'icon_path',
+        'profile',
     ];
 
     /**
@@ -78,5 +80,10 @@ class User extends Authenticatable
     public function diaryLikes()
     {
         return $this->hasMany(DiaryLike::class);
+    }
+
+    public function likedDiaries()
+    {
+        return $this->belongsToMany(Diary::class, 'diary_likes')->withTimestamps();
     }
 }

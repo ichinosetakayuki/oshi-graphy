@@ -8,6 +8,18 @@ use Illuminate\Http\Request;
 
 class DiaryLikeController extends Controller
 {
+
+    public function index(Diary $diary)
+    {
+        $likers = $diary->likers()
+                        ->select('users.id', 'users.name', 'users.icon_path', 'users.profile')
+                        ->latest('diary_likes.created_at')
+                        ->paginate(10)
+                        ->withQueryString();
+
+        return view('diaries.likes.index', compact('diary', 'likers'));
+    }
+
     public function store(Request $request ,Diary $diary)
     {
         DiaryLike::firstOrCreate([

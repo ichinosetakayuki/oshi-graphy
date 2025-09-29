@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/diaries/{diary}/like', [DiaryLikeController::class, 'store'])->name('diaries.like.store');
     Route::delete('/diaries/{diary}/like', [DiaryLikeController::class, 'destroy'])->name('diaries.like.destroy');
+
+    Route::get('/diaries/{diary}/likes', [DiaryLikeController::class, 'index'])->name('diaries.likes.index');
 });
 
 

@@ -59,7 +59,7 @@
               <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span>
               <span class="text-red-500">{{ $diary->artist->name ?? '-' }}</span>
             </div>
-            <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p>
+            <p class="text-sm line-clamp-2 lg:line-clamp-3 mb-2">{{ $diary->body }}</p>
           </div>
           <div class="flex justify-between items-center">
             <div class="flex items-center">
