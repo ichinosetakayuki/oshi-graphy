@@ -64,7 +64,7 @@
                             <span>{{ $diary->happened_on?->format('Y年n月j日') }}</span>
                             <span class="text-red-500">{{ $diary->artist->name ?? '-' }}</span>
                         </div>
-                        <p class="text-sm line-clamp-2 mb-2">{{ $diary->body }}</p>
+                        <p class="text-sm line-clamp-2 lg:line-clamp-3 mb-2">{{ $diary->body }}</p>
                     </div>
                     <div class="flex justify-between items-center">
                         <div class="flex items-center"><a href="{{ route('public.diaries.user', $diary->user) }}" class="text-[11px] px-2 py-0.5 rounded bg-green-500 text-white hover:underline" @click.stop>{{ $diary->user->name }}</a>

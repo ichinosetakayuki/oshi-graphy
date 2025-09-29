@@ -49,7 +49,7 @@
                             <span class="text-red-500">{{ $diary->artist->name ?? '-' }}</span>
                         </div>
                         {{-- line-clamp-2:テキストを２行で切り取り、あふれた分は...で省略 --}}
-                        <p class="text-sm line-clamp-3 mb-2">{{ $diary->body }}</p>
+                        <p class="text-sm line-clamp-2 lg:line-clamp-3 mb-2">{{ $diary->body }}</p>
                     </div>
                     <div class="flex justify-between items-center">
                         <span class="text-[11px] px-2 py-0.5 rounded {{ $diary->is_public ? 'bg-green-500 text-white' : 'bg-gray-400 text-white' }}">
