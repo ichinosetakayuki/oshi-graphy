@@ -1,7 +1,7 @@
 @props([
-  'diary',
-  'liked' => null,
-  'count' => null,
+'diary',
+'liked' => null,
+'count' => null,
 ])
 
 @php
@@ -43,12 +43,13 @@ $unlikeUrl= route('diaries.like.destroy', $diary);
       }
     }
   }"
-  class="inline-flex items-center"
->
+  class="inline-flex items-center">
   <button type="button" x-on:click.stop="toggle" :disabled="busy" class="focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" title="いいね！">
     <x-icons.heart x-show="!liked" size="size-5" class="text-gray-400" />
     <x-icons.heart-filled x-show="liked" size="size-5" class="text-pink-400" />
   </button>
-  <span x-text="count" class="text-sm hover:cursor-pointer" title="いいね数"></span>
+  <a href="{{ route('diaries.likes.index', $diary) }}">
+    <span x-text="count" class="text-sm hover:cursor-pointer" title="いいね数"></span>
+  </a>
 
 </div>
