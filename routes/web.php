@@ -7,12 +7,14 @@ use App\Http\Controllers\DiaryController;
 use App\Http\Controllers\DiaryPublicController;
 use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiaryLikeController;
+use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home')->name('home');
 
-Route::view('/dashboard', 'dashboard')->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,6 +45,22 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/diaries/{diary}/likes', [DiaryLikeController::class, 'index'])->name('diaries.likes.index');
 });
+
+Route::prefix('notifications')->middleware('auth')->group(function(){
+    Route::get('/',[NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/mark-all-read',[NotificationController::class, 'markAllRead'])->name('notifications.markAllRead');
+    Route::post('/{id}/read',[NotificationController::class, 'markRead'])->name('notifications.markRead');
+    Route::delete('/{id}',[NotificationController::class, 'destroy'])->name('notifications.destroy');
+
+    Route::get('/unread-Count', [NotificationController::class, 'unreadCount'])->name('notifications.unreadCount');
+});
+
+Route::get('/notifications/{id}/go',function(\Illuminate\Http\Request $request, string $id){
+    $n = $request->user()->notifications()->findOrFail($id);
+    if(is_null($n->read_at)) $n->markAsRead();
+    $url = data_get($n->data, 'url', route('dashboard'));
+    return redirect()->to($url);
+})->middleware('auth')->name('notifications.go');
 
 
 require __DIR__.'/auth.php';
