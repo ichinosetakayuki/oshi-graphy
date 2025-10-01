@@ -38,7 +38,7 @@
     <x-slot name="title">Oshi Graphy | （マイページ）日記詳細</x-slot>
 
     <x-slot name="header">
-        <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記詳細</h2>
+        <h2 class="text-lg sm:text-2xl font-semibold">{{ auth()->user()->name }}さんの日記詳細</h2>
     </x-slot>
 
     {{-- パンくず --}}

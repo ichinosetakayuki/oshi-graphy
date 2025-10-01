@@ -26,6 +26,8 @@ class CommentController extends Controller
 
         // 通知を作成
         $owner = $diary->user;
+        // 文字を丸める。文字列、開始位置、文字幅バイト数、省略記号
+        $excerpt = mb_strimwidth($diary->body, 0, 40, '...');
 
         if($owner->id !== auth()->id()) {
             $owner->notify(new CommentPostedOnYourDiary(
@@ -33,6 +35,7 @@ class CommentController extends Controller
                 commentId: $comment->id,
                 actorUserId: auth()->id(),
                 actorName: auth()->user()->name,
+                excerpt: $excerpt
             ));
         }
 

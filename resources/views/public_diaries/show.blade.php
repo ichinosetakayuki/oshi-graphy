@@ -2,7 +2,7 @@
     <x-slot name="title">Oshi Graphy | みんなの日記 詳細</x-slot>
 
     <x-slot name="header">
-        <h2 class="text-2xl font-semibold">{{ $diary->user->name }}さんの日記詳細</h2>
+        <h2 class="text-lg sm:text-2xl font-semibold">{{ $diary->user->name }}さんの日記詳細</h2>
     </x-slot>
 
     {{-- パンくず --}}

@@ -18,7 +18,8 @@ class DiaryLiked extends Notification implements ShouldQueue
 
         public int $diaryId,
         public int $actorUserId,
-        public string $actorName
+        public string $actorName,
+        public string $excerpt
     )
     {
         
@@ -41,7 +42,7 @@ class DiaryLiked extends Notification implements ShouldQueue
             'diary_id' => $this->diaryId,
             'actor_user_id' => $this->actorUserId,
             'actor_name' => $this->actorName,
-            'message' => "{$this->actorName}さんがあなたの日記にいいねしました。",
+            'message' => "{$this->actorName}さんがあなたの日記「{$this->excerpt}」にいいねしました。",
             'url' => route('diaries.show', $this->diaryId),
         ];
     }

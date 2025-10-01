@@ -2,7 +2,7 @@
     <x-slot name="title">Oshi Graphy | いいねユーザー一覧</x-slot>
 
     <x-slot name="header">
-        <h2 class="text-2xl font-semibold">いいねユーザー一覧</h2>
+        <h2 class="text-lg sm:text-2xl font-semibold">いいねユーザー一覧</h2>
     </x-slot>
 
     {{-- パンくず --}}

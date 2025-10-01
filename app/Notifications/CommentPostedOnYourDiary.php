@@ -19,7 +19,8 @@ class CommentPostedOnYourDiary extends Notification implements ShouldQueue
         public int $diaryId,
         public int $commentId,
         public int $actorUserId,
-        public string $actorName
+        public string $actorName,
+        public string $excerpt
     )
     {
         
@@ -43,7 +44,7 @@ class CommentPostedOnYourDiary extends Notification implements ShouldQueue
             'comment_id' => $this->commentId,
             'actor_user_id' => $this->actorUserId,
             'actor_name' =>$this->actorName,
-            'message' => "{$this->actorName}さんがあなたの日記にコメントしました。",
+            'message' => "{$this->actorName}さんがあなたの日記「{$this->excerpt}」にコメントしました。",
             'url' => route('diaries.show', $this->diaryId) . '#comment-' . $this->commentId,
         ];
     }

@@ -46,11 +46,14 @@ class DiaryLikeController extends Controller
                         ->where('data->actor_user_id', auth()->id()) // 誰が押したか（actor）でさらに限定
                         ->delete(); // 以上の条件に合う重複通知を丸ごと削除。結果、新規通知だけが１件残る。
 
+            // 本文を丸める。excerpt:引用
+            $excerpt = mb_strimwidth($diary->body, 0, 40, '...');
             // 新しい通知を作成
             $diary->user->notify(new DiaryLiked(
                 diaryId: $diary->id,
                 actorUserId: auth()->id(),
                 actorName: auth()->user()->name,
+                excerpt: $excerpt
             ));
         }
 

@@ -2,7 +2,7 @@
     <x-slot name="title">Oshi Graphy | ダッシュボード</x-slot>
 
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+        <h2 class="font-semibold text-lg sm:text-2xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ auth()->user()->name }}さんのダッシュボード
         </h2>
     </x-slot>
@@ -40,17 +40,11 @@
                     @endif
                     <div class="flex-1">
                         <a href="{{ route('notifications.go', $n->id) }}" class="{{ is_null($n->read_at) ? 'underline font-semibold text-gray-900 dark:text-gray-100' : '' }}">
-                            {{ $data['message'] ?? '通知'}}
+                            {{ $data['message'] ?? '通知' }}
                         </a>
                         <div class="text-xs text-gray-500">{{ $n->created_at->diffForHumans() }}</div>
                     </div>
                     <div class="flex items-center">
-                        {{-- @if(is_null($n->read_at))
-                        <form method="POST" action="{{ route('notifications.markRead', $n->id) }}">
-                            @csrf
-                            <button class="text-xs underline">既読</button>
-                        </form>
-                        @endif --}}
                         <form method="POST" action="{{ route('notifications.destroy', $n->id) }}">
                             @csrf
                             @method('DELETE')
