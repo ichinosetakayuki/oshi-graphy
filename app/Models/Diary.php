@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use Carbon\TranslatorStrongTypeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+
 
 class Diary extends Model
 {
@@ -57,5 +60,29 @@ class Diary extends Model
     public function likers()
     {
         return $this->belongsToMany(User::class, 'diary_likes')->withTimestamps();
+    }
+
+    /**
+     * Diaryモデルの起動フック。
+     * 日記削除前（deleting）のイベントリスナーを登録し、
+     * 1) 関連する画像レコードからファイルパスを収集し、
+     * 2) Storage（publicディスク）から該当ファイルを物理削除する
+     * という前処理をセットアップする。
+     *
+     * 前提:
+     * - 本プロジェクトでは日記は物理削除（SoftDeletesなし）
+     * - 画像の保存先は storage/app/public（php artisan storage:link 済）
+     */
+    protected static function booted(): void
+    {
+        // 日記削除の直前に、関連画像をストレージから削除する
+        static::deleting(function(Diary $diary) {
+            // 画像テーブルからファイルパスをまとめて取り出す。
+            $paths = $diary->images()->pluck('path')->filter()->values()->all();
+            // 見つかったファイルを物理削除（publicディスク想定）
+            if(!empty($paths)) {
+                Storage::disk('public')->delete($paths);
+            }
+        });
     }
 }
