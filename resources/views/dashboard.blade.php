@@ -2,9 +2,12 @@
     <x-slot name="title">Oshi Graphy | ダッシュボード</x-slot>
 
     <x-slot name="header">
-        <h2 class="font-semibold text-lg sm:text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ auth()->user()->name }}さんのダッシュボード
-        </h2>
+        <div class="flex items-center gap-1">
+            <img src="{{ auth()->user()->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
+            <h2 class="font-semibold text-lg sm:text-2xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ auth()->user()->name }}さんのダッシュボード
+            </h2>
+        </div>
     </x-slot>
 
     {{-- <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">
@@ -22,7 +25,7 @@
     <div class="max-w-3xl mx-auto space-y-6">
         <div class="bg-white dark:bg-gray-900 shadow rounded-2xl mx-2 my-6 p-4 motion-safe:animate-fade-up">
             <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold">最近の通知</h3>
+                <h3 class="text-lg font-semibold">🔔 最近の通知</h3>
                 <form method="POST" action="{{ route('notifications.markAllRead') }}">
                     @csrf
                     <x-primary-button>すべて既読にする</x-primary-button>

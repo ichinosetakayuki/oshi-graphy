@@ -10,7 +10,7 @@
     <div class="max-w-3xl mx-auto space-y-6 px-2 sm:px-6">
         <div class="bg-white dark:bg-gray-900 shadow rounded-2xl my-6 p-4 motion-safe:animate-fade-up">
             <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold">通知リスト</h3>
+                <h3 class="text-lg font-semibold">🔔 通知リスト</h3>
                 <form method="POST" action="{{ route('notifications.markAllRead') }}">
                     @csrf
                     <x-primary-button>すべて既読にする</x-primary-button>
