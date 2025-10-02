@@ -2,7 +2,7 @@
     <x-slot name="title">Oshi Graphy | 日記編集</x-slot>
 
     <x-slot name="header">
-        <h2 class="text-2xl font-semibold">日記編集</h2>
+        <h2 class="text-lg sm:text-2xl font-semibold">日記編集</h2>
     </x-slot>
 
     <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">

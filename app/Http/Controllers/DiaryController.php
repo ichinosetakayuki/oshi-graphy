@@ -7,8 +7,10 @@ use App\Models\Artist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Carbon;
 use Throwable;
+
 
 class DiaryController extends Controller
 {
@@ -104,6 +106,8 @@ class DiaryController extends Controller
      */
     public function show(Diary $diary)
     {
+        Gate::authorize('view', $diary);
+
         $diary->load(['user', 'comments.user'])
             ->loadCount(['comments','likes'])
             ->loadExists([
@@ -118,6 +122,9 @@ class DiaryController extends Controller
      */
     public function edit(Diary $diary)
     {
+
+        Gate::authorize('update', $diary);
+
         return view('diaries.edit', compact('diary'));
     }
 
@@ -126,6 +133,8 @@ class DiaryController extends Controller
      */
     public function update(Request $request, Diary $diary)
     {
+        Gate::authorize('update', $diary);
+
         $validated = $request->validate([
             'happened_on' => 'required|date',
             // exists:artists,id→存在しないartist_idが入らないようにする
@@ -178,6 +187,8 @@ class DiaryController extends Controller
      */
     public function destroy(Diary $diary)
     {
+        Gate::authorize('delete', $diary);
+
         // 画像のパスだけを取り出す。all()は中身を素の配列に変換
         $paths = $diary->images()->pluck('path')->all();
         // 親を削除、画像はCASCADEで自動削除     

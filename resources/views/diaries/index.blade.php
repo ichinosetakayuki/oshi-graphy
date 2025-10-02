@@ -4,7 +4,7 @@
     <x-slot name="header">
         <div class="flex items-center gap-1">
             <img src="{{ auth()->user()->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
-            <h2 class="text-2xl font-semibold">{{ auth()->user()->name }}さんの日記</h2>
+            <h2 class="text-lg sm:text-2xl font-semibold">{{ auth()->user()->name }}さんの日記</h2>
         </div>
     </x-slot>
 

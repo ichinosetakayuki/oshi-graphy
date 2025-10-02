@@ -1,31 +1,16 @@
 <x-app-layout>
-    <x-slot name="title">Oshi Graphy | ダッシュボード</x-slot>
+    <x-slot name="title">Oshi Graphy | 通知リスト</x-slot>
 
     <x-slot name="header">
-        <div class="flex items-center gap-1">
-            <img src="{{ auth()->user()->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
-            <h2 class="font-semibold text-lg sm:text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ auth()->user()->name }}さんのダッシュボード
-            </h2>
-        </div>
+        <h2 class="font-semibold text-lg sm:text-2xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ auth()->user()->name }}さんの通知リスト
+        </h2>
     </x-slot>
 
-    {{-- <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        {{ __("You're logged in!") }}
-    </div>
-    </div>
-    </div>
-    </div>
-    </div> --}}
-
-    <div class="max-w-3xl mx-auto space-y-6">
-        <div class="bg-white dark:bg-gray-900 shadow rounded-2xl mx-2 my-6 p-4 motion-safe:animate-fade-up">
+    <div class="max-w-3xl mx-auto space-y-6 px-2 sm:px-6">
+        <div class="bg-white dark:bg-gray-900 shadow rounded-2xl my-6 p-4 motion-safe:animate-fade-up">
             <div class="flex items-center justify-between">
-                <h3 class="text-lg font-semibold">🔔 最近の通知</h3>
+                <h3 class="text-lg font-semibold">🔔 通知リスト</h3>
                 <form method="POST" action="{{ route('notifications.markAllRead') }}">
                     @csrf
                     <x-primary-button>すべて既読にする</x-primary-button>
@@ -56,9 +41,13 @@
                     </div>
                 </li>
                 @empty
-                <li class="py-6 text-gray-500">新しい通知はありません。</li>
+                <li class="py-6 text-gray-500">通知はありません。</li>
                 @endforelse
             </ul>
+        </div>
+
+        <div class="mx-2 pb-4">
+            {{ $notifications->links() }}
         </div>
     </div>
 

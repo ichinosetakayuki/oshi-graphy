@@ -48,8 +48,12 @@ $unlikeUrl= route('diaries.like.destroy', $diary);
     <x-icons.heart x-show="!liked" size="size-5" class="text-gray-400" />
     <x-icons.heart-filled x-show="liked" size="size-5" class="text-pink-400" />
   </button>
+  @if($diary->user_id === auth()->user()->id)
   <a href="{{ route('diaries.likes.index', $diary) }}">
     <span x-text="count" class="text-sm hover:cursor-pointer" title="いいね数"></span>
   </a>
+  @else
+  <span x-text="count" class="text-sm hover:cursor-pointer" title="いいね数"></span>
+  @endif
 
 </div>

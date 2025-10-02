@@ -6,6 +6,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+
 
 class User extends Authenticatable
 {
@@ -85,5 +87,28 @@ class User extends Authenticatable
     public function likedDiaries()
     {
         return $this->belongsToMany(Diary::class, 'diary_likes')->withTimestamps();
+    }
+
+    /**
+     * Userモデルの起動フック。
+     * ユーザー削除前（deleting）のイベントリスナーを登録し、
+     * 1) ユーザーのアイコンファイルを削除し、
+     * 2) 所有する日記を Eloquent 経由で chunk 削除（→ Diary::deleting が発火し写真も物理削除）
+     * する前処理をセットアップする。
+     */
+    protected static function booted(): void
+    {
+        static::deleting(function(User $user) {
+
+            // ユーザーアイコンの物理削除
+            if(!empty($user->icon_path)) {
+                Storage::disk('public')->delete($user->icon_path);
+            }
+
+            // chunkById:ID順に100件ずつとりだして処理する関数
+            $user->diaries()->select('id')->chunkById(100, function($chunk){
+                $chunk->each->delete(); // それぞれを削除
+            });
+        });
     }
 }
