@@ -62,5 +62,10 @@ Route::get('/notifications/{id}/go',function(\Illuminate\Http\Request $request, 
     return redirect()->to($url);
 })->middleware('auth')->name('notifications.go');
 
+Route::middleware(['auth', 'can:access-admin'])->prefix('admin')->name('admin.')->group(function(){
+    Route::resource('artists', ArtistController::class)->except(['show']);
+    // 他に管理者限定のものがあればここへ
+});
+
 
 require __DIR__.'/auth.php';

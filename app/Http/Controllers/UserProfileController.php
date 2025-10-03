@@ -57,7 +57,8 @@ class UserProfileController extends Controller
         $user->save();
 
         return back()
-            ->with('status', $deleteIcon ? 'アイコンが削除されました。' : 'プロフィールが更新されました。');
+            ->with('status', $deleteIcon ? 'アイコンが削除されました。' : 'プロフィールが更新されました。')
+            ->with('status_type', 'success');
     }
 
     public function show(User $user)

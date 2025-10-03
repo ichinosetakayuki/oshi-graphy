@@ -69,7 +69,7 @@
                 @if(auth()->id() == $diary->user_id)
                 <div class="flex items-center gap-2 mr-2">
                     <a href="{{ route('diaries.edit', $diary) }}" title="編集">
-                        <x-icons.pencil-square size="w-4 h-4" class="text-brand-dark" /> {{-- 編集アイコン --}}
+                        <x-icons.pencil-square size="size-4" class="text-brand-dark" /> {{-- 編集アイコン --}}
                     </a>
                     <button type="button"
                         x-data
@@ -82,7 +82,7 @@
                             message: 'この日記を削除します。よろしいですか？'
                         }
                     }))" title="削除">
-                        <x-icons.trash size="w-4 h-4" class="text-brand-dark" /> {{-- 削除アイコン --}}
+                        <x-icons.trash size="size-4" class="text-brand-dark" /> {{-- 削除アイコン --}}
                     </button>
                 </div>
                 @endif
