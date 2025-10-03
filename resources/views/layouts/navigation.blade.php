@@ -56,7 +56,7 @@
                     x-init="fetchCount(); setInterval(fetchCount, 30000);"
                     class="relative flex items-center">
                     <a href="{{ route('notifications.index') }}" class="relative inline-flex items-center justify-center w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-label="通知を開く" title="通知">
-                        <x-icons.bell class="w-6 h-6 text-gray-800 dark:text-gray-100" />
+                        <x-icons.bell size="size-6" class="text-gray-800 dark:text-gray-100" />
                         <template x-if="count > 0">
                             <span class="absolute -top-1 -right-1 min-w-[1.1rem] px-1.5 py-0.5 text-[10px] leading-none text-center bg-rose-600 text-white rounded-full" x-text="count"></span>
                         </template>
