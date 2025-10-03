@@ -39,7 +39,7 @@ class CommentController extends Controller
             ));
         }
 
-        return back()->with('status', 'コメントを投稿しました。');
+        return back()->with('status', 'コメントを投稿しました。')->with('status_type', 'success');
     }
 
     public function destroy(Comment $comment)
@@ -50,6 +50,6 @@ class CommentController extends Controller
 
         $comment->delete();
 
-        return back()->with('status', 'コメントを削除しました。');
+        return back()->with('status', 'コメントを削除しました。')->with('status_type', 'success');
     }
 }

@@ -96,7 +96,7 @@ class DiaryController extends Controller
         }
         return redirect()
             ->route('diaries.index')
-            ->with('status', '日記を保存しました');
+            ->with('status', '日記を保存しました')->with('status_type', 'success');
             // セッションに一時的なデータ（フラッシュデータ）を保存するメソッド
 
     }
@@ -178,7 +178,7 @@ class DiaryController extends Controller
 
         return redirect()
             ->route('diaries.show', $diary)
-            ->with('status', '日記を更新しました');
+            ->with('status', '日記を更新しました')->with('status_type', 'success');
         // セッションに一時的なデータ（フラッシュデータ）を保存するメソッド
     }
 
@@ -203,6 +203,9 @@ class DiaryController extends Controller
             ]);
         }
 
-        return redirect()->route('diaries.index')->with('status', '日記を削除しました。');
+        return redirect()
+            ->route('diaries.index')
+            ->with('status', '日記を削除しました。')
+            ->with('status_type', 'success');
     }
 }

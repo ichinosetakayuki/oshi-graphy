@@ -35,7 +35,9 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'アカウント情報を更新しました。');
+        return Redirect::route('profile.edit')
+            ->with('status', 'アカウント情報を更新しました。')
+            ->with('status_type', 'success');
     }
 
     /**
@@ -100,6 +102,7 @@ class ProfileController extends Controller
         $user->save();
 
         return back()
-            ->with('status', $deleteIcon ? 'アイコンが削除されました。' : 'プロフィールが更新されました。');
+            ->with('status', $deleteIcon ? 'アイコンが削除されました。' : 'プロフィールが更新されました。')
+            ->with('status_type', 'success');
     }
 }

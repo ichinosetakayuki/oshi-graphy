@@ -24,6 +24,11 @@
                     <x-nav-link :href="route('diaries.create')" :active="request()->routeIs('diaries.create')">
                         {{ __('日記作成') }}
                     </x-nav-link>
+                    @can('viewAny', App\Models\Artist::class)
+                    <x-nav-link :href="route('admin.artists.index')" :active="request()->routeIs('admin.artists.index')">
+                        {{ __('管理者ページ') }}
+                    </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
@@ -49,8 +54,7 @@
                         }
                     }"
                     x-init="fetchCount(); setInterval(fetchCount, 30000);"
-                    class="relative flex items-center"
-                >
+                    class="relative flex items-center">
                     <a href="{{ route('notifications.index') }}" class="relative inline-flex items-center justify-center w-8 h-8 rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" aria-label="通知を開く" title="通知">
                         <x-icons.bell class="w-6 h-6 text-gray-800 dark:text-gray-100" />
                         <template x-if="count > 0">
@@ -125,6 +129,11 @@
             <x-responsive-nav-link :href="route('diaries.create')" :active="request()->routeIs('diaries.create')">
                 {{ __('日記作成') }}
             </x-responsive-nav-link>
+            @if(auth()->user()->is_admin)
+            <x-responsive-nav-link :href="route('admin.artists.index')" :active="request()->routeIs('admin.artists.index')">
+                {{ __('管理者ページ') }}
+            </x-responsive-nav-link>
+            @endif
         </div>
 
         {{-- Responsive Settings Options --}}
