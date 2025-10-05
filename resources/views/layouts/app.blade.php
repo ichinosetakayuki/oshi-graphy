@@ -27,16 +27,12 @@
     @stack('styles')
 </head>
 
-<body class="font-sans antialiased min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col">
+<body class="font-sans antialiased min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 dark:text-gray-100">
     @include('layouts.navigation')
-
-
-    {{-- sessionメッセージのトースト表示 --}}
-    <x-toast :message="session('status')" :type="session('status_type', 'success')" />
 
     <!-- Page Heading -->
     @isset($header)
-    <header class="bg-white dark:bg-gray-800 shadow">
+    <header class="bg-white dark:bg-gray-700 shadow">
         <div class="max-w-5xl mx-auto py-2 px-2 sm:px-6 lg:px-8">
             {{ $header }}
         </div>
@@ -49,9 +45,13 @@
         {{ $slot }}
     </main>
     <!-- footer -->
-    <footer class="bg-brand">
+    <footer class="bg-brand dark:bg-brand-dark">
         <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-center">©️Oshi-Graphy</div>
     </footer>
+
+    {{-- sessionメッセージのトースト表示 --}}
+    <x-toast :message="session('status')" :type="session('status_type', 'success')" />
+
     {{-- ↓追加 --}}
     @stack('scripts')
 </body>

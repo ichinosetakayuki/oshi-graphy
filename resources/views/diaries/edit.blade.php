@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">
-        <div class=" max-w-3xl mx-auto border rounded-2xl p-3 md:p-4 lg:p-8 lg:shadow bg-white">
+        <div class=" max-w-3xl mx-auto border rounded-2xl p-3 md:p-4 lg:p-8 lg:shadow bg-white dark:bg-gray-800">
 
             <form method="post" action="{{ route('diaries.update', $diary) }}" enctype="multipart/form-data" class="flex-col flex-wrap items-center gap-3 mb-5 w-full">
                 @csrf

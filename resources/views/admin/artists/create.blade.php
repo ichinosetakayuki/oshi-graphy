@@ -9,7 +9,7 @@
     </x-slot>
 
     <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">
-        <div class="max-w-3xl mx-auto border rounded-2xl px-4 sm:px-8 py-6 shadow bg-white space-y-4">
+        <div class="max-w-3xl mx-auto border rounded-2xl px-4 sm:px-8 py-6 shadow bg-white dark:bg-gray-800 space-y-4">
             <form method="POST" action="{{ route('admin.artists.store') }}" class="flex flex-col justify-center gap-4 w-fit">
                 @csrf
                 <div class="flex flex-col md:flex-row md:items-center gap-4">
