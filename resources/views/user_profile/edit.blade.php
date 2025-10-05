@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">
-        <div class="max-w-3xl mx-auto border rounded-2xl px-4 sm:px-8 py-6 shadow bg-white">
+        <div class="max-w-3xl mx-auto border rounded-2xl px-4 sm:px-8 py-6 shadow bg-white dark:bg-gray-800 ">
             <form method="post" action="{{ route('user.profile.update') }}" enctype="multipart/form-data" class="space-y-4">
                 @csrf
                 @method('PATCH')
@@ -41,7 +41,7 @@
                         {{-- 実ファイル入力（見た目は隠す） --}}
                         <input type="file" name="icon" id="icon" x-ref="icon" accept="image/*" class="hidden" x-on:change="const f = $event.target.files?.[0] ?? null; setPreview(f);" :disabled="del">
                         {{-- ラベルをボタン風にしてfileを開く --}}
-                        <label for="icon" class="inline-flex items-center px-3 py-2 rounded-lg border shadow-sm bg-brand-light hover:bg-gray-50 cursor-pointer" :class="del ? 'pointer-events-none opacity-50' : ''">画像を選択</label>
+                        <label for="icon" class="inline-flex items-center px-3 py-2 rounded-lg border shadow-sm bg-brand-light dark:bg-brand-dark hover:bg-gray-50 hover:dark:bg-brand-light hover:dark:text-gray-700 cursor-pointer" :class="del ? 'pointer-events-none opacity-50' : ''">画像を選択</label>
                         <span class="text-base text-gray-500" x-text="fileName ? fileName : '未選択' "></span>
                     </div>
                     <x-input-error :messages="$errors->profile->get('icon')" />

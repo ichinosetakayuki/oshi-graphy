@@ -14,7 +14,7 @@
   </x-slot>
 
   {{-- パンくず --}}
-  <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 sm:text-base px-4 sm:px-6 lg:px-8 my-3 sm:my-5">
+  <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 dark:text-gray-300 sm:text-base px-4 sm:px-6 lg:px-8 my-3 sm:my-5">
     <a href="{{ route('public.diaries.index') }}" class="hover:underline">みんなの日記</a>
     <span class="mx-1">/</span>
     <span>{{ $user->name }}さん</span>
@@ -25,7 +25,7 @@
     <form method="GET" class="flex flex-wrap items-center gap-3 mb-5 md:gap-5">
       <div class="flex gap-3 items-center">
         <label class="font-semibold">年</label>
-        <select name="year" class="border rounded px-3 py-1 w-24">
+        <select name="year" class="border rounded px-3 py-1 w-24 dark:text-gray-700">
           <option value="">すべて</option>
           @foreach($years as $y)
           <option value="{{ $y }}" @selected($year==$y)>{{ $y }}</option>
@@ -34,7 +34,7 @@
       </div>
       <div class="flex gap-3 items-center">
         <label class="font-semibold">アーティスト</label>
-        <select name="artist" class="border rounded px-3 py-1">
+        <select name="artist" class="border rounded px-3 py-1 dark:text-gray-700">
           <option value="">すべて</option>
           @foreach($artists as $a)
           <option value="{{ $a->id }}" @selected($artist==$a->id)>{{ $a->name }}</option>
@@ -43,7 +43,7 @@
       </div>
 
 
-      <button class="rounded px-4 py-1 bg-brand">絞り込み</button>
+      <button class="rounded px-4 py-1 bg-brand dark:bg-brand-dark">絞り込み</button>
       @if($year || $artist)
       <a href="{{ route('public.diaries.user', $user) }}" class="text-sm underline">条件クリア</a>
       @endif
@@ -51,7 +51,7 @@
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 motion-safe:animate-fade-up">
       @forelse($diaries as $diary)
-      <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-lime-50/30 border border-lime-400 rounded-2xl shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-xl">
+      <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-lime-50/30 dark:bg-lime-50 dark:text-gray-800 border border-lime-400 rounded-2xl shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-xl">
         <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
         <div class="flex flex-col justify-between h-32 p-3">
           <div>

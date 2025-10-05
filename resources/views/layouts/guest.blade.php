@@ -17,7 +17,7 @@
 </head>
 
 <body class="font-sans text-gray-900 antialiased min-h-screen flex flex-col">
-    <div class="bg-brand h-16 flex items-center">
+    <div class="bg-brand dark:bg-brand-dark h-16 flex items-center">
         <div class="max-w-7xl w-full px-4 sm:px-6 lg:px-8">
             <div class="flex justify-start items-center">
                 <!-- Logo -->
@@ -41,8 +41,8 @@
         </div>
 
     </div>
-    <footer class="bg-brand">
-        <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-center">©️Oshi-Graphy</div>
+    <footer class="bg-brand dark:bg-brand-dark">
+        <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-center dark:text-gray-100">©️Oshi-Graphy</div>
     </footer>
 </body>
 

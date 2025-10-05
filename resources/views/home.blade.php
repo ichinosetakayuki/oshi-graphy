@@ -24,9 +24,9 @@
 
 </head>
 
-<body class="font-sans antialiased min-h-screen bg-white dark:bg-gray-900 flex flex-col">
+<body class="font-sans antialiased min-h-screen bg-white dark:bg-gray-900 dark:text-gray-100 flex flex-col">
 
-    <nav x-data="{ open: false }" class="bg-brand border-b border-gray-100">
+    <nav x-data="{ open: false }" class="bg-brand dark:bg-brand-dark border-b border-gray-100">
         {{-- Primary Navigation Menu --}}
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -104,7 +104,7 @@
 
             {{-- 右カラム：キャッチコピー --}}
             <div class="flex flex-col items-center justify-center py-6 lg:text-left">
-                <p class="text-gray-800 mb-2 sm:mb-4 tracking-wider text-lg sm:text-2xl">推しグラフィー</p>
+                <p class="text-gray-800 dark:text-gray-300 mb-2 sm:mb-4 tracking-wider text-lg sm:text-2xl">推しグラフィー</p>
                 <h1 class="font-extrabold text-xl sm:text-3xl lg:text-5xl tracking-wide">
                     <span class="block py-2 md:py-4 lg:py-5">おとなの</span>
                     <span class="block py-2 md:py-4 lg:py-5 pl-2 sm:pl-6">
@@ -112,17 +112,17 @@
                     </span>
                     <span class="block py-2 md:py-4 lg:py-5 pl-4 sm:pl-12">感動を共有しよう</span>
                 </h1>
-                <p class="text-xs lg:text-base text-gray-800 mt-4 md:mt-6">
+                <p class="text-xs lg:text-base text-gray-800 dark:text-gray-300 mt-4 md:mt-6">
                     <span class="block">ライブ参戦・写真・メモをまとめて管理。</span>
                     <span class="block">思い出を美しく残そう。</span>
                 </p>
-                <p class="text-xs text-gray-800 mt-4 md:mt-8 hover:cursor-pointer lg:hidden">新規登録は<a href="{{ route('register') }}">こちら</a></p>
+                <p class="text-xs text-gray-800 dark:text-gray-300 mt-4 md:mt-8 hover:cursor-pointer lg:hidden">新規登録は<a href="{{ route('register') }}">こちら</a></p>
             </div>
         </div>
 
     </main>
     {{-- footer --}}
-    <footer class="bg-brand">
+    <footer class="bg-brand dark:bg-brand-dark">
         <div class="max-w-5xl mx-auto px-4 py-6 text-sm text-center">©️Oshi-Graphy</div>
     </footer>
 

@@ -12,20 +12,20 @@
                 {{-- 年 --}}
                 <div class="flex gap-3 items-center">
                     <label for="year" class="font-semibold">年</label>
-                    <select id="year" name="year" class="border rounded px-3 py-1 w-24">
+                    <select id="year" name="year" class="border rounded px-3 py-1 w-24 dark:text-gray-700">
                         <option value="">すべて</option>
                         @foreach($years as $y)
-                        <option value="{{ $y }}" @selected($year==$y)>{{ $y }}</option>
+                        <option value=" {{ $y }}" @selected($year==$y)>{{ $y }}</option>
                         @endforeach
                     </select>
                 </div>
                 {{-- 月 --}}
                 <div class="flex gap-3 items-center">
                     <label for="month" class="font-semibold">月</label>
-                    <select id="month" name="month" class="border rounded px-3 py-1 w-24">
+                    <select id="month" name="month" class="border rounded px-3 py-1 w-24 dark:text-gray-700"">
                         <option value="">すべて</option>
                         @foreach($months as $m)
-                        <option value="{{ $m }}" @selected($month==$m)>{{ $m }}</option>
+                        <option value=" {{ $m }}" @selected($month==$m)>{{ $m }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -45,7 +45,7 @@
                     </div>
                 </div>
                 <div>
-                    <button class="rounded px-4 py-1 bg-brand">絞り込み</button>
+                    <button class="rounded px-4 py-1 bg-brand dark:bg-brand-dark">絞り込み</button>
                     @if($year || $month || $artistName)
                     <a href="{{ route('public.diaries.index') }}" class="text-sm underline">条件クリア</a>
                     @endif
@@ -56,7 +56,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 motion-safe:animate-fade-up">
             @forelse($diaries as $diary)
-            <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-amber-50 border border-brand-dark rounded-2xl shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-xl ">
+            <article x-data @click="window.location='{{ route('public.diaries.show', $diary) }}'" class="bg-amber-50 dark:text-gray-800 border border-brand-dark rounded-2xl shadow-md overflow-hidden transform transition-transform duration-200 hover:scale-105 hover:shadow-xl ">
                 <img src="{{ $diary->coverImage ? Storage::url($diary->coverImage->path) : asset('images/placeholder.png')}}" class="w-full h-48 object-cover" alt="日記サムネイル画像">
                 <div class="flex flex-col justify-between h-32 p-3">
                     <div>

@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">
-        <div class=" max-w-3xl mx-auto border rounded-2xl p-3 md:p-4 lg:p-8 lg:shadow bg-white">
+        <div class=" max-w-3xl mx-auto border rounded-2xl p-3 md:p-4 lg:p-8 lg:shadow bg-white dark:bg-gray-800">
 
             <form method="post" action="{{ route('diaries.store') }}" id="diary-form" enctype="multipart/form-data" class="flex-col flex-wrap items-center gap-3 mb-5 w-full">
                 @csrf
@@ -50,16 +50,16 @@
                     </div>
                     <div class="flex justify-end gap-2">
                         <button type="button" id="ai_send" class="px-3 py-2 rounded-md bg-brand text-black text-sm hover:bg-brand-dark">AIに相談</button>
-                        <button type="button" id="ai_reset" class="px-3 py-2 rounded-md bg-gray-200 text-sm hover:bg-gray-400">会話リセット</button>
+                        <button type="button" id="ai_reset" class="px-3 py-2 rounded-md bg-gray-200 dark:bg-gray-700 text-sm hover:bg-gray-400">会話リセット</button>
                     </div>
                     <div class="flex flex-col md:flex-row gap-2 mt-3">
                         <div class="text-sm sm:text-right pl-2 sm:pr-2 w-28 shrink-0">AIの回答欄</div>
-                        <div id="ai_answers" class="h-32 w-full overflow-y-auto rounded-md border border-gray-300 p-3 bg-white text-gray-900 text-sm shadow-sm">
+                        <div id="ai_answers" class="h-32 w-full overflow-y-auto rounded-md border border-gray-300 dark:border-gray-700 p-3 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 text-sm shadow-sm">
                             {{-- AI回答がここに --}}
                         </div>
                     </div>
                     <div class="flex justify-end">
-                        <button type="button" id="ai_copy_latest" class="px-3 py-1 rounded-md bg-gray-200 text-sm hover:bg-gray-400">本文にコピー</button>
+                        <button type="button" id="ai_copy_latest" class="px-3 py-1 rounded-md bg-gray-200 dark:bg-gray-700 text-sm hover:bg-gray-400">本文にコピー</button>
                     </div>
 
                 </div>
@@ -205,7 +205,7 @@
 
         function appendAnswer(text) {
             const html = `
-            <div class="bg-gray-100 rounded-md mt-2 p-2 shadow-sm">
+            <div class="bg-gray-100 dark:bg-gray-700 rounded-md mt-2 p-2 shadow-sm">
             <pre class="whitespace-pre-wrap break-words text-[13px]">${escapeHtml(text)}</pre>
             </div>`;
             $answers.append(html);

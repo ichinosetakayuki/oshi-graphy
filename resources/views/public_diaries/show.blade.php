@@ -6,7 +6,7 @@
     </x-slot>
 
     {{-- パンくず --}}
-    <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 sm:text-base px-4 sm:px-6 lg:px-8 my-3 sm:my-5 ">
+    <nav class="max-w-5xl mx-auto flex items-center text-xs text-gray-600 dark:text-gray-300 sm:text-base px-4 sm:px-6 lg:px-8 my-3 sm:my-5 ">
         <a href="{{ route('public.diaries.index') }}" class="underline">みんなの日記</a>
         <span class="mx-1">/</span>
         <a href="{{ route('public.diaries.user', $diary->user) }}" class="underline">{{ $diary->user->name }}さん</a>
@@ -17,12 +17,12 @@
     <div class="motion-safe:animate-fade-up">
         <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-6">
             <div class="flex flex-wrap items-center gap-3">
-                <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
-                <span class="bg-brand p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->artist->name }}</span>
+                <span class="bg-brand dark:bg-brand-dark p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
+                <span class="bg-brand dark:bg-brand-dark p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->artist->name }}</span>
             </div>
 
             <div class="flex mt-3">
-                <p class="flex-1 bg-brand-light p-4 my-2 rounded-lg shadow lg:text-lg">{{ $diary->body }}</p>
+                <p class="flex-1 bg-brand-light dark:bg-brand-dark p-4 my-2 rounded-lg shadow lg:text-lg">{{ $diary->body }}</p>
             </div>
             <div class="flex items-center gap-1">
                 <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
@@ -41,7 +41,7 @@
             </div>
         </section>
 
-        <section class="bg-slate-100 py-6">
+        <section class="bg-slate-100 py-6 dark:bg-slate-300 dark:text-gray-800">
             <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                 {{-- コメント部分 --}}
                 <h3 class=" text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
