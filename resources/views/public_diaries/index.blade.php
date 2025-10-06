@@ -12,7 +12,7 @@
                 {{-- 年 --}}
                 <div class="flex gap-3 items-center">
                     <label for="year" class="font-semibold">年</label>
-                    <select id="year" name="year" class="border rounded px-3 py-1 w-24 dark:text-gray-700">
+                    <select id="year" name="year" class="border rounded px-3 py-1 w-24 dark:bg-gray-900 dark:text-gray-200">
                         <option value="">すべて</option>
                         @foreach($years as $y)
                         <option value=" {{ $y }}" @selected($year==$y)>{{ $y }}</option>
@@ -22,7 +22,7 @@
                 {{-- 月 --}}
                 <div class="flex gap-3 items-center">
                     <label for="month" class="font-semibold">月</label>
-                    <select id="month" name="month" class="border rounded px-3 py-1 w-24 dark:text-gray-700"">
+                    <select id="month" name="month" class="border rounded px-3 py-1 w-24 dark:bg-gray-900 dark:text-gray-200">
                         <option value="">すべて</option>
                         @foreach($months as $m)
                         <option value=" {{ $m }}" @selected($month==$m)>{{ $m }}</option>
@@ -37,7 +37,7 @@
                 <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
                     <label for="artist_id" class="w-28 lg:text-right font-semibold shrink-0">アーティスト</label>
                     <div class="w-full md:w-64">
-                        <select name="artist_id" id="artist_id" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                        <select name="artist_id" id="artist_id" class="focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                             @if(!empty($artistId) && !empty($artistName))
                             <option value="{{ $artistId }}" selected>{{ $artistName }}</option>
                             @endif

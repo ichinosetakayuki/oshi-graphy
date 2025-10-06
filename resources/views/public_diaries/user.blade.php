@@ -25,7 +25,7 @@
     <form method="GET" class="flex flex-wrap items-center gap-3 mb-5 md:gap-5">
       <div class="flex gap-3 items-center">
         <label class="font-semibold">年</label>
-        <select name="year" class="border rounded px-3 py-1 w-24 dark:text-gray-700">
+        <select name="year" class="border rounded px-3 py-1 w-24 dark:bg-gray-900 dark:text-gray-200">
           <option value="">すべて</option>
           @foreach($years as $y)
           <option value="{{ $y }}" @selected($year==$y)>{{ $y }}</option>
@@ -34,7 +34,7 @@
       </div>
       <div class="flex gap-3 items-center">
         <label class="font-semibold">アーティスト</label>
-        <select name="artist" class="border rounded px-3 py-1 dark:text-gray-700">
+        <select name="artist" class="border rounded px-3 py-1 dark:bg-gray-900 dark:text-gray-200">
           <option value="">すべて</option>
           @foreach($artists as $a)
           <option value="{{ $a->id }}" @selected($artist==$a->id)>{{ $a->name }}</option>

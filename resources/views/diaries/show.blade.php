@@ -53,12 +53,15 @@
 
         <div class="motion-safe:animate-fade-up">
             <section class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-                <div class="flex flex-wrap items-center gap-3">
-                    <span class="bg-brand dark:bg-brand-dark p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
-                    <span class="bg-brand dark:bg-brand-dark p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->artist->name }}</span>
-                    @if(auth()->id() == $diary->user_id)
-                    <span class="{{ $diary->is_public ? 'bg-green-500' : 'bg-gray-400' }} px-2 py-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-white text-center shadow">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
-                    @endif
+                <div class="flex items-center justify-between">
+                    <div class="flex flex-wrap items-center gap-3">
+                        <span class="bg-brand dark:bg-brand-dark p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->happened_on->format('Y年n月j日') }}</span>
+                        <span class="bg-brand dark:bg-brand-dark p-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-center shadow">{{ $diary->artist->name }}</span>
+                        @if(auth()->id() == $diary->user_id)
+                        <span class="{{ $diary->is_public ? 'bg-green-500' : 'bg-gray-400' }} px-2 py-2 rounded-lg font-semibold text-xs sm:text-base lg:text-lg text-white text-center shadow">{{ $diary->is_public ? '公　開' : '非公開' }}</span>
+                        @endif
+                    </div>
+                    <x-secondary-button class="no-print text-gray-600" onclick="window.print()">印刷/PDF</x-secondary-button>
                 </div>
 
                 <div class="flex mt-3">
@@ -70,7 +73,7 @@
                         <x-like-button :diary="$diary" :liked="$diary->likedBy(auth()->user())" :count="$diary->likes_count" />
                     </div>
                     @if(auth()->id() == $diary->user_id)
-                    <div class="flex items-center gap-2 mr-2">
+                    <div class="flex items-center gap-2 mr-2 no-print">
                         <a href="{{ route('diaries.edit', $diary) }}" title="編集">
                             <x-icons.pencil-square size="size-4" class="text-brand-dark" /> {{-- 編集アイコン --}}
                         </a>

@@ -11,28 +11,48 @@
 
 /* select2の高さをカスタマイズするcss */
 @layer components {
-  .og-select2-tall.select2-selection--single{
-    height: 2.75rem;       /* 44px */
+  .og-select2-tall.select2-selection--single {
+    height: 2.75rem;
+    /* 44px */
     display: flex;
     align-items: center;
   }
-  .og-select2-tall .select2-selection__rendered{ line-height: 2.75rem; }
-  .og-select2-tall .select2-selection__arrow{ height: 2.75rem; }
+
+  .og-select2-tall .select2-selection__rendered {
+    line-height: 2.75rem;
+  }
+
+  .og-select2-tall .select2-selection__arrow {
+    height: 2.75rem;
+  }
+
   /* 高さをカスタマイズした select2 のクリアボタン調整 */
   .og-select2-tall .select2-selection__clear {
-    position: absolute;       /* 浮動配置ではなく絶対配置 */
-    right: 0.5rem;           /* 右端からの余白（調整可） */
-    top: 50%;                 /* 高さの中央 */
+    position: absolute;
+    /* 浮動配置ではなく絶対配置 */
+    right: 0.5rem;
+    /* 右端からの余白（調整可） */
+    top: 50%;
+    /* 高さの中央 */
     transform: translateY(-50%);
-    margin: 0;                /* デフォルト余白をリセット */
+    margin: 0;
+    /* デフォルト余白をリセット */
   }
+
 }
 
 /* home.blade.phpのアニメーション設定 */
 @layer keyframes {
   @keyframes fade-up {
-    from { opacity: 0; transform: translateY(32px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(32px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 }
 
@@ -43,7 +63,82 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .animate-fade-up { animation: none; opacity: 1; transform: none; }
+    .animate-fade-up {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 }
 
+/* --- Select2: ライト / ダークの最小仕上げ --- */
+
+/* ライト（通常） */
+.select2-container.select2-container--default .select2-selection--single {
+  background-color: #ffffff;
+  /* bg-white */
+  border-color: #d1d5db;
+  /* border-gray-300 */
+  color: #111827;
+  /* text-gray-900 */
+}
+
+.select2-container--default .select2-dropdown {
+  background-color: #ffffff;
+  border-color: #d1d5db;
+}
+
+.select2-results__option {
+  color: #111827;
+}
+
+/* 選択後に枠内に表示されるテキスト色を調整 */
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: #111827;
+  /* text-gray-900 */
+}
+
+/* ダーク（OS設定に追従） */
+@media (prefers-color-scheme: dark) {
+  .select2-container.select2-container--default .select2-selection--single {
+    background-color: #111827;
+    /* bg-gray-900 */
+    border-color: #374151;
+    /* border-gray-700 */
+    color: #d1d5db;
+    /* text-gray-300 */
+  }
+
+  .select2-container--default .select2-dropdown {
+    background-color: #111827;
+    border-color: #374151;
+  }
+
+  .select2-results__option {
+    color: #d1d5db;
+  }
+
+  .select2-results__option--highlighted[aria-selected] {
+    background-color: #1f2937;
+    /* bg-gray-800 */
+    color: #ffffff;
+  }
+
+  .select2-search__field {
+    background-color: #1f2937;
+    /* bg-gray-800 */
+    color: #e5e7eb;
+    border-color: #374151;
+  }
+
+  .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #e5e7eb;
+    /* ちょい明るめ: gray-200 相当 */
+  }
+
+  /* プレースホルダも少し暗めにして差を出す（任意） */
+  .select2-container--default .select2-selection--single .select2-selection__placeholder {
+    color: #cbd5e1;
+    /* slate-300 相当 */
+  }
+}

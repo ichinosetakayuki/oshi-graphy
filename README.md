@@ -15,8 +15,12 @@ Oshi-Graphy（推しグラフィー）は、<br>
 - AIアシスト（下書き補助）※Gemini API 連携
 - 検索 UI（Select2 などの補助 UI、一部ページで利用）
 ## 技術スタック
-- Backend: Laravel 12, PHP 8.4 (Local: Sail), PHP 8.3 (Production: さくらレンタルサーバ)
-- DB: MySQL 8
-- Frontend: Tailwind CSS, Alpine.js, Vite, Blade Components
-- Auth: Laravel Breeze（JP ローカライズ）
-- Local: Docker / Laravel Sail
+- Backend : Laravel 12, PHP 8.4
+- DB : MySQL 8
+- Frontend : Tailwind CSS / Alpine.js / Vite / Blade Components
+- Auth : Laravel Breeze（JP ローカライズ）
+- AI / API連携 : Gemini API ( Google Generative AI)
+- Environment :
+  - Docker / Laravel Sail ( ローカル開発環境 )
+  - さくらレンタルサーバ ( 本番環境 PHP 8.3 )
+
