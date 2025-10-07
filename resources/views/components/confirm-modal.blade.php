@@ -19,7 +19,7 @@
     <x-modal name="{{ $name }}" :show="false" :maxWidth="$maxWidth" focusable>
         <div class="p-6">
             <h2 class="text-lg font-semibold mb-2" x-text="ttl"></h2>
-            <p class="text-sm text-gray-600" x-text="msg"></p>
+            <p class="text-sm text-gray-600 dark:text-gray-300" x-text="msg"></p>
 
             <div class="mt-6 flex justify-end gap-3">
                 <x-secondary-button x-on:click="$dispatch('close')">{{ $cancelText }}</x-secondary-button>

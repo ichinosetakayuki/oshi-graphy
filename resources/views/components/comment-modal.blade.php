@@ -13,7 +13,7 @@ $modalName = $name ?: ('commentModal-' . $diary->id);
 <x-modal name="{{ $modalName }}" :maxWidth="$maxWidth" focusable>
     <div class="p-6">
         <div class="flex items-start justify-between mb-3">
-            <h2 class="text-lg font-semibold">コメントを書く</h2>
+            <h2 class="text-lg font-semibold dark:text-gray-200">コメントを書く</h2>
             <button type="button" class="text-xl leading-none px-2" x-on:click="window.dispatchEvent(new CustomEvent('close-modal', { detail: '{{ $modalName }}' }))" aria-label="閉じる">&times;</button>
         </div>
         <form method="post" action="{{ route('comments.store', $diary) }}">

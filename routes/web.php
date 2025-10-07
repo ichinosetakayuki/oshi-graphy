@@ -20,7 +20,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::post('/me/profile/info', [ProfileController::class, 'updateProfileInfo'])->name('profile.update.info');
 
     Route::get('/users/{user}',[UserProfileController::class, 'show'])
         ->whereNumber('user')->name('user.profile.show');
@@ -42,7 +41,6 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/diaries/{diary}/like', [DiaryLikeController::class, 'store'])->name('diaries.like.store');
     Route::delete('/diaries/{diary}/like', [DiaryLikeController::class, 'destroy'])->name('diaries.like.destroy');
-
     Route::get('/diaries/{diary}/likes', [DiaryLikeController::class, 'index'])->name('diaries.likes.index');
 });
 

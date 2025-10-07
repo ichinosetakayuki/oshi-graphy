@@ -9,6 +9,9 @@ use App\Models\User;
 class UserProfileController extends Controller
 {
 
+    /**
+     * Display the user's profile form.
+     */
     public function edit(Request $request)
     {
         $user = $request->user();
@@ -16,6 +19,9 @@ class UserProfileController extends Controller
         return view('user_profile.edit', compact('user'));
     }
 
+    /**
+     * Update the user's profile information.
+     */
     public function update(Request $request)
     {
         $user = $request->user();
@@ -61,6 +67,9 @@ class UserProfileController extends Controller
             ->with('status_type', 'success');
     }
 
+    /**
+     * Display the user's profile information.
+     */
     public function show(User $user)
     {
 

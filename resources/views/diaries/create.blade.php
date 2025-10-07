@@ -21,7 +21,7 @@
                     <div class="flex flex-col md:flex-row gap-2">
                         <x-form-label for="artist_id" value="アーティスト" width="w-32" class="shrink-0" />
                         <div class="w-full md:w-64">
-                            <select name="artist_id" id="artist_id" class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                            <select name="artist_id" id="artist_id" class="focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
                                 <option value="">-- アーティストを選択 --</option>
                                 {{-- old() があれば初期optionを1つだけ指す (JSで選択状態に) --}}
                                 @if(old('artist_id') && old('artist_name'))
