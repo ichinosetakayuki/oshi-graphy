@@ -12,18 +12,9 @@ class ProfileModal extends Component
     /**
      * Create a new component instance.
      */
-    public function __construct(
-
-        public User $user,
-        public bool $editable = false,
-        public $name = 'profileModal'
-    )
+    public function __construct()
     {
-        if(!isset($this->user->public_diaries_count)) {
-            $this->user->loadCount([
-                'diaries as public_diaries_count' => fn($q) => $q->where('is_public', true) 
-            ]);
-        }
+        //
     }
 
     /**
