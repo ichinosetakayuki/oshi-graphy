@@ -116,42 +116,8 @@
                     <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
                     {{-- コメント一覧 --}}
-                    <ul class="space-y-4">
-                        @forelse($diary->comments as $comment)
-                        <li>
-                            <div class="flex justify-between">
-                                <div>
-                                    <img src="{{ $comment->user->icon_url ?? asset('images/icon_placeholder.png') }}" alt="アイコン画像" class="inline-block size-5 rounded-full object-cover border">
-                                    <span class="text-sm font-semibold">{{ $comment->user->name ?? '退会ユーザー' }}</span>
-                                    <span class="text-xs ml-1">{{ $comment->updated_at->diffForHumans() }}</span>
-                                    {{-- diffForHumans():人間感覚○分前などで表示 --}}
-                                </div>
-                                @if( auth()->id() === $comment->user_id )
-                                <button
-                                    type="button"
-                                    x-data
-                                    x-on:click="
-                                    window.dispatchEvent(new CustomEvent('confirm-delete', {
-                                        detail: {
-                                            name: 'confirm-delete',
-                                            title: 'コメント削除',
-                                            action: '{{ route('comments.destroy', $comment) }}',
-                                            message: 'このコメントを削除します。よろしいですか？'
-                                        }
-                                    }))"
-                                    title="削除"
-                                    class="flex items-end">
-                                    <x-icons.trash size="w-4 h-4" class="text-brand-dark" />
-                                </button>
-                                @endif
-                            </div>
-                            <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
+                    <x-comments :comments="$diary->comments" />
 
-                        </li>
-                        @empty
-                        <li class="text-sm text-gray-500">まだコメントはありません</li>
-                        @endforelse
-                    </ul>
                 </div>
             </section>
             @endif
