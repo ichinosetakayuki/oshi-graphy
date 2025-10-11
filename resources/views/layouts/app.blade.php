@@ -51,6 +51,8 @@
 
     {{-- sessionメッセージのトースト表示 --}}
     <x-toast :message="session('status')" :type="session('status_type', 'success')" />
+    {{-- alertモーダル --}}
+    <x-alert-modal name="alert" title="お知らせ" />
 
     {{-- ↓追加 --}}
     @stack('scripts')

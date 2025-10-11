@@ -12,34 +12,44 @@
                 @csrf
                 <div class="flex flex-col gap-3 md:flex-row md:gap-6">
                     {{-- 日付 --}}
-                    <div class="flex flex-col md:flex-row gap-2">
-                        <x-form-label for="happened_on" value="日付" />
-                        <x-text-input type="date" name="happened_on" id="happened_on" :value="old('happened_on')" />
-                        <x-input-error :messages="$errors->get('happened_on')" />
-                    </div>
-                    {{-- アーティスト --}}
-                    <div class="flex flex-col md:flex-row gap-2">
-                        <x-form-label for="artist_id" value="アーティスト" width="w-32" class="shrink-0" />
-                        <div class="w-full md:w-64">
-                            <select name="artist_id" id="artist_id" class="focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                                <option value="">-- アーティストを選択 --</option>
-                                {{-- old() があれば初期optionを1つだけ指す (JSで選択状態に) --}}
-                                @if(old('artist_id') && old('artist_name'))
-                                <option value="{{ old('artist_id') }}" selected>{{ old('artist_name') }}</option>
-                                @endif
-                            </select>
+                    <div class="flex flex-col gap-2">
+                        <div class="flex flex-col md:flex-row gap-2">
+                            <x-form-label for="happened_on" value="日付" />
+                            <x-text-input type="date" name="happened_on" id="happened_on" :value="old('happened_on')" />
                         </div>
-                        <x-input-error :messages="$errors->get('artist_id')" class="mt-2" />
+                        <x-input-error :messages="$errors->get('happened_on')" class="md:text-center" />
                     </div>
+
+                    {{-- アーティスト --}}
+                    <div class="flex flex-col gap-2">
+                        <div class="flex flex-col md:flex-row gap-2">
+                            <x-form-label for="artist_id" value="アーティスト" width="w-32" class="shrink-0" />
+                            <div class="w-full md:w-64">
+                                <select name="artist_id" id="artist_id" class="focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                    <option value="">-- アーティストを選択 --</option>
+                                    {{-- old() があれば初期optionを1つだけ指す (JSで選択状態に) --}}
+                                    @if(old('artist_id') && old('artist_name'))
+                                    <option value="{{ old('artist_id') }}" selected>{{ old('artist_name') }}</option>
+                                    @endif
+                                </select>
+                            </div>
+                        </div>
+                        <x-input-error :messages="$errors->get('artist_id')" class="md:text-center" />
+
+                    </div>
+
 
                 </div>
 
                 {{-- 本文 --}}
-                <div class="flex flex-col md:flex-row gap-2 mt-3">
-                    <x-form-label for="body" class="shrink-0" value="本文" />
-                    <x-textarea name="body" id="body" rows="6" />
-                    <x-input-error :messages="$errors->get('body')" />
+                <div class="flex flex-col gap-2 mt-3">
+                    <div class="flex flex-col md:flex-row gap-2 mt-3">
+                        <x-form-label for="body" class="shrink-0" value="本文" />
+                        <x-textarea name="body" id="body" rows="6" />
+                    </div>
+                    <x-input-error :messages="$errors->get('body')" class="md:text-center" />
                 </div>
+
 
                 {{-- AIアシスト下書きゾーン --}}
                 <div class="flex flex-col gap-2 mt-3">
@@ -99,6 +109,8 @@
 
         </div>
     </div>
+    {{-- AI会話リセット用削除確認モーダル --}}
+    <x-confirm-modal name="confirm-delete" confirmText="リセットする" maxWidth="sm" />
 
 
     {{-- Select2のCSS/JSをこのページだけに読み込む --}}
@@ -189,6 +201,22 @@
             });
         });
     </script>
+    {{-- アラート表示関数 --}}
+    <script>
+        /**
+         * アラートに表示するメッセージ、タイトル、モーダルに渡す名前を入力し、
+         * モーダル画面を開いて表示する関数。
+         */
+        window.showAlert = (message, title = 'お知らせ', name = 'alert') => {
+            window.dispatchEvent(new CustomEvent('alert-populate', {
+                detail: {
+                    name,
+                    title,
+                    message
+                }
+            }));
+        };
+    </script>
 
     {{-- AIアシスト機能のscript --}}
     <script>
@@ -215,7 +243,7 @@
         $send.on('click', function() {
             const text = $prompt.val().trim();
             if (!text) {
-                alert('キーワードなどを入力してください');
+                showAlert('キーワードなどを入力してください', 'AIアシストエラー');
                 return;
             }
 
@@ -234,35 +262,50 @@
                         appendAnswer(res.reply);
                         $prompt.val('');
                     } else {
-                        alert(res.message || '生成に失敗しました。');
+                        showAlert(res?.message || '生成に失敗しました。', 'AIアシストエラー');
                     }
                 })
                 .fail(function(xhr) {
                     const msg = xhr.responseJSON?.message || '通信エラー';
-                    alert(msg);
+                    showAlert(msg, 'AIアシストエラー');
                 })
                 .always(function() {
                     $send.prop('disabled', false).text('AIに相談');
                 });
         });
 
+        // AIとの会話リセット：ボタン押下時→確認モーダルを開く
         $reset.on('click', function() {
-            if (!confirm('AIとの会話履歴をリセットしてよろしいですか？')) return;
-            $.post("{{ route('ai.diary.reset') }}", {
-                    _token: "{{ csrf_token() }}"
-                })
-                .done(function() {
-                    $answers.empty();
-                })
-                .fail(function() {
-                    alert('リセットに失敗しました');
-                });
+            window.dispatchEvent(new CustomEvent('confirm-delete', {
+                detail: {
+                    name: 'confirm-delete',
+                    title: '会話履歴のリセット',
+                    message: 'AIとの会話履歴をリセットしてよろしいですか？',
+                    action: 'reset-ai-history'
+                }
+            }));
         });
 
+        // AIとの会話リセット：モーダルでOKが押下時→実処理が走る
+        window.addEventListener('confirmed', function(e) {
+            if (e.detail.action === 'reset-ai-history') {
+                $.post("{{ route('ai.diary.reset') }}", {
+                        _token: "{{ csrf_token() }}"
+                    })
+                    .done(function() {
+                        $answers.empty();
+                    })
+                    .fail(function() {
+                        showAlert('会話履歴のリセットに失敗しました', 'AIアシストエラー');
+                    });
+            }
+        });
+
+        // AI回答を本文にコピーする処理
         $copy.on('click', function() {
             const $last = $answers.children('.bg-gray-100').last();
             if (!$last.length) {
-                alert('まだAIの回答がありません');
+                showAlert('まだAIの回答がありません', 'AIアシストエラー');
             }
             const text = $last.text().trim();
             $body.val(text).trigger('input');

@@ -23,11 +23,24 @@
 
             <div class="mt-6 flex justify-end gap-3">
                 <x-secondary-button x-on:click="$dispatch('close')">{{ $cancelText }}</x-secondary-button>
-                <form method="post" x-bind:action="action">
-                    @csrf
-                    @method('DELETE')
-                    <x-danger-button>{{ $confirmText }}</x-danger-button>
-                </form>
+                {{-- AI会話リセットの時：イベント通知だけ --}}
+                <template x-if="action === 'reset-ai-history'">
+                    <x-danger-button
+                        x-on:click="
+                        window.dispatchEvent(new CustomEvent('confirmed', { detail: { action } }));
+                        $dispatch('close');
+                    ">
+                        {{ $confirmText }}
+                    </x-danger-button>
+                </template>
+                {{-- それ以外（フォーム送信：DELETE想定） --}}
+                <template x-if="action !== 'reset-ai-history'">
+                    <form method="post" x-bind:action="action">
+                        @csrf
+                        @method('DELETE')
+                        <x-danger-button>{{ $confirmText }}</x-danger-button>
+                    </form>
+                </template>
             </div>
         </div>
     </x-modal>
