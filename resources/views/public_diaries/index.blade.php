@@ -15,17 +15,17 @@
                     <select id="year" name="year" class="border rounded px-3 py-1 w-24 dark:bg-gray-900 dark:text-gray-200">
                         <option value="">すべて</option>
                         @foreach($years as $y)
-                        <option value=" {{ $y }}" @selected($year==$y)>{{ $y }}</option>
+                        <option value="{{ $y }}" @selected($year==$y)>{{ $y }}</option>
                         @endforeach
                     </select>
                 </div>
                 {{-- 月 --}}
                 <div class="flex gap-3 items-center">
                     <label for="month" class="font-semibold">月</label>
-                    <select id="month" name="month" class="border rounded px-3 py-1 w-24 dark:bg-gray-900 dark:text-gray-200">
+                    <select id="month" name="month" class="border rounded px-3 py-1 w-24 dark:bg-gray-900 dark:text-gray-200" {{ $year ? '' : 'disabled' }}>
                         <option value="">すべて</option>
                         @foreach($months as $m)
-                        <option value=" {{ $m }}" @selected($month==$m)>{{ $m }}</option>
+                        <option value="{{ $m }}" @selected($month==$m)>{{ $m }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -98,6 +98,15 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(function() {
+            // 年が空の時、月が選択できないようにする関数
+            function sync() {
+                const enable = $("#year").val() !== ''; // 月が選択できる状態＝年が空でない
+                $("#month").prop('disabled', !enable); // !enable（=月が選択できない状態＝年が空）
+                if(!enable) $("#month").val('');
+            }
+            sync();
+            $("#year").on('change', sync);
+
             const ARTIST_SEARCH_URL = @json(route('artists.search'));
 
             const $sel = $("#artist_id").select2({
