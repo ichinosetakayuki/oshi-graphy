@@ -5,7 +5,11 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Artist;
+use App\Models\Comment;
 use App\Policies\ArtistPolicy;
+use App\Observers\CommentObserver;
+use App\Models\DiaryLike;
+use App\Observers\DiaryLikeObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
+     * アプリの起動時に毎回実行される。
      */
     public function boot(): void
     {
@@ -27,5 +32,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Policyの登録。ArtistモデルとArtistPolicyの対応づけ。
         Gate::policy(Artist::class, ArtistPolicy::class);
+
+        // CommentモデルにObserverを紐づける登録処理
+        Comment::observe(CommentObserver::class);
+
+        DiaryLike::observe(DiaryLikeObserver::class);
     }
 }
