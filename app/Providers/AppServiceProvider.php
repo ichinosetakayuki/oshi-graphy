@@ -8,6 +8,8 @@ use App\Models\Artist;
 use App\Models\Comment;
 use App\Policies\ArtistPolicy;
 use App\Observers\CommentObserver;
+use App\Models\DiaryLike;
+use App\Observers\DiaryLikeObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +35,7 @@ class AppServiceProvider extends ServiceProvider
 
         // CommentモデルにObserverを紐づける登録処理
         Comment::observe(CommentObserver::class);
+
+        DiaryLike::observe(DiaryLikeObserver::class);
     }
 }

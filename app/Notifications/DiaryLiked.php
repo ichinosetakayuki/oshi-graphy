@@ -15,15 +15,12 @@ class DiaryLiked extends Notification implements ShouldQueue
      * Create a new notification instance.
      */
     public function __construct(
-
         public int $diaryId,
         public int $actorUserId,
         public string $actorName,
         public string $excerpt
     )
-    {
-        
-    }
+    { }
 
     /**
      * Get the notification's delivery channels.
