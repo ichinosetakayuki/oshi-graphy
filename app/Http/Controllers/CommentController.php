@@ -25,19 +25,19 @@ class CommentController extends Controller
         ]);
 
         // 通知を作成
-        $owner = $diary->user;
+        // $owner = $diary->user;
         // 文字を丸める。文字列、開始位置、文字幅バイト数、省略記号
-        $excerpt = mb_strimwidth($diary->body, 0, 40, '...');
+        // $excerpt = mb_strimwidth($diary->body, 0, 40, '...');
 
-        if($owner->id !== auth()->id()) {
-            $owner->notify(new CommentPostedOnYourDiary(
-                diaryId: $diary->id,
-                commentId: $comment->id,
-                actorUserId: auth()->id(),
-                actorName: auth()->user()->name,
-                excerpt: $excerpt
-            ));
-        }
+        // if($owner->id !== auth()->id()) {
+        //     $owner->notify(new CommentPostedOnYourDiary(
+        //         diaryId: $diary->id,
+        //         commentId: $comment->id,
+        //         actorUserId: auth()->id(),
+        //         actorName: auth()->user()->name,
+        //         excerpt: $excerpt
+        //     ));
+        // }
 
         return back()->with('status', 'コメントを投稿しました。')->with('status_type', 'success');
     }
