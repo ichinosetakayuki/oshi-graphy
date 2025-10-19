@@ -295,8 +295,118 @@ it('他人は編集画面を表示できない (Policy view)', function () {
   $response->assertForbidden();
 });
 
-// it('has diary page', function () {
-//     $response = $this->get('/diary');
+// update:更新処理
+it('本人は日記を更新できる', function() {
+  $user = User::factory()->create();
+  $artist = Artist::factory()->create();
+  $diary = Diary::factory()->for($user)->create([
+    'artist_id' => $artist->id,
+    'happened_on' => '2025-01-20',
+    'body' => '更新前の本文',
+    'is_public' => false,
+  ]);
 
-//     $response->assertStatus(200);
-// });
+  $response = $this->actingAs($user)->put(route('diaries.update', $diary), [
+    'artist_id' => $artist->id,
+    'happened_on' => '2025-01-25',
+    'body' => '更新後の本文',
+    'is_public' => true
+  ]);
+
+  $response->assertRedirect(route('diaries.show', $diary));
+  $this->assertDatabaseHas('diaries', [
+    'id' => $diary->id,
+    'happened_on' => '2025-01-25',
+    'body' => '更新後の本文',
+    'is_public' => 1,
+  ]);
+
+});
+
+it('他人は更新できない（policy: update）', function(){
+  $owner = User::factory()->create();
+  $other = User::factory()->create();
+  $artist = Artist::factory()->create();
+  $diary = Diary::factory()->for($owner)->for($artist)->create();
+
+  $response = $this->actingAs($other)->put(route('diaries.update', $diary), [
+    'happened_on' => '2025-01-25',
+    'body' => '更新できない',
+    'is_public' => false,
+  ]);
+  $response->assertForbidden();
+  
+});
+
+// 更新（update）で画像の削除と追加
+it('更新時に既存画像を削除し、新規画像を追加できる', function() {
+  $user = User::factory()->create();
+  $artist = Artist::factory()->create();
+  Storage::fake('public');
+  $diary = Diary::factory()->for($user)->create();
+
+  $existing1 = $diary->images()->create(['path' => 'diary_images/ex1.jpg']);
+  $existing2 = $diary->images()->create(['path' => 'diary_images/ex2.jpg']);
+
+  // publicディスク（テスト用フェイク）に、ダミーファイルを作成する。
+  Storage::disk('public')->put($existing1->path, 'dummy');
+  Storage::disk('public')->put($existing2->path, 'dummy');
+
+  // 新規アップロード
+  $newFile = UploadedFile::fake()->image('new.jpg');
+
+  $response = $this->actingAs($user)
+      ->from(route('diaries.edit', $diary))
+      ->put(route('diaries.update', $diary), [
+        'artist_id' => $artist->id,
+        'happened_on' => '2025-01-20',
+        'body' => '画像変更後本文',
+        'is_public' => true,
+        'delete_images' => [$existing1->id], // 1枚だけ削除
+        'images' => [$newFile], // 1枚追加
+      ]);
+
+  $response->assertRedirect(route('diaries.show', $diary));
+
+  // 削除された方はDBもファイルもない
+  $this->assertDatabaseMissing('diary_images', ['id' => $existing1->id]);
+  Storage::disk('public')->assertMissing($existing1->path);
+  // 残った方はDBにある
+  $this->assertDatabaseHas('diary_images', ['id' => $existing2->id]);
+
+  // 新規画像が１枚増えている
+  $diary->refresh(); // $diaryの属性を最新に置き換える
+  expect($diary->images()->count())->toBe(2);
+  
+});
+
+// 削除（destroy）
+it('本人は日記を削除でき、画像ファイルも物理削除される', function(){
+  Storage::fake('public');
+
+  $user = User::factory()->create();
+  $artist = Artist::factory()->create();
+  $diary = Diary::factory()->for($user)->create();
+
+  $img = $diary->images()->create(['path' => 'diary_images/will_delete.jpg']);
+  Storage::disk('public')->put($img->path, 'dummy');
+
+  $response = $this->actingAs($user)->delete(route('diaries.destroy', $diary));
+  $response->assertRedirect(route('diaries.index'));
+
+  $this->assertDatabaseMissing('diaries', ['id' => $diary->id]);
+  $this->assertDatabaseMissing('diary_images', ['id' => $img->id]);
+  Storage::disk('public')->assertMissing($img->path);
+});
+
+it('他人は削除できない（Policy:delete）', function() {
+  $owner = User::factory()->create();
+  $other = User::factory()->create();
+  $artist = Artist::factory()->create();
+  $diary = Diary::factory()->for($owner)->create();
+
+  $response = $this->actingAs($other)->delete(route('diaries.destroy', $diary));
+  $response->assertForbidden();
+});
+
+
