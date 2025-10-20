@@ -248,7 +248,7 @@ it('本人は詳細を確認でき、画像も表示される', function() {
 
   $response->assertOk();
   $response->assertSee($artist->name);
-  $response->assertSee($diary->happened_on->format('Y年n月d日'));
+  $response->assertSee($diary->happened_on->format('Y年n月j日'));
   $response->assertSee($diary->body);
   $response->assertSee('非公開');
 
@@ -270,6 +270,36 @@ it('他人は詳細を表示できない (Policy view)', function() {
 
   $response = $this->actingAs($other)->get(route('diaries.show', $diary));
   $response->assertForbidden();
+});
+
+// show コメント数、いいね数
+it('詳細画面にコメント数といいね数が表示される', function () {
+  $user = User::factory()->create();
+  $artist = Artist::factory()->create();
+  $diary = Diary::factory()
+    ->for($user)
+    ->for($artist)
+    ->create([
+      'happened_on' => '2025-01-20',
+      'body' => 'コメント数といいね数テスト本文',
+      'is_public' => true,
+    ]);
+
+  $likers = User::factory()->count(3)->create();
+  // コメント2件
+  Comment::factory()->count(2)->for($diary)->for($user)->create();
+  // いいね3件（複合ユニーク対策でforPairを使用）
+  foreach ($likers as $liker) {
+    DiaryLike::factory()->forPair($diary, $liker)->create();
+  }
+
+  $response = $this->actingAs($user)->get(route('diaries.show', $diary));
+  $response->assertOk();
+  // 本文が表示されている
+  $response->assertSee('コメント数といいね数テスト本文');
+  // コメント数、いいね数の表示確認
+  $response->assertSee('2');
+  $response->assertSee('3');
 });
 
 it('本人は編集画面を表示できる', function() {
