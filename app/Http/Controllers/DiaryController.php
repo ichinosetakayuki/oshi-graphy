@@ -108,11 +108,21 @@ class DiaryController extends Controller
     {
         Gate::authorize('view', $diary);
 
-        $diary->load(['user', 'comments.user'])
+        $diary->load(['user'])
             ->loadCount(['comments','likes'])
             ->loadExists([
-                'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id())
+                'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
             ]);
+
+        // コメントをlikes_count / liked_by_me 付きで取得
+        $comment = $diary->comments()
+            ->with('user')
+            ->withCount('likes')
+            ->withExists([
+                'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
+            ])
+            ->latest()
+            ->get();
 
         return view('diaries.show', compact('diary'));
     }

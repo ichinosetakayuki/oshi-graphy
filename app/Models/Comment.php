@@ -21,4 +21,9 @@ class Comment extends Model
     {
         return $this->belongsTo(Diary::class);
     }
+
+    public function likes()
+    {
+        return $this->morphMany(Like::class, 'likeable');
+    }
 }

@@ -1,3 +1,4 @@
+{{--
 @props([
 'diary',
 'liked' => null,
@@ -28,32 +29,41 @@ $unlikeUrl= route('diaries.like.destroy', $diary);
           method,
           headers: {
             'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json',
-          },
-          credentials: 'same-origin',
-        });
-        if(!res.ok) throw new Error('Request failed');
-        const json = await res.json();
-        this.liked = !!json.liked;
-        this.count = Number(json.count);
-      } catch(e) {
-          console.error(e);
-      } finally {
-          this.busy = false;
-      }
-    }
-  }"
-  class="inline-flex items-center">
-  <button type="button" x-on:click.stop="toggle" :disabled="busy" class="focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" title="いいね！">
-    <x-icons.heart x-show="!liked" size="size-5" class="text-gray-400" />
-    <x-icons.heart-filled x-show="liked" size="size-5" class="text-pink-400" />
-  </button>
-  @if($diary->user_id === auth()->user()->id)
-  <a href="{{ route('diaries.likes.index', $diary) }}">
-    <span x-text="count" class="text-sm hover:cursor-pointer" title="いいね数"></span>
-  </a>
-  @else
+'Accept': 'application/json',
+},
+credentials: 'same-origin',
+});
+if(!res.ok) throw new Error('Request failed');
+const json = await res.json();
+this.liked = !!json.liked;
+this.count = Number(json.count);
+} catch(e) {
+console.error(e);
+} finally {
+this.busy = false;
+}
+}
+}"
+class="inline-flex items-center">
+<button type="button" x-on:click.stop="toggle" :disabled="busy" class="focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" title="いいね！">
+  <x-icons.heart x-show="!liked" size="size-5" class="text-gray-400" />
+  <x-icons.heart-filled x-show="liked" size="size-5" class="text-pink-400" />
+</button>
+@if($diary->user_id === auth()->user()->id)
+<a href="{{ route('diaries.likes.index', $diary) }}">
   <span x-text="count" class="text-sm hover:cursor-pointer" title="いいね数"></span>
-  @endif
+</a>
+@else
+<span x-text="count" class="text-sm" title="いいね数"></span>
+@endif
 
 </div>
+--}}
+
+@props([
+'diary',
+'liked' => null,
+'count' => null,
+])
+
+<x-like-toggle :likeable="$diary" :liked="$liked" :count="$count" :likeUrl="route('diaries.like.store', $diary)" :unlikeUrl="route('diaries.like.destroy', $diary)" :ownerId="$diary->user_id" :indexUrl="route('diaries.likes.index', $diary)" />

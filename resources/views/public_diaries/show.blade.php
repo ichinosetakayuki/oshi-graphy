@@ -26,6 +26,7 @@
             </div>
             <div class="flex items-center gap-1">
                 <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
+                {{-- いいねボタン --}}
                 <x-like-button :diary="$diary" :liked="$diary->liked_by_me" :count="$diary->likes_count" />
             </div>
 
