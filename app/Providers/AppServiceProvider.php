@@ -9,7 +9,9 @@ use App\Models\Comment;
 use App\Policies\ArtistPolicy;
 use App\Observers\CommentObserver;
 use App\Models\DiaryLike;
+use App\Models\Like;
 use App\Observers\DiaryLikeObserver;
+use App\Observers\LikeObserver;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -37,5 +39,7 @@ class AppServiceProvider extends ServiceProvider
         Comment::observe(CommentObserver::class);
 
         DiaryLike::observe(DiaryLikeObserver::class);
+
+        Like::observe(LikeObserver::class);
     }
 }

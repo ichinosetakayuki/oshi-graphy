@@ -13,11 +13,6 @@ class CommentLikeController extends Controller
             'user_id' => $request->user()->id,
         ]);
 
-        // 自分のコメント以外なら通知
-        // if($comment->user_id !== $request->user()->id) {
-        //     $comment->user->notify()
-        // }
-
         return response()->json([
             'ok' => true,
             'liked' => true,
