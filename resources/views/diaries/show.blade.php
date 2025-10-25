@@ -70,7 +70,8 @@
                 <div class="flex justify-between">
                     <div class="flex items-center gap-1">
                         <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
-                        <x-like-button :diary="$diary" :liked="$diary->likedBy(auth()->user())" :count="$diary->likes_count" />
+                        {{-- いいねボタン --}}
+                        <x-like-button :diary="$diary" :liked="$diary->liked_by_me" :count="$diary->likes_count" />
                     </div>
                     @if(auth()->id() == $diary->user_id)
                     <div class="flex items-center gap-2 mr-2 no-print">

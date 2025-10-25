@@ -6,11 +6,13 @@
     @forelse($comments as $comment)
     <li>
         <div class="flex justify-between">
-            <div>
+            <div class="flex items-center gap-1">
                 <img src="{{ $comment->user->icon_url ?? asset('images/icon_placeholder.png') }}" alt="アイコン画像" class="inline-block size-5 rounded-full object-cover border">
                 <span class="text-sm font-semibold">{{ $comment->user->name ?? '退会ユーザー' }}</span>
                 <span class="text-xs ml-1">{{ $comment->updated_at->diffForHumans() }}</span>
                 {{-- diffForHumans():人間感覚○分前などで表示 --}}
+                {{-- いいねボタン --}}
+                <x-comment-like-button :comment="$comment" :liked="$comment->liked_by_me" :count="$comment->likes_count" />
             </div>
             @if( auth()->id() === $comment->user_id )
             <button

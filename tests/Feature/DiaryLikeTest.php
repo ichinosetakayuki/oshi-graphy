@@ -3,6 +3,7 @@ use App\Models\User;
 use App\Models\Diary;
 use App\Models\Artist;
 use App\Models\DiaryLike;
+use App\Models\Like;
 
 beforeEach(function() {
     $this->artist = Artist::factory()->create();
@@ -15,7 +16,7 @@ it('いいねが作成される', function() {
 
     $response = $this->actingAs($this->user)->post(route('diaries.like.store', $diary), [
         'user_id' => $this->user->id,
-        'diary_id' => $diary->id,
+        // 'diary_id' => $diary->id,
     ]);
     $response->assertOk();
     $response->assertJson([
@@ -23,15 +24,16 @@ it('いいねが作成される', function() {
         'liked' => true,
     ]);
     $response->assertJsonStructure(['ok', 'liked', 'count']);
-    $this->assertDatabaseHas('diary_likes', [
+    $this->assertDatabaseHas('likes', [
         'user_id' => $this->user->id,
-        'diary_id' => $diary->id,
+        'likeable_type' => Diary::class,
+        'likeable_id' => $diary->id,
     ]);
 });
 
 it('いいねを取り消す', function() {
     $diary = Diary::factory()->for($this->owner)->for($this->artist)->create(['is_public' => true]);
-    DiaryLike::factory()->for($diary)->for($this->user)->create([]);
+    Like::factory()->forDiary($diary, $this->user)->create([]);
     
     $response = $this->actingAs($this->user)->delete(route('diaries.like.destroy', $diary));
     $response->assertOk();
@@ -40,14 +42,11 @@ it('いいねを取り消す', function() {
         'liked' => false,
     ]);
     $response->assertJsonStructure(['ok', 'liked', 'count']);
-    $this->assertDatabaseMissing('diary_likes', [
+    $this->assertDatabaseMissing('likes', [
         'user_id' => $this->user->id,
-        'diary_id' => $diary->id,
+        'likeable_type' => Diary::class,
+        'likeable_id' => $diary->id,
     ]);
 });
 
-// it('has diarylike page', function () {
-//     $response = $this->get('/diarylike');
 
-//     $response->assertStatus(200);
-// });

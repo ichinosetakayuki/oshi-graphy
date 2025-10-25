@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DiaryLike;
 use App\Models\Diary;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -15,22 +16,34 @@ class DiaryLikeController extends Controller
      */
     public function index(Diary $diary)
     {
-        $likers = $diary->likers()
-                        ->select('users.id', 'users.name', 'users.icon_path', 'users.profile')
-                        ->latest('diary_likes.created_at')
-                        ->paginate(10)
-                        ->withQueryString();
+        $likers = User::select('users.*')
+                ->join('likes', 'likes.user_id', '=', 'users.id')
+                ->where('likes.likeable_type', Diary::class)
+                ->where('likes.likeable_id', $diary->id)
+                ->orderByDesc('likes.created_at')
+                ->paginate(10)
+                ->withQueryString();
+
 
         return view('diaries.likes.index', compact('diary', 'likers'));
     }
+    // public function index(Diary $diary)
+    // {
+    //     $likers = $diary->likers()
+    //                     ->select('users.id', 'users.name', 'users.icon_path', 'users.profile')
+    //                     ->latest('likes.created_at')
+    //                     ->paginate(10)
+    //                     ->withQueryString();
+
+    //     return view('diaries.likes.index', compact('diary', 'likers'));
+    // }
 
     /**
      * いいね情報を保存、通知を作成
      */
     public function store(Request $request ,Diary $diary)
     {
-        DiaryLike::firstOrCreate([
-            'diary_id' => $diary->id,
+        $like = $diary->likes()->firstOrCreate([
             'user_id' => $request->user()->id,
         ]);
 
@@ -42,9 +55,10 @@ class DiaryLikeController extends Controller
     }
 
 
+
     public function destroy(Request $request, Diary $diary)
     {
-        $like = DiaryLike::where('diary_id', $diary->id)
+        $like = $diary->likes()
              ->where('user_id', $request->user()->id)
              ->first();
         

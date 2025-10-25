@@ -24,7 +24,7 @@
                         <img src="{{ $user->icon_url ?? asset('images/icon_placeholder.png') }}" alt="アイコン画像" class="inline-block size-10 rounded-full object-cover border">
                         <div>
                             <div class="font-semibold">{{ $user->name ?? '退会ユーザー' }}</div>
-                            <div class="line-clamp-2">{{ $user->profile }}</div>
+                            <div class="line-clamp-2 min-h-8">{{ $user->profile }}</div>
                         </div>
                     </a>
                 </li>

@@ -9,6 +9,7 @@ use App\Http\Controllers\ArtistController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiaryLikeController;
+use App\Http\Controllers\CommentLikeController;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -42,6 +43,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/diaries/{diary}/like', [DiaryLikeController::class, 'store'])->name('diaries.like.store');
     Route::delete('/diaries/{diary}/like', [DiaryLikeController::class, 'destroy'])->name('diaries.like.destroy');
     Route::get('/diaries/{diary}/likes', [DiaryLikeController::class, 'index'])->name('diaries.likes.index');
+
+    Route::post('/comments/{comment}/like', [CommentLikeController::class, 'store'])->name('comments.like.store');
+    Route::delete('/comments/{comment}/like', [CommentLikeController::class, 'destroy'])->name('comments.like.destroy');
+
 });
 
 Route::prefix('notifications')->middleware('auth')->group(function(){

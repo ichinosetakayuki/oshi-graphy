@@ -10,6 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 use App\Models\DiaryLike;
+use App\Models\Like;
 
 class LikeAdded
 {
@@ -18,7 +19,7 @@ class LikeAdded
     /**
      * Create a new event instance.
      */
-    public function __construct(public DiaryLike $like)
+    public function __construct(public Like $like)
     {}
 
     /**
