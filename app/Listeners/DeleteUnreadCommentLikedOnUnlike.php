@@ -29,7 +29,7 @@ class DeleteUnreadCommentLikedOnUnlike
         $comment = $like->likeable;
         $actor = $like->user;
 
-        if(!$comment || $actor) return;
+        if(!$comment || !$actor) return;
 
         $comment->user->notifications()
             ->whereNull('read_at')

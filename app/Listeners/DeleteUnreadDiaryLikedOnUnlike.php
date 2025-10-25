@@ -6,6 +6,7 @@ use App\Events\LikeRemoved;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Notifications\DiaryLiked;
+use App\Models\Diary;
 
 class DeleteUnreadDiaryLikedOnUnlike
 {
@@ -22,8 +23,10 @@ class DeleteUnreadDiaryLikedOnUnlike
      */
     public function handle(LikeRemoved $event): void
     {
-        $like = $event->like->loadMissing(['diary', 'user']);
-        $diary = $like->diary;
+        $like = $event->like;
+        if(!$like->likeable instanceof Diary) return;
+
+        $diary = $like->likeable;
         $actor = $like->user;
 
         if(!$diary || !$actor) return;

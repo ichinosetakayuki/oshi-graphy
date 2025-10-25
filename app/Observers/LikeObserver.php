@@ -4,8 +4,12 @@ namespace App\Observers;
 
 use App\Models\Like;
 use App\Models\Comment;
+use App\Models\Diary;
 use App\Events\CommentLikeAdded;
 use App\Events\CommentLikeRemoved;
+use App\Events\LikeAdded;
+use App\Events\LikeRemoved;
+
 
 
 class LikeObserver
@@ -17,6 +21,8 @@ class LikeObserver
     {
         if($like->likeable instanceof Comment) {
             CommentLikeAdded::dispatch($like);
+        } elseif($like->likeable instanceof Diary) {
+            LikeAdded::dispatch($like);
         }
     }
 
@@ -35,6 +41,8 @@ class LikeObserver
     {
         if($like->likeable instanceof Comment) {
             CommentLikeRemoved::dispatch($like);
+        } elseif($like->likeable instanceof Diary) {
+            LikeRemoved::dispatch($like);
         }
     }
 

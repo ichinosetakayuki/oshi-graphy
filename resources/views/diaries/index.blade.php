@@ -56,6 +56,7 @@
                             {{ $diary->is_public ? '公開' : '非公開' }}
                         </span>
                         <div class="flex items-center gap-1">
+                            {{-- いいねボタン --}}
                             <x-like-button :diary="$diary" :liked="$diary->liked_by_me" :count="$diary->likes_count" />
                             <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
                         </div>

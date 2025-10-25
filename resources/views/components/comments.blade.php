@@ -11,6 +11,7 @@
                 <span class="text-sm font-semibold">{{ $comment->user->name ?? '退会ユーザー' }}</span>
                 <span class="text-xs ml-1">{{ $comment->updated_at->diffForHumans() }}</span>
                 {{-- diffForHumans():人間感覚○分前などで表示 --}}
+                {{-- いいねボタン --}}
                 <x-comment-like-button :comment="$comment" :liked="$comment->liked_by_me" :count="$comment->likes_count" />
             </div>
             @if( auth()->id() === $comment->user_id )

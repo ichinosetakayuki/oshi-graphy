@@ -115,14 +115,16 @@ class DiaryController extends Controller
             ]);
 
         // コメントをlikes_count / liked_by_me 付きで取得
-        $comment = $diary->comments()
-            ->with('user')
-            ->withCount('likes')
-            ->withExists([
-                'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
-            ])
-            ->latest()
-            ->get();
+        $diary->load([
+            'comments' => function($q) {
+                $q->with('user')
+                    ->withCount('likes')
+                    ->withExists([
+                        'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
+                    ])
+                    ->latest();
+            }
+        ]);
 
         return view('diaries.show', compact('diary'));
     }

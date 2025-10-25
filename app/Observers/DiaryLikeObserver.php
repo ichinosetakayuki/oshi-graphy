@@ -13,7 +13,7 @@ class DiaryLikeObserver
      */
     public function created(DiaryLike $like): void
     {
-        LikeAdded::dispatch($like);
+        // LikeAdded::dispatch($like);
     }
 
     /**
@@ -29,7 +29,7 @@ class DiaryLikeObserver
      */
     public function deleted(DiaryLike $like): void
     {
-        LikeRemoved::dispatch($like);
+        // LikeRemoved::dispatch($like);
     }
 
     /**

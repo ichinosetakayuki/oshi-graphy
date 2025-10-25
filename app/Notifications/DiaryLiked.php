@@ -6,6 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use App\Models\User;
+use App\Models\Diary;
+
 
 class DiaryLiked extends Notification implements ShouldQueue
 {
@@ -14,10 +17,10 @@ class DiaryLiked extends Notification implements ShouldQueue
     /**
      * Create a new notification instance.
      */
+
     public function __construct(
-        public int $diaryId,
-        public int $actorUserId,
-        public string $actorName,
+        public User $actor,
+        public Diary $diary,
         public string $excerpt
     )
     { }
@@ -36,11 +39,12 @@ class DiaryLiked extends Notification implements ShouldQueue
     {
         return [
             'type' => 'like',
-            'diary_id' => $this->diaryId,
-            'actor_user_id' => $this->actorUserId,
-            'actor_name' => $this->actorName,
-            'message' => "{$this->actorName}さんがあなたの日記「{$this->excerpt}」にいいねしました。",
-            'url' => route('diaries.show', $this->diaryId),
+            'target' => 'diary',
+            'diary_id' => $this->diary->id,
+            'actor_user_id' => $this->actor->id,
+            'actor_name' => $this->actor->name,
+            'message' => "{$this->actor->name}さんがあなたの日記「{$this->excerpt}」にいいねしました。",
+            'url' => route('diaries.show', $this->diary->id),
         ];
     }
 

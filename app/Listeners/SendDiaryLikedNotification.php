@@ -6,6 +6,7 @@ use App\Events\LikeAdded;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Notifications\DiaryLiked;
+use App\Models\Diary;
 
 class SendDiaryLikedNotification
 {
@@ -20,14 +21,16 @@ class SendDiaryLikedNotification
     /**
      * Handle the event.
      */
+
     public function handle(LikeAdded $event): void
     {
-        $like = $event->like->loadMissing(['diary', 'user']);
-        $diary = $like->diary;
+        $like = $event->like;
+        if(!$like->likeable instanceof Diary) return;
+
+        $diary = $like->likeable;
         $actor = $like->user;
 
-        if(!$diary || !$actor) return;
-        if($diary->user_id === $actor->id) return; // 自分には通知しない
+        if((int)$diary->user_id === (int)$actor->id) return; // 自分には通知しない
 
         $diary->user->notifications()
             ->whereNull('read_at') //未読通知だけに限定
@@ -39,11 +42,6 @@ class SendDiaryLikedNotification
         // 本文を丸める。excerpt:引用
         $excerpt = mb_strimwidth($diary->body, 0, 40, '...');
         // 新しい通知を作成
-        $diary->user->notify(new DiaryLiked(
-            diaryId: $diary->id,
-            actorUserId: $actor->id,
-            actorName: $actor->name,
-            excerpt: $excerpt
-        ));
+        $diary->user->notify(new DiaryLiked($actor, $diary, $excerpt));
     }
 }
