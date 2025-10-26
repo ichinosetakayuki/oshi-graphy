@@ -44,11 +44,6 @@ class Diary extends Model
         return $this->hasMany(Comment::class)->latest();
     }
 
-    // public function likes()
-    // {
-    //     return $this->hasMany(DiaryLike::class);
-    // }
-
     public function likes()
     {
         return $this->morphMany(Like::class, 'likeable');

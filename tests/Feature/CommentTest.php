@@ -43,7 +43,7 @@ it('本人のみが見られる日記詳細画面でコメント一覧が表示�
     $diary = Diary::factory()->for($this->owner)->for($this->artist)->create(['is_public' => true]);
     // $viewer = User::factory()->create();
 
-    $comment =Comment::factory()->for($diary)->for($this->user)->create();
+    $comment = Comment::factory()->for($diary)->for($this->user)->create();
 
     $response = $this->actingAs($this->owner)->get(route('diaries.show', $diary));
     $response->assertOk();

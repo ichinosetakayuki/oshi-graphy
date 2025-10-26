@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DiaryLike;
 use App\Models\Diary;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -27,16 +26,6 @@ class DiaryLikeController extends Controller
 
         return view('diaries.likes.index', compact('diary', 'likers'));
     }
-    // public function index(Diary $diary)
-    // {
-    //     $likers = $diary->likers()
-    //                     ->select('users.id', 'users.name', 'users.icon_path', 'users.profile')
-    //                     ->latest('likes.created_at')
-    //                     ->paginate(10)
-    //                     ->withQueryString();
-
-    //     return view('diaries.likes.index', compact('diary', 'likers'));
-    // }
 
     /**
      * いいね情報を保存、通知を作成

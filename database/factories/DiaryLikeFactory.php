@@ -12,7 +12,7 @@ use App\Models\User;
  */
 class DiaryLikeFactory extends Factory
 {
-    protected $model = DiaryLike::class;
+    // protected $model = DiaryLike::class;
     /**
      * Define the model's default state.
      *
@@ -21,16 +21,16 @@ class DiaryLikeFactory extends Factory
     public function definition(): array
     {
         return [
-            'diary_id' => Diary::factory(),
-            'user_id' => User::factory(),
+            // 'diary_id' => Diary::factory(),
+            // 'user_id' => User::factory(),
         ];
     }
 
-    public function forPair(Diary $diary, User $user): static
-    {
-        return $this->state(fn() => [
-            'diary_id' => $diary->id,
-            'user_id' => $user->id,
-        ]);
-    }
+    // public function forPair(Diary $diary, User $user): static
+    // {
+    //     return $this->state(fn() => [
+    //         'diary_id' => $diary->id,
+    //         'user_id' => $user->id,
+    //     ]);
+    // }
 }
