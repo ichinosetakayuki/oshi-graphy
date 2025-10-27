@@ -23,7 +23,6 @@ class DiaryLikeController extends Controller
                 ->paginate(10)
                 ->withQueryString();
 
-
         return view('diaries.likes.index', compact('diary', 'likers'));
     }
 

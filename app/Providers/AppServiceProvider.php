@@ -39,8 +39,6 @@ class AppServiceProvider extends ServiceProvider
         // CommentモデルにObserverを紐づける登録処理
         Comment::observe(CommentObserver::class);
 
-        // DiaryLike::observe(DiaryLikeObserver::class);
-
         Like::observe(LikeObserver::class);
 
         Model::preventLazyLoading(!$this->app->isProduction());

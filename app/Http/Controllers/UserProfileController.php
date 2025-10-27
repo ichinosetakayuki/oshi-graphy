@@ -72,7 +72,6 @@ class UserProfileController extends Controller
      */
     public function show(User $user)
     {
-
         $user->loadCount([
             'diaries as public_diaries_count' => fn($q) => $q->where('is_public', true)]);
 

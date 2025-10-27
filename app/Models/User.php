@@ -76,20 +76,6 @@ class User extends Authenticatable
     }
 
     /**
-     * このユーザーがつけた「いいね」の一覧
-     * 戻り値はDiaryLikeのモデルコレクション
-     */
-    // public function diaryLikes()
-    // {
-    //     return $this->hasMany(DiaryLike::class);
-    // }
-
-    // public function likedDiaries()
-    // {
-    //     return $this->belongsToMany(Diary::class, 'diary_likes')->withTimestamps();
-    // }
-
-    /**
      * Userモデルの起動フック。
      * ユーザー削除前（deleting）のイベントリスナーを登録し、
      * 1) ユーザーのアイコンファイルを削除し、

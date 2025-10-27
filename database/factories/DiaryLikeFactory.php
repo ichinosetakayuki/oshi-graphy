@@ -26,11 +26,4 @@ class DiaryLikeFactory extends Factory
         ];
     }
 
-    // public function forPair(Diary $diary, User $user): static
-    // {
-    //     return $this->state(fn() => [
-    //         'diary_id' => $diary->id,
-    //         'user_id' => $user->id,
-    //     ]);
-    // }
 }
