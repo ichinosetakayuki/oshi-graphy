@@ -2,7 +2,6 @@
 use App\Models\User;
 use App\Models\Diary;
 use App\Models\Artist;
-use App\Models\DiaryLike;
 use App\Models\Like;
 
 beforeEach(function() {

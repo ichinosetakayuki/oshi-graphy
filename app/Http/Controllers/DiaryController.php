@@ -134,7 +134,6 @@ class DiaryController extends Controller
      */
     public function edit(Diary $diary)
     {
-
         Gate::authorize('update', $diary);
 
         return view('diaries.edit', compact('diary'));
@@ -187,7 +186,6 @@ class DiaryController extends Controller
             }
         }
         
-
         return redirect()
             ->route('diaries.show', $diary)
             ->with('status', '日記を更新しました')->with('status_type', 'success');

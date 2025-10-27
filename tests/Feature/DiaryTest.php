@@ -4,7 +4,8 @@ use App\Models\Diary;
 use App\Models\User;
 use App\Models\Artist;
 use App\Models\Comment;
-use App\Models\DiaryLike;
+// use App\Models\DiaryLike;
+use App\Models\Like;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\facades\Storage;
 
@@ -130,7 +131,7 @@ it('一覧にコメント数といいね数が表示される', function() {
   Comment::factory()->count(2)->for($diary)->for($user)->create();
   // いいね3件（複合ユニーク対策でforPairを使用）
   foreach($likers as $liker) {
-    DiaryLike::factory()->forPair($diary, $liker)->create();
+    Like::factory()->forDiary($diary, $liker)->create();
   }
 
   $response = $this->actingAs($user)->get(route('diaries.index'));
@@ -290,7 +291,7 @@ it('詳細画面にコメント数といいね数が表示される', function (
   Comment::factory()->count(2)->for($diary)->for($user)->create();
   // いいね3件（複合ユニーク対策でforPairを使用）
   foreach ($likers as $liker) {
-    DiaryLike::factory()->forPair($diary, $liker)->create();
+    Like::factory()->forDiary($diary, $liker)->create();
   }
 
   $response = $this->actingAs($user)->get(route('diaries.show', $diary));
@@ -416,7 +417,7 @@ it('本人は日記を削除でき、画像ファイルも物理削除される'
 
   $user = User::factory()->create();
   $artist = Artist::factory()->create();
-  $diary = Diary::factory()->for($user)->create();
+  $diary = Diary::factory()->for($user)->for($artist)->create();
 
   $img = $diary->images()->create(['path' => 'diary_images/will_delete.jpg']);
   Storage::disk('public')->put($img->path, 'dummy');
@@ -433,7 +434,7 @@ it('他人は削除できない（Policy:delete）', function() {
   $owner = User::factory()->create();
   $other = User::factory()->create();
   $artist = Artist::factory()->create();
-  $diary = Diary::factory()->for($owner)->create();
+  $diary = Diary::factory()->for($owner)->for($artist)->create();
 
   $response = $this->actingAs($other)->delete(route('diaries.destroy', $diary));
   $response->assertForbidden();

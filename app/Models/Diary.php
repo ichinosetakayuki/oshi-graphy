@@ -44,11 +44,6 @@ class Diary extends Model
         return $this->hasMany(Comment::class)->latest();
     }
 
-    // public function likes()
-    // {
-    //     return $this->hasMany(DiaryLike::class);
-    // }
-
     public function likes()
     {
         return $this->morphMany(Like::class, 'likeable');
@@ -62,10 +57,6 @@ class Diary extends Model
         return $this->likes()->where('user_id', $user->id)->exists();
     }
 
-    // public function likers()
-    // {
-    //     return $this->belongsToMany(User::class, 'diary_likes')->withTimestamps();
-    // }
     public function likers()
     {
         return $this->belongsToMany(User::class, 'likes')->withTimestamps();

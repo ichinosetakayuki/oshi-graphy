@@ -42,14 +42,6 @@ class LikeFactory extends Factory
             'likeable_id' => $diary->id,
         ]);
     }
-    // public function forDiary(): static
-    // {
-    //     return $this->state(fn() => [
-    //         'user_id' => User::factory(),
-    //         'likeable_type' => Diary::class,
-    //         'likeable_id' => Diary::factory(),
-    //     ]);
-    // }
 
     public function forComment(Comment $comment, User $user): static
     {

@@ -66,6 +66,7 @@
               <span class="text-[11px] px-2 py-0.5 rounded bg-green-500 text-white">{{ $diary->user->name }}</span>
             </div>
             <div class="flex items-center gap-1">
+              {{-- いいねボタン --}}
               <x-like-button :diary="$diary" :liked="$diary->liked_by_me" :count="$diary->liked_count" />
               <span class="text-sm">⭐️コメント({{ $diary->comments_count }})</span>
             </div>

@@ -4,7 +4,8 @@ use App\Models\Diary;
 use App\Models\User;
 use App\Models\Artist;
 use App\Models\Comment;
-use App\Models\DiaryLike;
+// use App\Models\DiaryLike;
+use App\Models\Like;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\facades\Storage;
 
@@ -119,7 +120,7 @@ it('一覧にコメント数といいね数が表示される', function () {
     Comment::factory()->count(2)->for($diary)->for($this->owner)->create();
     // いいね3件（複合ユニーク対策でforPairを使用）
     foreach ($likers as $liker) {
-        DiaryLike::factory()->forPair($diary, $liker)->create();
+        Like::factory()->forDiary($diary, $liker)->create();
     }
 
     $this->actingAs($this->viewer);
@@ -188,7 +189,7 @@ it('詳細画面にもコメント数といいね数が表示される', functio
     Comment::factory()->count(2)->for($diary)->for($this->owner)->create();
     // いいね3件（複合ユニーク対策でforPairを使用）
     foreach ($likers as $liker) {
-        DiaryLike::factory()->forPair($diary, $liker)->create();
+        Like::factory()->forDiary($diary, $liker)->create();
     }
 
     $this->actingAs($this->viewer);
@@ -314,7 +315,7 @@ it('user: 一覧にコメント数といいね数が表示される', function (
     Comment::factory()->count(2)->for($diary)->for($this->owner)->create();
     // いいね3件（複合ユニーク対策でforPairを使用）
     foreach ($likers as $liker) {
-        DiaryLike::factory()->forPair($diary, $liker)->create();
+        Like::factory()->forDiary($diary, $liker)->create();
     }
 
     $this->actingAs($this->viewer);

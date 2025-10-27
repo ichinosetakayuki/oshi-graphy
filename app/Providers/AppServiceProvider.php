@@ -12,6 +12,7 @@ use App\Models\DiaryLike;
 use App\Models\Like;
 use App\Observers\DiaryLikeObserver;
 use App\Observers\LikeObserver;
+use Illuminate\Database\Eloquent\Model;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,8 +39,9 @@ class AppServiceProvider extends ServiceProvider
         // CommentモデルにObserverを紐づける登録処理
         Comment::observe(CommentObserver::class);
 
-        DiaryLike::observe(DiaryLikeObserver::class);
-
         Like::observe(LikeObserver::class);
+
+        Model::preventLazyLoading(!$this->app->isProduction());
+
     }
 }
