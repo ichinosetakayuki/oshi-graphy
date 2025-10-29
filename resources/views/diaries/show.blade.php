@@ -113,11 +113,14 @@
                     {{-- コメント部分 --}}
                     <h3 class="text-lg font-semibold my-2 dark:text-gray-800">⭐️コメント({{ $diary->comments->count() }})</h3>
 
-                    {{-- コメント入力ボタン＆モーダル本体 --}}
+                    {{-- コメント入力ボタン --}}
+                    <x-primary-button type="button" class="mb-2" x-data x-on:click="window.dispatchEvent(new CustomEvent('open-modal', { detail: '{{ 'commentModal-'.$diary->id }}' }))">コメントする</x-primary-button>
+
+                    {{-- モーダル本体 --}}
                     <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
                     {{-- コメント一覧 --}}
-                    <x-comments :comments="$diary->comments" />
+                    <x-comments :comments="$diary->comments" :diary="$diary" />
 
                 </div>
             </section>

@@ -36,6 +36,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/diaries/{diary}/comments', [CommentController::class, 'store'])->name('comments.store')
         ->middleware('throttle:20,1'); // 簡易スパム対策（1分20件）
     Route::delete('/comments/{comment}',[CommentController::class, 'destroy'])->name('comments.destroy');
+    Route::post('/diaries/{diary}/comments/reply', [CommentController::class, 'reply'])->name('comments.reply')
+        ->middleware('throttle:20,1'); // 簡易スパム対策（1分20件）
 
     Route::post('/ai/diary-suggest', [AiDiaryController::class, 'suggest'])->name('ai.diary.suggest');
     Route::post('/ai/diary-reset', [AiDiaryController::class, 'reset'])->name('ai.diary.reset');

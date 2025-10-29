@@ -47,14 +47,17 @@
                 {{-- コメント部分 --}}
                 <h3 class=" text-lg font-semibold my-2">⭐️コメント({{ $diary->comments->count() }})</h3>
 
+                {{-- コメント入力ボタン --}}
+                <x-primary-button type="button" class="mb-2" x-data x-on:click="window.dispatchEvent(new CustomEvent('open-modal', { detail: '{{ 'commentModal-'.$diary->id }}' }))">コメントする</x-primary-button>
+                
                 {{-- コメント入力ボタン＆モーダル本体 --}}
                 <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
+                {{-- コメント一覧 --}}
+                <x-comments :comments="$diary->comments" :diary="$diary" />
+
                 {{-- コメント削除確認モーダル --}}
                 <x-confirm-modal name="confirm-delete" title="確認" message="本当に削除しますか？" maxWidth="md" />
-
-                {{-- コメント一覧 --}}
-                <x-comments :comments="$diary->comments" />
 
             </div>
         </section>
