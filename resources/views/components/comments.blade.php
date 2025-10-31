@@ -1,10 +1,9 @@
 @props([
-'comments' => null,
 'diary',
 ])
 
 <ul class="space-y-4">
-    @forelse($comments->whereNull('parent_id') as $comment)
+    @forelse($diary->comments as $comment)
     <li>
         <div class="flex justify-between">
             <div class="flex items-center gap-1">
@@ -42,22 +41,30 @@
             @endif
         </div>
         <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
-        {{-- 返信ボタン --}}
-        <button type="button" class="mb-2 pl-2 text-xs"
-            x-data
-            @click="$dispatch('open-reply', {
+        <div x-data="{ open: false }">
+            {{-- 返信ボタン --}}
+            <button type="button" class="mb-2 pl-2 text-xs"
+                x-data
+                @click="$dispatch('open-reply', {
                 parentId: {{ $comment->id }}
-            })">-返信-</button>
-        {{-- 返信一覧 --}}
-        @foreach($comments->whereNotNull('parent_id') as $reply)
-        @if($reply->parent_id === $comment->id)
-        <div class="ml-8 mb-2 text-xs">
-            <span class="pl-2">{{ $reply->user->name }}</span>
-            <span class="ml-1">{{ $reply->updated_at->diffForHumans() }}</span>
-            <p class="whitespace-pre-wrap bg-yellow-100 shadow-md rounded-lg p-2">{{ $reply->body }}</p>
+            })">-返信する-</button>
+            <button type="button" class="mb-2 pl-2 text-xs" @click="open=!open">-返信を見る({{ $comment->replies_count }})-</button>
+            {{-- 返信一覧 --}}
+            @foreach($comment->replies as $reply)
+            <div class="ml-8 mb-2 text-xs"
+                x-show="open"
+                x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-90"
+                x-transition:enter-end="opacity-100 scale-100"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-90">
+                <span class="pl-2">{{ $reply->user->name }}</span>
+                <span class="ml-1">{{ $reply->updated_at->diffForHumans() }}</span>
+                <p class="whitespace-pre-wrap bg-yellow-100 shadow-md rounded-lg p-2">{{ $reply->body }}</p>
+            </div>
+            @endforeach
         </div>
-        @endif
-        @endforeach
     </li>
     @empty
     <li class="text-sm text-gray-500">まだコメントはありません</li>
