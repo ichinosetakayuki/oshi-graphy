@@ -39,6 +39,11 @@ class CommentController extends Controller
             'parent_id' => 'required|integer|exists:comments,id',
         ]);
 
+        $parent = Comment::findOrFail($validated['parent_id']);
+        if($parent->diary_id !== $diary->id) {
+            abort(422, '親コメントがこの日記のものではありません。');
+        }
+
         $diary->comments()->create([
             'user_id' => $request->user()->id,
             'body' => $validated['body'],

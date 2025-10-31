@@ -4,7 +4,7 @@
 ])
 
 <ul class="space-y-4">
-    @forelse($comments as $comment)
+    @forelse($comments->whereNull('parent_id') as $comment)
     <li>
         <div class="flex justify-between">
             <div class="flex items-center gap-1">
@@ -42,11 +42,25 @@
             @endif
         </div>
         <p class="whitespace-pre-wrap bg-brand-light shadow-md rounded-lg p-4 text-sm">{{ $comment->body }}</p>
-        {{-- 返信 --}}
-        <button type="button" class="mb-2" x-data x-on:click="window.dispatchEvent(new CustomEvent('open-modal', { detail: '{{ 'reply-modal' }}' }))">返信する</button>
+        {{-- 返信ボタン --}}
+        <button type="button" class="mb-2 pl-2 text-xs"
+            x-data
+            @click="$dispatch('open-reply', {
+                parentId: {{ $comment->id }}
+            })">-返信-</button>
+        {{-- 返信一覧 --}}
+        @foreach($comments->whereNotNull('parent_id') as $reply)
+        @if($reply->parent_id === $comment->id)
+        <div class="ml-8 mb-2 text-xs">
+            <span class="pl-2">{{ $reply->user->name }}</span>
+            <span class="ml-1">{{ $reply->updated_at->diffForHumans() }}</span>
+            <p class="whitespace-pre-wrap bg-yellow-100 shadow-md rounded-lg p-2">{{ $reply->body }}</p>
+        </div>
+        @endif
+        @endforeach
     </li>
     @empty
     <li class="text-sm text-gray-500">まだコメントはありません</li>
     @endforelse
 </ul>
-<x-reply-modal :diary="$diary" :comment="$comment" name="reply-modal" maxWidth="md" />
+<x-reply-modal :diary="$diary" name="reply-modal" maxWidth="md" />

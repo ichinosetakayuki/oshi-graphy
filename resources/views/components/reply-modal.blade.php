@@ -6,20 +6,30 @@ $modalName = $name ?: 'reply-modal';
 
 {{-- 返信投稿モーダル本体 --}}
 <x-modal name="{{ $modalName }}" :maxWidth="$maxWidth" focusable>
-    <div class="p-6" x-data="{ showErrors: @js($errors->reply->has($errorField)) }">
+    <div class="p-6"
+    x-data="{
+        showErrors: @js($errors->reply->has($errorField)),
+        parentId: @js(old('parent_id'))
+        }"
+        @open-reply.window="
+            parentId = $event.detail.parentId;
+            showErrors = false;
+            $dispatch('open-modal', '{{  $modalName }}');
+        "
+    >
         <div class="flex items-start justify-between mb-3">
             <h2 class="text-lg font-semibold dark:text-gray-200">返信を書く</h2>
-            <button type="button" class="text-xl leading-none px-2" x-on:click="showErrors = false; window.dispatchEvent(new CustomEvent('close-modal', { detail: '{{ $modalName }}' }))" aria-label="閉じる">&times;</button>
+            <button type="button" class="text-xl leading-none px-2" @click="showErrors = false; $dispatch('close-modal', '{{ $modalName }}')" aria-label="閉じる">&times;</button>
         </div>
         <form method="post" action="{{ route('comments.reply', $diary) }}">
             @csrf
-            <input type="hidden" name="parent_id" value="{{ $comment->id }}">
+            <input type="hidden" name="parent_id" :value="parentId">
             <x-textarea name="body" placeholder="返信を書く・・・" />
             <div x-show="showErrors" x-transition>
                 <x-input-error :messages="$errors->reply->get('body')" class="mt-1" />
             </div>
             <div class="mt-4 flex justify-end gap-2">
-                <x-secondary-button type="button" x-on:click="showErrors = false; window.dispatchEvent(new CustomEvent('close-modal', { detail: '{{ $modalName }}' }))">キャンセル</x-secondary-button>
+                <x-secondary-button type="button" @click="showErrors = false; $dispatch('close-modal', '{{ $modalName }}')">キャンセル</x-secondary-button>
                 <x-primary-button>返信</x-primary-button>
             </div>
         </form>
