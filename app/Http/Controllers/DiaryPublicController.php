@@ -51,21 +51,21 @@ class DiaryPublicController extends Controller
         abort_unless($diary->is_public, 403); // 公開フラグがなければ403
 
         $diary->load(['user'])
-            ->loadCount(['likes', 'comments'])
+            ->loadCount(['likes','comments'])
             ->loadExists(['likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id())]);
 
         // コメントをlikes_count / liked_by_me 付きで取得
         $diary->load([
             'comments' => function ($q) {
-                $q->with('user')
-                    ->withCount('likes')
+                $q->whereNull('parent_id')
+                    ->with(['user', 'replies.user'])
+                    ->withCount(['replies', 'likes'])
                     ->withExists([
                         'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
                     ])
                     ->latest();
             }
         ]);
-
 
         return view('public_diaries.show', compact('diary'));
     }

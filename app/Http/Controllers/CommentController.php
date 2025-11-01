@@ -14,26 +14,57 @@ class CommentController extends Controller
             return abort(403);
         }
 
-        $validated = $request->validate([
+        $validated = $request->validateWithBag('comment', [
             'body' => 'required|string|max:2000'
         ]);
 
         $diary->comments()->create([
             'user_id' => auth()->id(),
             'body' => $validated['body'],
+            'parent_id' => null,
         ]);
 
         return back()->with('status', 'コメントを投稿しました。')->with('status_type', 'success');
     }
 
-    public function destroy(Comment $comment)
+    public function reply(Request $request, Diary $diary)
+    {
+        if (!$diary->is_public && auth()->id() !== $diary->user_id) {
+            return abort(403);
+        }
+
+        $validated = $request->validateWithBag('reply', [
+            'body' => 'required|string|max:2000',
+            // exists:comments,id コメントテーブルのidに存在する
+            'parent_id' => 'required|integer|exists:comments,id',
+        ]);
+
+        $parent = Comment::findOrFail($validated['parent_id']);
+        if($parent->diary_id !== $diary->id) {
+            abort(422, '親コメントがこの日記のものではありません。');
+        }
+
+        $diary->comments()->create([
+            'user_id' => $request->user()->id,
+            'body' => $validated['body'],
+            'parent_id' => $validated['parent_id'],
+        ]);
+
+        return back()->with('status', '返信を投稿しました')->with('status_type', 'success');
+    }
+
+    public function destroy(Request $request, Comment $comment)
     {
         if(auth()->id() !== $comment->user_id) {
             abort(403);
         }
 
+        $isReply = $comment->parent_id !== null || $request->routeIs('replies.destroy');
+
         $comment->delete();
 
-        return back()->with('status', 'コメントを削除しました。')->with('status_type', 'success');
+        return back()
+            ->with('status', $isReply ? '返信を削除しました。' : 'コメントを削除しました。')
+            ->with('status_type', 'success');
     }
 }
