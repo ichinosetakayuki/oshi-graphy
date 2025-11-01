@@ -53,14 +53,18 @@ class CommentController extends Controller
         return back()->with('status', '返信を投稿しました')->with('status_type', 'success');
     }
 
-    public function destroy(Comment $comment)
+    public function destroy(Request $request, Comment $comment)
     {
         if(auth()->id() !== $comment->user_id) {
             abort(403);
         }
 
+        $isReply = $comment->parent_id !== null || $request->routeIs('replies.destroy');
+
         $comment->delete();
 
-        return back()->with('status', 'コメントを削除しました。')->with('status_type', 'success');
+        return back()
+            ->with('status', $isReply ? '返信を削除しました。' : 'コメントを削除しました。')
+            ->with('status_type', 'success');
     }
 }

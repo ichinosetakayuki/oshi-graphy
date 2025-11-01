@@ -117,8 +117,9 @@ class DiaryController extends Controller
         // コメントをlikes_count / liked_by_me 付きで取得
         $diary->load([
             'comments' => function($q) {
-                $q->with('user')
-                    ->withCount('likes')
+                $q->whereNull('parent_id')
+                    ->with(['user', 'replies.user'])
+                    ->withCount('replies', 'likes')
                     ->withExists([
                         'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
                     ])

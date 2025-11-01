@@ -80,15 +80,13 @@
                         </a>
                         <button type="button"
                             x-data
-                            x-on:click="
-                        window.dispatchEvent(new CustomEvent('confirm-delete', {
-                        detail: {
-                            name: 'confirm-delete',
-                            title: '日記の削除',
-                            action: '{{ route('diaries.destroy', $diary) }}',
-                            message: 'この日記を削除します。よろしいですか？'
-                        }
-                    }))" title="削除">
+                            @click="$dispatch('confirm-delete', {
+                                name: 'confirm-delete',
+                                title: '日記の削除',
+                                action: '{{ route('diaries.destroy', $diary) }}',
+                                message: 'この日記を削除します。よろしいですか？'
+                            })"
+                            title="削除">
                             <x-icons.trash size="size-4" class="text-brand-dark" /> {{-- 削除アイコン --}}
                         </button>
                     </div>
@@ -98,11 +96,8 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-3">
                     @forelse($diary->images as $image)
                     <img src="{{ Storage::url($image->path) }}" alt="日記写真">
-
-
                     @empty
                     <p class="text-gray-500">写真はありません</p>
-
                     @endforelse
                 </div>
             </section>
@@ -111,16 +106,16 @@
             <section class="bg-slate-100 dark:bg-slate-300 dark:text-gray-800 py-6 no-print">
                 <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                     {{-- コメント部分 --}}
-                    <h3 class="text-lg font-semibold my-2 dark:text-gray-800">⭐️コメント({{ $diary->comments->count() }})</h3>
+                    <h3 class="text-lg font-semibold my-2 dark:text-gray-800">⭐️コメント({{ $diary->comments_count }})</h3>
 
                     {{-- コメント入力ボタン --}}
                     <x-primary-button type="button" class="mb-2" x-data x-on:click="window.dispatchEvent(new CustomEvent('open-modal', { detail: '{{ 'commentModal-'.$diary->id }}' }))">コメントする</x-primary-button>
 
-                    {{-- モーダル本体 --}}
+                    {{-- コメントモーダル本体 --}}
                     <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
                     {{-- コメント一覧 --}}
-                    <x-comments :comments="$diary->comments" :diary="$diary" />
+                    <x-comments :diary="$diary" />
 
                 </div>
             </section>
