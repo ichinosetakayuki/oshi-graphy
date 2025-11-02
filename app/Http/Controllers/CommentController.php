@@ -5,11 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Diary;
 use App\Models\Comment;
+use Illuminate\Support\Facades\Gate;
+
 
 class CommentController extends Controller
 {
     public function store(Request $request, Diary $diary)
     {
+        Gate::authorize('create', Comment::class);
+
         if(!$diary->is_public && auth()->id() !== $diary->user_id) {
             return abort(403);
         }
@@ -29,6 +33,8 @@ class CommentController extends Controller
 
     public function reply(Request $request, Diary $diary)
     {
+        Gate::authorize('reply', Comment::class);
+
         if (!$diary->is_public && auth()->id() !== $diary->user_id) {
             return abort(403);
         }
@@ -55,9 +61,8 @@ class CommentController extends Controller
 
     public function destroy(Request $request, Comment $comment)
     {
-        if(auth()->id() !== $comment->user_id) {
-            abort(403);
-        }
+
+        Gate::authorize('delete', $comment);
 
         $isReply = $comment->parent_id !== null || $request->routeIs('replies.destroy');
 
