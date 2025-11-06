@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Diary;
 use App\Models\User;
 use App\Models\Artist;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -55,19 +56,22 @@ class DiaryPublicController extends Controller
             ->loadExists(['likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id())]);
 
         // コメントをlikes_count / liked_by_me 付きで取得
-        $diary->load([
-            'comments' => function ($q) {
-                $q->whereNull('parent_id')
-                    ->with(['user', 'replies.user'])
-                    ->withCount(['replies', 'likes'])
-                    ->withExists([
-                        'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
-                    ])
-                    ->latest();
-            }
-        ]);
+        // コメントへの返信を多層化：親コメントは新着順、返信コメントは古い順にソート
+        // 親を除く全ての返信数をカウント
+        $comments = Comment::query()
+            ->leftJoin('comments as r', 'r.id', '=', 'comments.root_id')
+            ->where('comments.diary_id', $diary->id)
+            ->orderByDesc('r.created_at')
+            ->orderBy('comments.path')
+            ->select('comments.*')
+            ->with('user')
+            ->withCount(['replies', 'likes'])
+            ->withExists([
+                'likes as liked_by_me' => fn($q) => $q->where('user_id', auth()->id()),
+                ])
+            ->get();
 
-        return view('public_diaries.show', compact('diary'));
+        return view('public_diaries.show', compact('diary', 'comments'));
     }
 
     /**

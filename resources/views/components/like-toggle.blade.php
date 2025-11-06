@@ -10,6 +10,8 @@
 'ownerId' => null,
 {{-- いいね一覧へのリンク（なければnullでOK） --}}
 'indexUrl' => null,
+{{-- コメントが返信かどうか --}}
+'isReply' => false,
 ])
 
 @php
@@ -52,15 +54,15 @@ $count = $count ?? ($likeable->likes_count ?? $likeable->likes()->count());
   }"
   class="inline-flex items-center">
   <button type="button" x-on:click.stop="toggle" :disabled="busy" class="focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" title="いいね！" aria-pressed="{{ $liked ? 'true' : 'false' }}">
-    <x-icons.heart x-show="!liked" size="size-5" class="text-gray-400" />
-    <x-icons.heart-filled x-show="liked" size="size-5" class="text-pink-400" />
+    <x-icons.heart x-show="!liked" size="{{ $isReply ? 'size-4' : 'size-5' }}" class="text-gray-400" />
+    <x-icons.heart-filled x-show="liked" size="{{ $isReply ? 'size-4' : 'size-5' }}" class="text-pink-400" />
   </button>
   @if($indexUrl && $user && $ownerId && $ownerId === $user->id)
   <a href="{{ $indexUrl }}">
     <span x-text="count" class="text-sm hover:cursor-pointer" title="いいね数"></span>
   </a>
   @else
-  <span x-text="count" class="text-sm" title="いいね数"></span>
+  <span x-text="count" class="{{ $isReply ? 'text-xs' : 'text-sm' }}" title="いいね数"></span>
   @endif
 
 </div>

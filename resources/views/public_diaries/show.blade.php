@@ -54,7 +54,7 @@
                 <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
                 {{-- コメント一覧 --}}
-                <x-comments :diary="$diary" />
+                <x-comments :diary="$diary" :comments="$comments" />
 
                 {{-- コメント削除確認モーダル --}}
                 <x-confirm-modal name="confirm-delete" title="確認" message="本当に削除しますか？" maxWidth="md" />
