@@ -115,7 +115,7 @@
                     <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 
                     {{-- コメント一覧 --}}
-                    <x-comments :diary="$diary" />
+                    <x-comments :diary="$diary" :comments="$comments" />
 
                 </div>
             </section>
