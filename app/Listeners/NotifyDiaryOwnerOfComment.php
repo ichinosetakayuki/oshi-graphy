@@ -6,6 +6,7 @@ use App\Events\CommentCreated;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use App\Notifications\CommentPostedOnYourDiary;
+use App\Notifications\CommentOrReplyNotification;
 use Illuminate\Support\Facades\DB;
 
 
@@ -26,17 +27,25 @@ class NotifyDiaryOwnerOfComment implements ShouldQueue
     {
         $comment = $event->comment;
         $diary = $comment->diary;
-        $owner = $diary->user;
+        // $owner = $diary->user;
+        $owner = $comment->parent?->user ?? $diary->user;
         $actor = $comment->user;
 
         if($owner && $actor && $owner->is($actor)) return; 
+
+        $isReply = (bool)$comment->parent_id;
+
+        $targetExcerpt = $isReply
+            ? mb_strimwidth((string)$comment->parent?->body ?? '', 0, 40, '...')
+            : mb_strimwidth((string)$diary->body, 0, 40, '...');
 
         $payload = [
             'diaryId' => $diary->id,
             'commentId' => $comment->id,
             'actorUserId' => $actor?->id,
             'actorName' => $actor?->name ?? '退会ユーザー',
-            'excerpt' => mb_strimwidth($diary->body, 0, 40, '...')
+            'isReply' => $isReply,
+            'excerpt' => $targetExcerpt,
         ];
 
         /**
@@ -45,11 +54,12 @@ class NotifyDiaryOwnerOfComment implements ShouldQueue
          * sync でも “同じリクエスト内のコミット後” に実行される。
          */
         DB::afterCommit(function () use ($owner, $payload) {
-            $owner?->notify(new CommentPostedOnYourDiary(
+            $owner?->notify(new CommentOrReplyNotification(
                 diaryId: $payload['diaryId'],
                 commentId: $payload['commentId'],
                 actorUserId: $payload['actorUserId'],
                 actorName: $payload['actorName'],
+                isReply: $payload['isReply'],
                 excerpt: $payload['excerpt']
             ));
         });

@@ -24,7 +24,7 @@
                 @forelse($notifications as $n)
                 @php $data = $n->data; @endphp
                 <li class="py-3 flex items-center gap-3">
-                    @if(($data['type'] ?? '' ) === 'comment')
+                    @if(($data['type'] ?? '' ) === 'comment' || ($data['type'] ?? '' ) === 'reply')
                     <x-icons.chat-bubble-left size="size-5" class="mt-1 text-blue-600" />
                     @else
                     <x-icons.heart size="size-5" class="mt-1 text-rose-600" />
