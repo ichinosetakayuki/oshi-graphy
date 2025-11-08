@@ -13,13 +13,22 @@ class DiaryLikeController extends Controller
     /**
      * いいねしたユーザーの一覧を生成
      */
+    // public function index(Diary $diary)
+    // {
+    //     $likers = User::select('users.*')
+    //             ->join('likes', 'likes.user_id', '=', 'users.id')
+    //             ->where('likes.likeable_type', Diary::class)
+    //             ->where('likes.likeable_id', $diary->id)
+    //             ->orderByDesc('likes.created_at')
+    //             ->paginate(10)
+    //             ->withQueryString();
+
+    //     return view('diaries.likes.index', compact('diary', 'likers'));
+    // }
     public function index(Diary $diary)
     {
-        $likers = User::select('users.*')
-                ->join('likes', 'likes.user_id', '=', 'users.id')
-                ->where('likes.likeable_type', Diary::class)
-                ->where('likes.likeable_id', $diary->id)
-                ->orderByDesc('likes.created_at')
+        $likers = $diary->likers()
+                ->orderByPivot('created_at', 'desc') // 中間テーブルlikesのcreated_atで並べる。
                 ->paginate(10)
                 ->withQueryString();
 

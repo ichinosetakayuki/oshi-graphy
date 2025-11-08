@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('/comments/{comment}/like', [CommentLikeController::class, 'store'])->name('comments.like.store');
     Route::delete('/comments/{comment}/like', [CommentLikeController::class, 'destroy'])->name('comments.like.destroy');
+    Route::get('/comments/{comment}/likes', [CommentLikeController::class, 'commentLikers'])->name('comments.likes.index');
 
 });
 
