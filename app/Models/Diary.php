@@ -57,10 +57,6 @@ class Diary extends Model
         return $this->likes()->where('user_id', $user->id)->exists();
     }
 
-    // public function likers()
-    // {
-    //     return $this->belongsToMany(User::class, 'likes')->withTimestamps();
-    // }
     public function likers()
     {
         return $this->morphToMany(User::class,  'likeable', 'likes', 'likeable_id', 'user_id')
