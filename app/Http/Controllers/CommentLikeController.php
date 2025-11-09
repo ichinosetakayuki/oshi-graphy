@@ -33,4 +33,16 @@ class CommentLikeController extends Controller
             'count' => $comment->likes()->count(),
         ]);
     }
+
+    public function commentLikers(Comment $comment)
+    {
+        $likers = $comment->likers()
+            ->orderByPivot('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        $comment->load('diary.user');
+
+        return view('comments.likes.index', compact('comment', 'likers'));
+    }
 }

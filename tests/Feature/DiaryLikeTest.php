@@ -48,4 +48,20 @@ it('いいねを取り消す', function() {
     ]);
 });
 
+it('日記のいいねユーザー一覧を表示できる', function(){
+    $diary = Diary::factory()->for($this->owner)->for($this->artist)->create(['is_public' => true]);
+
+    $liker1 = User::factory()->create();
+    $liker2 = User::factory()->create();
+
+    Like::factory()->forDiary($diary, $liker1)->create([]);
+    Like::factory()->forDiary($diary, $liker2)->create([]);
+
+    $response = $this->actingAs($this->owner)->get(route('diaries.likes.index', $diary));
+
+    $response->assertOk();
+    $response->assertSee($liker1->name);
+    $response->assertSee($liker2->name);
+});
+
 

@@ -59,7 +59,8 @@ class Diary extends Model
 
     public function likers()
     {
-        return $this->belongsToMany(User::class, 'likes')->withTimestamps();
+        return $this->morphToMany(User::class,  'likeable', 'likes', 'likeable_id', 'user_id')
+            ->withTimestamps();
     }
 
     /**

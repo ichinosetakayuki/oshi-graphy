@@ -74,3 +74,18 @@ it('公開日記の詳細画面で各コメントにいいね数が表示され�
     $response->assertOk();
     $response->assertSee(3);
 });
+
+it('コメントのいいねユーザー一覧を表示できる', function(){
+    $diary = Diary::factory()->for($this->owner)->for($this->artist)->create(['is_public' => true]);
+    $comment = Comment::factory()->for($diary)->for($this->user)->create();
+    $liker1 = User::factory()->create();
+    $liker2 = User::factory()->create();
+    Like::factory()->forComment($comment, $liker1)->create();
+    Like::factory()->forComment($comment, $liker2)->create();
+
+    $response = $this->actingAs($this->user)->get(route('comments.likes.index', $comment));
+    $response->assertOk();
+    $response->assertSee($liker1->name);
+    $response->assertSee($liker2->name);
+
+});

@@ -27,6 +27,12 @@ class Comment extends Model
         return $this->morphMany(Like::class, 'likeable');
     }
 
+    public function likers()
+    {
+        return $this->morphToMany(User::class, 'likeable', 'likes', 'likeable_id', 'user_id')
+            ->withTimestamps();
+    }
+
     public function parent()
     {
         return $this->belongsTo(Comment::class, 'parent_id');
@@ -80,6 +86,5 @@ class Comment extends Model
         });
 
     }
-
 
 }
