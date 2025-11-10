@@ -34,14 +34,16 @@ $unfollowUrl = route('users.follow.destroy', $user);
         const json = await res.json();
         this.following = !!json.following;
         this.count = Number(json.followers_count) ?? Number($this.count);
-        window.dispatchEvent(new CustomEvent('toast',{
-          detail: {
-            message: json.message,
-            type: json.status_type
-          }  
-        }));
+        $dispatch('toast',{
+          message: json.message,
+          type: json.status_type
+        });
       } catch(e) {
           console.error(e);
+          $dispatch('toast', {
+            message: 'ネットワークエラーです。時間をおいて再試行してください。',
+            type: error
+          });
       } finally {
           this.busy = false;
       }

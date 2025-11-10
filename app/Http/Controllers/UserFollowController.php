@@ -38,15 +38,19 @@ class UserFollowController extends Controller
             'followed_id' => $user->id,
         ]);
 
+        // フラッシュメッセージも渡す（toastで表示用）
         return response()->json([
             'ok' => true,
             'following' => true,
             'followers_count' => $user->followers()->count(),
-            'message' => $user->name . 'さんをフォローしました。',
+            'message' => $user->name . 'さんをフォローしました。', // フラッシュメッセージ
             'status_type' => 'success',
             ]);
     }
 
+    /**
+     * フォロー解除
+     */
     public function destroy(Request $request, User $user)
     {
         Gate::authorize('unfollow', $user);
@@ -55,11 +59,12 @@ class UserFollowController extends Controller
             ->where('followed_id', $user->id)
             ->delete();
 
+        // フラッシュメッセージも渡す（toastで表示用）
         return response()->json([
             'ok' => true,
             'following' => false,
             'followers_count' => $user->followers()->count(),
-            'message' => $user->name . 'さんのフォローを解除しました。',
+            'message' => $user->name . 'さんのフォローを解除しました。', // フラッシュメッセージ
             'status_type' => 'success',
             ]);
     }
