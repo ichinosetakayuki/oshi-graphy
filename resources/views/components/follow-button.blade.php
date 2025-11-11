@@ -53,7 +53,7 @@ $unfollowUrl = route('users.follow.destroy', $user);
     }
   }"
   class="">
-  <button type="button" @click.stop="toggle" :disabled="busy" class="font-semibold rounded-xl px-4 py-1 shadow-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" :class="following ? 'bg-gray-200' : 'bg-brand hover:bg-brand-dark'">
+  <button type="button" @click.stop="toggle" :disabled="busy" class="font-semibold rounded-xl px-4 py-1 shadow-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" :class="following ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-500' : 'bg-brand hover:bg-brand-dark dark:bg-brand-dark dark:hover:bg-brand dark:hover:text-gray-500'">
     <template x-if="following"><span>フォロー中</span></template>
     <template x-if="!following"><span>フォロー</span></template>
   </button>
