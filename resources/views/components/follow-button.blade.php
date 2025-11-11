@@ -59,7 +59,10 @@ $unfollowUrl = route('users.follow.destroy', $user);
   </button>
   <div class="text-xs mt-2">
     <span>フォロー<span x-text="followingsCount"></span>人</span>
-    <span class="ml-2">フォロワー<span x-text="followersCount"></span>人</span>
+    <a href="{{ route('user.follow.followers') }}" class="ml-2">
+      フォロワー<span x-text="followersCount"></span>人
+    </a>
+    {{-- <span class="ml-2">フォロワー<span x-text="followersCount"></span>人</span> --}}
   </div>
 
 </div>

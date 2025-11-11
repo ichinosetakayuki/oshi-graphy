@@ -16,7 +16,7 @@ $followersCount = $user->followers()->count();
                 <img src="{{ $user->icon_url }}" alt="アイコン" class="w-32 h-32 rounded-full object-cover border">
                 <div>
                     <div class="text-2xl font-semibold">{{ $user->name }}</div>
-                    {{-- フォローボタン --}}
+                    {{-- フォローボタン＆フォロー、フォロワー数 --}}
                     <x-follow-button :user="$user" :initialFollowing="$isFollowing" :followingsCount="$followingsCount" :followersCount="$followersCount" />
                 </div>
             </div>

@@ -70,4 +70,12 @@ class UserFollowController extends Controller
             'status_type' => 'success',
             ]);
     }
+
+    public function followers(Request $request)
+    {
+        $followers = $request->user()->followers()
+            ->orderByPivot('created_at', 'desc')->paginate(30)->withQueryString();
+
+        return view(('user_follow.followers'), compact('followers'));
+    }
 }
