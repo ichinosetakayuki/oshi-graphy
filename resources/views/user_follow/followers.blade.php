@@ -7,6 +7,16 @@
         </div>
     </x-slot>
 
+    {{-- パンくず --}}
+    <nav class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-3 sm:mt-5 flex justify-between items-center text-[11px] text-gray-600 dark:text-gray-300 sm:text-base no-print">
+        <div>
+            <a href="{{ route('user.profile.show', auth()->user()) }}" class="underline">プロフィールへ</a>
+            <span class="mx-1">/</span>
+            <span>フォロワー一覧({{ $followers->total() }}人)</span>
+        </div>
+        <div x-data @click="history.back()" class="underline cursor-pointer">戻る</div>
+    </nav>
+
     {{-- フォロワー一覧 --}}
     <div class="motion-safe:animate-fade-up">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
