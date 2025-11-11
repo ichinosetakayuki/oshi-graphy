@@ -42,6 +42,7 @@ class UserFollowController extends Controller
         return response()->json([
             'ok' => true,
             'following' => true,
+            'followings_count' => $user->followings()->count(),
             'followers_count' => $user->followers()->count(),
             'message' => $user->name . 'さんをフォローしました。', // フラッシュメッセージ
             'status_type' => 'success',
@@ -63,6 +64,7 @@ class UserFollowController extends Controller
         return response()->json([
             'ok' => true,
             'following' => false,
+            'followings_count' => $user->followings()->count(),
             'followers_count' => $user->followers()->count(),
             'message' => $user->name . 'さんのフォローを解除しました。', // フラッシュメッセージ
             'status_type' => 'success',

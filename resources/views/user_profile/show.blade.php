@@ -1,5 +1,6 @@
 @php
 $isFollowing = auth()->user()->isFollowing($user);
+$followingsCount = $user->followings()->count();
 $followersCount = $user->followers()->count();
 @endphp
 <x-app-layout>
@@ -16,7 +17,7 @@ $followersCount = $user->followers()->count();
                 <div>
                     <div class="text-2xl font-semibold">{{ $user->name }}</div>
                     {{-- フォローボタン --}}
-                    <x-follow-button :user="$user" :initialFollowing="$isFollowing" />
+                    <x-follow-button :user="$user" :initialFollowing="$isFollowing" :followingsCount="$followingsCount" :followersCount="$followersCount" />
                 </div>
             </div>
             <div class="bg-brand-light dark:bg-brand-dark min-h-16 rounded-lg p-6 whitespace-pre-line">{{ $user->profile ?: '(未設定)'}}</div>

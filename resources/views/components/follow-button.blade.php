@@ -1,6 +1,7 @@
 @props([
 'user',
 'initialFollowing' => false,
+'followingsCount' => 0,
 'followersCount' => 0,
 ])
 
@@ -12,7 +13,8 @@ $unfollowUrl = route('users.follow.destroy', $user);
 <div
   x-data="{
     following: @js((bool)$initialFollowing),
-    count: @js((int)$followersCount),
+    followingsCount: @js((int)$followingsCount),
+    followersCount: @js((int)$followersCount),
     busy: false,
     async toggle() {
       if(this.busy) return;
@@ -33,7 +35,8 @@ $unfollowUrl = route('users.follow.destroy', $user);
         if(!res.ok) throw new Error('Request failed');
         const json = await res.json();
         this.following = !!json.following;
-        this.count = Number(json.followers_count) ?? Number($this.count);
+        this.followingsCount = Number(json.followings_count) ?? Number($this.followingsCount);
+        this.followersCount = Number(json.followers_count) ?? Number($this.followersCount);
         $dispatch('toast',{
           message: json.message,
           type: json.status_type
@@ -49,10 +52,14 @@ $unfollowUrl = route('users.follow.destroy', $user);
       }
     }
   }"
-  class="inline-flex items-center">
+  class="">
   <button type="button" @click.stop="toggle" :disabled="busy" class="font-semibold rounded-xl px-4 py-1 shadow-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" :class="following ? 'bg-gray-200' : 'bg-brand hover:bg-brand-dark'">
     <template x-if="following"><span>フォロー中</span></template>
     <template x-if="!following"><span>フォロー</span></template>
   </button>
+  <div class="text-xs mt-2">
+    <span>フォロー<span x-text="followingsCount"></span>人</span>
+    <span class="ml-2">フォロワー<span x-text="followersCount"></span>人</span>
+  </div>
 
 </div>
