@@ -7,15 +7,26 @@ $followersCount = $user->followers()->count();
     <x-slot name="title">Oshi Graphy | {{ $user->name }}プロフィール</x-slot>
 
     <x-slot name="header">
-        <h2 class="text-lg sm:text-2xl font-semibold">{{ $user->name }}さんのプロフィール</h2>
+        <h2 class="text-lg sm:text-2xl font-semibold dark:text-gray-300">{{ $user->name }}さんのプロフィール</h2>
     </x-slot>
+
+    {{-- パンくず --}}
+    <nav class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-3 sm:mt-5 flex justify-between items-center text-[11px] text-gray-600 dark:text-gray-300 sm:text-base no-print">
+        <div>
+            <a href="{{ route('public.diaries.user', $user) }}" class="underline">{{ $user->name }}さんのページ</a>
+            <span class="mx-1">/</span>
+            <span>プロフィール</span>
+        </div>
+        <div x-data @click="history.back()" class="underline cursor-pointer">戻る</div>
+
+    </nav>
 
     <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">
         <div class="max-w-3xl mx-auto border rounded-2xl px-4 sm:px-8 py-6 shadow bg-white dark:bg-gray-800 space-y-4 motion-safe:animate-fade-up">
             <div class="flex items-center gap-6">
                 <img src="{{ $user->icon_url }}" alt="アイコン" class="w-32 h-32 rounded-full object-cover border">
                 <div>
-                    <div class="text-2xl font-semibold">{{ $user->name }}</div>
+                    <div class="text-2xl font-semibold dark:text-gray-300">{{ $user->name }}</div>
                     {{-- フォローボタン＆フォロー、フォロワー数 --}}
                     <x-follow-button :user="$user" :initialFollowing="$isFollowing" :followingsCount="$followingsCount" :followersCount="$followersCount" />
                 </div>
@@ -24,10 +35,9 @@ $followersCount = $user->followers()->count();
             <div class="text-lg text-gray-800 dark:text-gray-300">
                 ⭐️公開日記数：{{ $user->public_diaries_count }}
             </div>
-            <div class="flex justify-end">
-                <a x-data @click="history.back()" class="underline text-gray-600 dark:text-gray-300 text-xs sm:text-base cursor-pointer">戻る</a>
-            </div>
         </div>
+
+
     </div>
 
 </x-app-layout>
