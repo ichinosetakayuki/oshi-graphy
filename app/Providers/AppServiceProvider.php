@@ -6,7 +6,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Artist;
 use App\Models\Comment;
+use App\Models\User;
 use App\Policies\ArtistPolicy;
+use App\Policies\UserFollowPolicy;
 use App\Observers\CommentObserver;
 use App\Models\DiaryLike;
 use App\Models\Like;
@@ -35,6 +37,9 @@ class AppServiceProvider extends ServiceProvider
 
         // Policyの登録。ArtistモデルとArtistPolicyの対応づけ。
         Gate::policy(Artist::class, ArtistPolicy::class);
+
+        // Policyの登録。UserモデルとUserFollowPolicyの対応づけ。
+        Gate::policy(User::class, UserFollowPolicy::class);
 
         // CommentモデルにObserverを紐づける登録処理
         Comment::observe(CommentObserver::class);
