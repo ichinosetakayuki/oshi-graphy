@@ -12,7 +12,7 @@
         <div>
             <a href="{{ route('user.profile.show', auth()->user()) }}" class="underline">プロフィールへ</a>
             <span class="mx-1">/</span>
-            <span>フォロワー一覧({{ $followers->total() }}人)</span>
+            <span>フォロワー一覧({{ $followers?->total() ?? 0 }}人)</span>
         </div>
         <div x-data @click="history.back()" class="underline cursor-pointer">戻る</div>
     </nav>
@@ -32,7 +32,7 @@
                     </a>
                 </li>
                 @empty
-                <li class="text-sm text-gray-500">まだフォロワーがいません。</li>
+                <li class="text-base text-gray-500 ml-4">まだフォロワーがいません。</li>
                 @endforelse
             </ul>
             <div class="mt-6">{{ $followers->links() }}</div>

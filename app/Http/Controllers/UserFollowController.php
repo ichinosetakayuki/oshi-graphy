@@ -76,6 +76,14 @@ class UserFollowController extends Controller
         $followers = $request->user()->followers()
             ->orderByPivot('created_at', 'desc')->paginate(20)->withQueryString();
 
-        return view(('user_follow.followers'), compact('followers'));
+        return view('user_follow.followers', compact('followers'));
+    }
+
+    public function followings(Request $request)
+    {
+        $followings = $request->user()->followings()
+            ->orderByPivot('created_at', 'desc')->paginate(20)->withQueryString();
+
+        return view('user_follow.followings', compact('followings'));
     }
 }

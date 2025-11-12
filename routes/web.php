@@ -55,6 +55,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/users/{user}/follow', [UserFollowController::class, 'store'])->name('users.follow.store');
     Route::delete('/users/{user}/follow', [UserFollowController::class, 'destroy'])->name('users.follow.destroy');
     Route::get('/user_follow/followers', [UserFollowController::class, 'followers'])->name('user.follow.followers');
+    Route::get('/user_follow/followings', [UserFollowController::class, 'followings'])->name('user.follow.followings');
 });
 
 Route::prefix('notifications')->middleware('auth')->group(function(){
