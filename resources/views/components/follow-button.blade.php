@@ -52,19 +52,24 @@ $unfollowUrl = route('users.follow.destroy', $user);
       }
     }
   }"
-  class="">
+>
+  @if(auth()->user()->id !== $user->id)
   <button type="button" @click.stop="toggle" :disabled="busy" class="font-semibold rounded-xl px-4 py-1 shadow-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" :class="following ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-500' : 'bg-brand hover:bg-brand-dark dark:bg-brand-dark dark:hover:bg-brand dark:hover:text-gray-500'">
     <template x-if="following"><span>フォロー中</span></template>
     <template x-if="!following"><span>フォロー</span></template>
   </button>
+  @endif
   <div class="text-xs mt-2">
-    <span>フォロー<span x-text="followingsCount"></span>人</span>
     @if(auth()->user()->id === $user->id)
+    <a href="{{ route('user.follow.followings') }}">
+      フォロー<span x-text="followingsCount ?? 0"></span>人
+    </a>
     <a href="{{ route('user.follow.followers') }}" class="ml-2">
-      フォロワー<span x-text="followersCount"></span>人
+      フォロワー<span x-text="followersCount ?? 0"></span>人
     </a>
     @else
-    <span class="ml-2">フォロワー<span x-text="followersCount"></span>人</span>
+    <span>フォロー<span x-text="followingsCount ?? 0"></span>人</span>
+    <span class="ml-2">フォロワー<span x-text="followersCount ?? 0"></span>人</span>
     @endif
   </div>
 
