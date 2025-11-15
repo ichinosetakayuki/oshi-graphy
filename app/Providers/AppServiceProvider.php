@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Models\Artist;
 use App\Models\Comment;
 use App\Models\User;
+use App\Models\Follow;
 use App\Policies\ArtistPolicy;
 use App\Policies\UserFollowPolicy;
 use App\Observers\CommentObserver;
@@ -14,6 +15,7 @@ use App\Models\DiaryLike;
 use App\Models\Like;
 use App\Observers\DiaryLikeObserver;
 use App\Observers\LikeObserver;
+use App\Observers\FollowObserver;
 use Illuminate\Database\Eloquent\Model;
 
 class AppServiceProvider extends ServiceProvider
@@ -45,6 +47,8 @@ class AppServiceProvider extends ServiceProvider
         Comment::observe(CommentObserver::class);
 
         Like::observe(LikeObserver::class);
+
+        Follow::observe(FollowObserver::class);
 
         Model::preventLazyLoading(!$this->app->isProduction());
 
