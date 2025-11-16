@@ -51,11 +51,26 @@ $unfollowUrl = route('users.follow.destroy', $user);
           this.busy = false;
       }
     }
-  }"
->
+  }">
   @if(auth()->user()->id !== $user->id)
-  <button type="button" @click.stop="toggle" :disabled="busy" class="font-semibold rounded-xl px-4 py-1 shadow-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed" :class="following ? 'bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-500' : 'bg-brand hover:bg-brand-dark dark:bg-brand-dark dark:hover:bg-brand dark:hover:text-gray-500'">
-    <template x-if="following"><span>フォロー中</span></template>
+  <button
+    type="button"
+    x-data="{ hover : false }"
+    @mouseover="hover = true"
+    @mouseleave="hover = false"
+    @click.stop="toggle"
+    :disabled="busy"
+    :class="following 
+      ? (hover 
+        ? 'bg-red-200 text-red-500 dark:bg-red-500 dark:text-red-100' 
+        : 'bg-gray-200 dark:bg-gray-700' )
+      : 'bg-brand hover:bg-brand-dark dark:bg-brand-dark dark:hover:bg-brand dark:hover:text-gray-500'"
+    class="font-semibold rounded-xl px-4 py-1 shadow-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    <template x-if="following">
+      <span x-text="hover ? 'フォロー解除' : 'フォロー中'"></span>
+      {{-- <span x-show="isHovering">フォロー解除</span> --}}
+    </template>
     <template x-if="!following"><span>フォロー</span></template>
   </button>
   @endif
