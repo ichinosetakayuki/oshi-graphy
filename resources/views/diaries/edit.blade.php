@@ -22,15 +22,23 @@
                     <div class="flex flex-col md:flex-row gap-2">
                         <x-form-label for="artist_id" value="アーティスト" width="w-32" class="shrink-0" />
                         <div class="w-full md:w-64">
-                            <select name="artist_id" id="artist_id" class="focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                                {{-- old() があれば初期optionを1つだけ指す (JSで選択状態に) --}}
-                                @if(old('artist_id') && old('artist_name'))
-                                <option value="{{ old('artist_id') }}" selected>{{ old('artist_name') }}</option>
-                                @elseif($diary->artist)
-                                <option value="{{ $diary->artist->id}}" selected>{{ $diary->artist->name }}</option>
+                            <select
+                                name="artist_id"
+                                id="artist_id"
+                                class="js-artist-select focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                                data-search-url="{{ route('artists.search') }}"
+                                data-placeholder="アーティストを選択..."
+                                data-min-input-length="1"
+                                data-artist-name-target="#artist_name_old"
+                                data-old-id="{{ old('artist_id', $diary->artist_id) }}"
+                                data-old-name="{{ old('artist_name', optional($diary->artist)->name) }}">
+                                @if($diary->artist)
+                                {{-- 編集画面初期表示用（oldがない通常状態で表示される） --}}
+                                <option value="{{ $diary->artist->id }}" selected>{{ $diary->artist->name }}</option>
                                 @endif
                             </select>
                         </div>
+                        <input type="hidden" id="artist_name_old" name="artist_name" value="{{ old('artist_name', optional($diary->artist)->name) }}">
                         <x-input-error :messages="$errors->get('artist_id')" class="mt-2" />
                     </div>
 
@@ -93,73 +101,15 @@
                     <x-secondary-button x-data @click="window.location='{{ route('diaries.show', $diary)}}'">キャンセル</x-secondary-button>
                 </div>
 
-                {{-- old('artist_name')を保存するための隠しフィールド（再描画用） --}}
-                <input type="hidden" name="artist_name" id="artist_name_old" value="{{ old('artist_name') }}">
-
             </form>
 
         </div>
     </div>
 
-
-
-    {{-- Select2のCSS/JSをこのページだけに読み込む --}}
-    @push('vendor-styles')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
-    @endpush
-
+    <x-artist-select2-script />
 
 
     @push('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script>
-        $(function() {
-            const ARTIST_SEARCH_URL = @json(route('artists.search'));
-
-            const $sel = $("#artist_id").select2({
-                width: '100%',
-                placeholder: 'アーティストを検索...',
-                allowClear: true,
-                ajax: {
-                    url: ARTIST_SEARCH_URL,
-                    dataType: 'json',
-                    delay: 200,
-                    data: params => ({
-                        q: params.term || ''
-                    }),
-                    processResults: data => ({
-                        results: (data.items || []).map(it => ({
-                            id: it.id,
-                            text: it.name
-                        })),
-                    }),
-                },
-                minimumInputLength: 1,
-                language: {
-                    inputTooShort: () => '1文字以上入力してください',
-                    searching: () => '検索中...',
-                    noResults: () => '該当するアーティストが見つかりません'
-                },
-                containerCssClass: 'og-select2-tall',
-                selectionCssClass: 'og-select2-tall',
-            });
-            const oldId = @json(old('artist_id'));
-            const oldName = @json(old('artist_name'));
-            if (oldId && oldName) {
-                const opt = new Option(oldName, oldId, true, true);
-                $sel.append(opt).trigger('change');
-            }
-
-            // 選択変更時に hidden の artist_name へラベル名を入れる（バリデーション戻りで使える）
-            $sel.on('select2:select', (e) => {
-                $("#artist_name_old").val(e.params.data.text || '');
-            });
-            $sel.on('select2:clear', () => {
-                $("#artist_name_old").val('');
-            });
-        });
-    </script>
     {{-- 写真をプレビュー表示するscript --}}
     <script>
         $(function() {
