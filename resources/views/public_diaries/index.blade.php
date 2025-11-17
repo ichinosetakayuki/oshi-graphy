@@ -37,7 +37,16 @@
                 <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
                     <label for="artist_id" class="w-28 lg:text-right font-semibold shrink-0">アーティスト</label>
                     <div class="w-full md:w-64">
-                        <select name="artist_id" id="artist_id" class="focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                        <select
+                            name="artist_id"
+                            id="artist_id"
+                            class="js-artist-select focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                            data-search-url="{{ route('artists.search') }}"
+                            data-placeholder="アーティストを検索..."
+                            data-min-input-length="1"
+                            data-old-id="{{ $artistId ?? null }}"
+                            data-old-name="{{ $artistName ?? null }}"
+                        >
                             @if(!empty($artistId) && !empty($artistName))
                             <option value="{{ $artistId }}" selected>{{ $artistName }}</option>
                             @endif
@@ -87,73 +96,23 @@
         </div>
     </div>
 
-    {{-- Select2のCSS/JSをこのページだけに読み込む --}}
-    @push('vendor-styles')
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet">
-    @endpush
-
 
 
     @push('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         $(function() {
             // 年が空の時、月が選択できないようにする関数
             function sync() {
                 const enable = $("#year").val() !== ''; // 月が選択できる状態＝年が空でない
                 $("#month").prop('disabled', !enable); // !enable（=月が選択できない状態＝年が空）
-                if(!enable) $("#month").val('');
+                if (!enable) $("#month").val('');
             }
             sync();
             $("#year").on('change', sync);
-
-            const ARTIST_SEARCH_URL = @json(route('artists.search'));
-
-            const $sel = $("#artist_id").select2({
-                width: '100%',
-                placeholder: 'アーティストを検索...',
-                allowClear: true,
-                ajax: {
-                    url: ARTIST_SEARCH_URL,
-                    dataType: 'json',
-                    delay: 200,
-                    data: params => ({
-                        q: params.term || ''
-                    }),
-                    processResults: data => ({
-                        results: (data.items || []).map(it => ({
-                            id: it.id,
-                            text: it.name
-                        })),
-                    }),
-                },
-                minimumInputLength: 1,
-                language: {
-                    inputTooShort: () => '1文字以上入力してください',
-                    searching: () => '検索中...',
-                    noResults: () => '該当するアーティストが見つかりません'
-                },
-                containerCssClass: 'og-select2-tall',
-                selectionCssClass: 'og-select2-tall',
-            });
-            const oldId = @json(old('artist_id'));
-            const oldName = @json(old('artist_name'));
-            if (oldId && oldName) {
-                const opt = new Option(oldName, oldId, true, true);
-                $sel.append(opt).trigger('change');
-            }
-
-            // 選択変更時に hidden の artist_name へラベル名を入れる（バリデーション戻りで使える）
-            $sel.on('select2:select', (e) => {
-                $("#artist_name_old").val(e.params.data.text || '');
-            });
-            $sel.on('select2:clear', () => {
-                $("#artist_name_old").val('');
-            });
         });
     </script>
     @endpush
 
+    <x-artist-select2-script />
 
 </x-app-layout>
