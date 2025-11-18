@@ -45,8 +45,7 @@
                             data-placeholder="アーティストを検索..."
                             data-min-input-length="1"
                             data-old-id="{{ $artistId ?? null }}"
-                            data-old-name="{{ $artistName ?? null }}"
-                        >
+                            data-old-name="{{ $artistName ?? null }}">
                             @if(!empty($artistId) && !empty($artistName))
                             <option value="{{ $artistId }}" selected>{{ $artistName }}</option>
                             @endif
@@ -113,6 +112,7 @@
     </script>
     @endpush
 
+    {{-- Select2によるアーティスト検索のスクリプト読み込み --}}
     <x-artist-select2-script />
 
 </x-app-layout>

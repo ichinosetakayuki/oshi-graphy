@@ -59,16 +59,8 @@
                     <x-input-error :messages="$errors->get('body')" class="md:text-center" />
                 </div>
 
-                {{-- 写真の登録 --}}
-                <div class="flex flex-col gap-2 mt-3">
-                    <div class="flex flex-col md:flex-row gap-2 mt-3">
-                        <x-form-label for="images" value="写真" class="w-28" />
-                        <input type="file" name="images[]" accept="image/*" id="images" multiple>
-                    </div>
-                    <x-input-error :messages="$errors->get('images')" />
-                    {{-- 写真のプレビュー --}}
-                    <div id="preview" class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2"></div>
-                </div>
+                {{-- 写真の登録＆プレビュー --}}
+                <x-image-upload name="images" id="edit-images" previewId="edit-preview" />
 
 
                 {{-- 公開設定 --}}
@@ -84,6 +76,7 @@
                     <x-input-error :messages="$errors->get('is_public')" class="mt-2" />
                 </div>
 
+                {{-- 既存写真の表示 --}}
                 <div class="gap-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 mb-6">
                     @forelse($diary->images as $i => $image)
                     <div>
@@ -100,44 +93,12 @@
                     <x-primary-button type="submit">保存</x-primary-button>
                     <x-secondary-button x-data @click="window.location='{{ route('diaries.show', $diary)}}'">キャンセル</x-secondary-button>
                 </div>
-                
+
             </form>
         </div>
     </div>
 
+    {{-- Select2によるアーティスト検索のスクリプト読み込み --}}
     <x-artist-select2-script />
 
-
-    @push('scripts')
-    {{-- 写真をプレビュー表示するscript --}}
-    <script>
-        $(function() {
-            const $input = $("#images");
-            const $preview = $("#preview");
-
-            function renderPreviews(files) {
-                $preview.empty(); // 以前のプレビューをクリア
-
-                Array.from(files).forEach(function(file) {
-                    if (!file.type.startsWith('image/')) return;
-
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const $img = $('<img>', {
-                            src: e.target.result,
-                            alt: file.name,
-                            class: 'w-full h-24 object-cover rounded border'
-                        });
-                        $preview.append($img);
-                    }
-                    reader.readAsDataURL(file);
-                });
-            }
-
-            $input.on('change', function() {
-                renderPreviews(this.files);
-            });
-        });
-    </script>
-    @endpush
 </x-app-layout>
