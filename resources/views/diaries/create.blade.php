@@ -80,16 +80,8 @@
 
                 </div>
 
-                {{-- 写真の登録 --}}
-                <div class="flex flex-col gap-2 mt-3">
-                    <div class="flex flex-col md:flex-row gap-2 mt-3">
-                        <x-form-label for="images" value="写真" />
-                        <input type="file" name="images[]" accept="image/*" id="images" multiple>
-                    </div>
-                    <x-input-error :messages="$errors->get('images')" />
-                    {{-- 写真のプレビュー --}}
-                    <div id="preview" class="mt-3 grid grid-cols-2 md:grid-cols-4 gap-2"></div>
-                </div>
+                {{-- 写真の登録＆プレビュー --}}
+                <x-image-upload name="images" id="create-images" previewId="create-preview" />
 
                 {{-- 公開設定 --}}
                 <div class="mb-6 mt-3">
@@ -112,42 +104,13 @@
             </form>
         </div>
     </div>
-    {{-- アーティスト検索のスクリプト読み込み --}}
+    
+    {{-- Select2によるアーティスト検索のスクリプト読み込み --}}
     <x-artist-select2-script />
     {{-- AI会話リセット用削除確認モーダル --}}
     <x-confirm-modal name="confirm-delete" confirmText="リセットする" maxWidth="sm" />
 
     @push('scripts')
-    {{-- 写真をプレビュー表示するscript --}}
-    <script>
-        $(function() {
-            const $input = $("#images");
-            const $preview = $("#preview");
-
-            function renderPreviews(files) {
-                $preview.empty(); // 以前のプレビューをクリア
-
-                Array.from(files).forEach(function(file) {
-                    if (!file.type.startsWith('image/')) return;
-
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const $img = $('<img>', {
-                            src: e.target.result,
-                            alt: file.name,
-                            class: 'w-full h-24 object-cover rounded border'
-                        });
-                        $preview.append($img);
-                    }
-                    reader.readAsDataURL(file);
-                });
-            }
-
-            $input.on('change', function() {
-                renderPreviews(this.files);
-            });
-        });
-    </script>
     {{-- アラート表示関数 --}}
     <script>
         /**
@@ -262,8 +225,8 @@
     {{-- キャンセルボタン --}}
     <script>
         $("#form-clear-btn").on('click', function() {
-            $("#happened_on, #body, #ai_prompt, #images").val('');
-            $("#ai_answers, #preview").empty();
+            $("#happened_on, #body, #ai_prompt, #create-images").val('');
+            $("#ai_answers, #create-preview").empty();
             $("input[type=checkbox]").prop('checked', false);
             $("#artist_id").val('').trigger('change');
         })
