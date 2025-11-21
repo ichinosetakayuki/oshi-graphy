@@ -22,7 +22,7 @@
             </div>
 
             <div class="flex mt-3">
-                <p class="flex-1 bg-brand-light dark:bg-brand-dark p-4 my-2 rounded-lg shadow lg:text-lg">{{ $diary->body }}</p>
+                <p class="flex-1 bg-brand-light dark:bg-brand-dark p-4 my-2 rounded-lg shadow lg:text-lg whitespace-pre-wrap">{{ $diary->body }}</p>
             </div>
             <div class="flex items-center gap-1">
                 <p class="text-sm ml-2">更新日時：{{ $diary->updated_at->format('Y-m-d H:i') }}</p>
@@ -49,7 +49,7 @@
 
                 {{-- コメント入力ボタン --}}
                 <x-primary-button type="button" class="mb-2" x-data x-on:click="window.dispatchEvent(new CustomEvent('open-modal', { detail: '{{ 'commentModal-'.$diary->id }}' }))">コメントする</x-primary-button>
-                
+
                 {{-- コメントモーダル本体 --}}
                 <x-comment-modal :diary="$diary" :name="'commentModal-'.$diary->id" maxWidth="md" />
 

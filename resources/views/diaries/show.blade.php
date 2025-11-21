@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="flex mt-3">
-                    <p class="flex-1 bg-brand-light dark:bg-brand-dark p-4 my-2 rounded-lg shadow lg:text-lg">{{ $diary->body }}</p>
+                    <p class="flex-1 bg-brand-light dark:bg-brand-dark p-4 my-2 rounded-lg shadow lg:text-lg whitespace-pre-wrap">{{ $diary->body }}</p>
                 </div>
                 <div class="flex justify-between">
                     <div class="flex items-center gap-1">
