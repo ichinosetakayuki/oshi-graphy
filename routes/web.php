@@ -11,6 +11,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiaryLikeController;
 use App\Http\Controllers\CommentLikeController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\UserBlockController;
 use App\Http\Controllers\UserFollowController;
 use Illuminate\Support\Facades\Route;
 
@@ -56,6 +57,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/users/{user}/follow', [UserFollowController::class, 'destroy'])->name('users.follow.destroy');
     Route::get('/user_follow/followers', [UserFollowController::class, 'followers'])->name('user.follow.followers');
     Route::get('/user_follow/followings', [UserFollowController::class, 'followings'])->name('user.follow.followings');
+
+    Route::post('/users/{user}/block', [UserBlockController::class, 'store'])->name('users.block.store');
+    Route::delete('/users/{user}/block', [UserBlockController::class, 'destroy'])->name('users.block.destroy');
 });
 
 Route::prefix('notifications')->middleware('auth')->group(function(){
