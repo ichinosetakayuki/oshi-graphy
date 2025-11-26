@@ -45,7 +45,7 @@ $unfollowUrl = route('users.follow.destroy', $user);
           console.error(e);
           $dispatch('toast', {
             message: 'ネットワークエラーです。時間をおいて再試行してください。',
-            type: error
+            type: 'error'
           });
       } finally {
           this.busy = false;
@@ -69,7 +69,6 @@ $unfollowUrl = route('users.follow.destroy', $user);
   >
     <template x-if="following">
       <span x-text="hover ? 'フォロー解除' : 'フォロー中'"></span>
-      {{-- <span x-show="isHovering">フォロー解除</span> --}}
     </template>
     <template x-if="!following"><span>フォロー</span></template>
   </button>

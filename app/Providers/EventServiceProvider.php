@@ -7,11 +7,13 @@ use App\Events\LikeAdded;
 use App\Events\LikeRemoved;
 use App\Events\CommentLikeAdded;
 use App\Events\CommentLikeRemoved;
+use App\Events\UserFollowed;
 use App\Listeners\DeleteUnreadCommentLikedOnUnlike;
 use App\Listeners\NotifyDiaryOwnerOfComment;
 use App\Listeners\DeleteUnreadDiaryLikedOnUnlike;
 use App\Listeners\SendCommentLikedNotification;
 use App\Listeners\SendDiaryLikedNotification;
+use App\Listeners\SendUserFollowedNotification;
 use Illuminate\Support\ServiceProvider;
 
 class EventServiceProvider extends ServiceProvider
@@ -31,6 +33,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         CommentLikeRemoved::class => [
             DeleteUnreadCommentLikedOnUnlike::class,
+        ],
+        UserFollowed::class => [
+            SendUserFollowedNotification::class,
         ],
     ];
     /**

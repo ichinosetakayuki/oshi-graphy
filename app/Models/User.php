@@ -83,6 +83,22 @@ class User extends Authenticatable
 
     }
 
+    public function blocks()
+    {
+        return $this->belongsToMany(User::class, 'blocks', 'blocker_id', 'blocked_id');
+    }
+
+    public function blockedBy()
+    {
+        return $this->belongsToMany(User::class, 'blocks', 'blocked_id', 'blocker_id');
+    }
+
+    public function isBlocking(User $other): bool
+    {
+        if($this->id === $other->id) return false;
+        return $this->blocks()->whereKey($other->id)->exists();
+    }
+
     protected $appends = ['icon_url'];
 
     public function getIconUrlAttribute(): string
