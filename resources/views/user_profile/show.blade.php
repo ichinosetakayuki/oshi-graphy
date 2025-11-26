@@ -2,6 +2,7 @@
 $isFollowing = auth()->user()->isFollowing($user);
 $followingsCount = $user->followings()->count();
 $followersCount = $user->followers()->count();
+$isBlocking = auth()->user()->isBlocking($user);
 @endphp
 <x-app-layout>
     <x-slot name="title">Oshi Graphy | {{ $user->name }}プロフィール</x-slot>
@@ -23,14 +24,21 @@ $followersCount = $user->followers()->count();
 
     <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">
         <div class="max-w-3xl mx-auto border rounded-2xl px-4 sm:px-8 py-6 shadow bg-white dark:bg-gray-800 space-y-4 motion-safe:animate-fade-up">
-            <div class="flex items-center gap-6">
-                <img src="{{ $user->icon_url }}" alt="アイコン" class="w-32 h-32 rounded-full object-cover border">
-                <div>
-                    <div class="text-2xl font-semibold dark:text-gray-300">{{ $user->name }}</div>
-                    {{-- フォローボタン＆フォロー、フォロワー数 --}}
-                    <x-follow-button :user="$user" :initialFollowing="$isFollowing" :followingsCount="$followingsCount" :followersCount="$followersCount" />
+            <div class="flex justify-between">
+                <div class="flex items-center gap-6">
+                    <img src="{{ $user->icon_url }}" alt="アイコン" class="w-32 h-32 rounded-full object-cover border">
+                    <div>
+                        <div class="text-2xl font-semibold dark:text-gray-300">{{ $user->name }}</div>
+                        {{-- フォローボタン＆フォロー、フォロワー数 --}}
+                        <x-follow-button :user="$user" :initialFollowing="$isFollowing" :followingsCount="$followingsCount" :followersCount="$followersCount" />
+                    </div>
+                </div>
+                <div x-data="{ open : false }" class="relative">
+                    <x-icons.ellipsis-horizontal-circle class="text-gray-300 hover:cursor-pointer" @click="open=!open" />
+                    <x-block-button :user="$user" :initialBlocking="$isBlocking" />
                 </div>
             </div>
+
             <div class="bg-brand-light dark:bg-brand-dark min-h-16 rounded-lg p-6 whitespace-pre-line">{{ $user->profile ?: '(未設定)'}}</div>
             <div class="text-lg text-gray-800 dark:text-gray-300">
                 ⭐️公開日記数：{{ $user->public_diaries_count }}
