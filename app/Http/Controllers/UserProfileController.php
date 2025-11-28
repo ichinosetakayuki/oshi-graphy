@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
+
 
 class UserProfileController extends Controller
 {
@@ -72,6 +74,7 @@ class UserProfileController extends Controller
      */
     public function show(User $user)
     {
+        Gate::authorize('view', $user);
         $user->loadCount([
             'diaries as public_diaries_count' => fn($q) => $q->where('is_public', true)]);
 

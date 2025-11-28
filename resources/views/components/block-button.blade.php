@@ -35,7 +35,6 @@ $unblockUrl = route('users.block.destroy', $user);
                     message: json.message,
                     type: json.status_type
                 });
-                window.location.reload();
             } catch(e) {
                 console.error(e);
                 $dispatch('toast', {
