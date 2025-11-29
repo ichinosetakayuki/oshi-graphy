@@ -67,4 +67,12 @@ class UserBlockController extends Controller
             'status_type' => 'success',
         ]);
     }
+
+    public function blocks(Request $request)
+    {
+        $blocks = $request->user()->blocks()
+            ->orderByPivot('created_at', 'desc')->paginate(20)->withQueryString();
+        
+        return view('user_block.blocks', compact('blocks'));
+    }
 }

@@ -33,9 +33,17 @@ $isBlocking = auth()->user()->isBlocking($user);
                         <x-follow-button :user="$user" :initialFollowing="$isFollowing" :followingsCount="$followingsCount" :followersCount="$followersCount" />
                     </div>
                 </div>
+                {{-- 右上の三点リーダアイコンメニュー --}}
                 <div x-data="{ open : false }" class="relative">
                     <x-icons.ellipsis-horizontal-circle class="text-gray-300 hover:cursor-pointer" @click="open=!open" />
-                    <x-block-button :user="$user" :initialBlocking="$isBlocking" />
+                    <div x-show="open" @click="open=false" class="absolute top-0 right-6 bg-gray-50 shadow p-4 w-48 space-y-2 rounded">
+                        @if(auth()->user()->id !== $user->id)
+                        <x-block-button :user="$user" :initialBlocking="$isBlocking" />
+                        @else
+                        <a href="{{ route('user.block.blocks') }}" class="inline-block">ブロックユーザー一覧</a>
+                        <a href="{{ route('user.profile.edit') }}" class="inline-block">プロフィール編集</a>
+                        @endif
+                    </div>
                 </div>
             </div>
 
