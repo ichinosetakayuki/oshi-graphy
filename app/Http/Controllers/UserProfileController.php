@@ -64,7 +64,7 @@ class UserProfileController extends Controller
 
         $user->save();
 
-        return back()
+        return redirect()->route('user.profile.show', $user)
             ->with('status', $deleteIcon ? 'アイコンが削除されました。' : 'プロフィールが更新されました。')
             ->with('status_type', 'success');
     }

@@ -46,7 +46,7 @@ $unblockUrl = route('users.block.destroy', $user);
             }
         }
     }"
-    x-show="open" @click="open=false" class="absolute top-0 right-6 bg-gray-50 shadow p-4 w-48">
+    >
     <button type="button" :disabled="busy" @click.stop="toggle" @click="open=false">
         <template x-if="!blocking"><span class="text-red-400 font-semibold">ブロックする</span></template>
         <template x-if="blocking"><span class="text-blue-400 font-semibold">ブロック解除</span></template>

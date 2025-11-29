@@ -73,17 +73,17 @@ $unfollowUrl = route('users.follow.destroy', $user);
     <template x-if="!following"><span>フォロー</span></template>
   </button>
   @endif
-  <div class="text-xs mt-2">
+  <div class="text-xs mt-2 flex flex-col sm:flex-row gap-1 sm:gap-2">
     @if(auth()->user()->id === $user->id)
     <a href="{{ route('user.follow.followings') }}">
       フォロー<span x-text="followingsCount ?? 0"></span>人
     </a>
-    <a href="{{ route('user.follow.followers') }}" class="ml-2">
+    <a href="{{ route('user.follow.followers') }}" class="">
       フォロワー<span x-text="followersCount ?? 0"></span>人
     </a>
     @else
     <span>フォロー<span x-text="followingsCount ?? 0"></span>人</span>
-    <span class="ml-2">フォロワー<span x-text="followersCount ?? 0"></span>人</span>
+    <span class="">フォロワー<span x-text="followersCount ?? 0"></span>人</span>
     @endif
   </div>
 
