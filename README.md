@@ -9,6 +9,7 @@ Oshi-Graphy（推しグラフィー）は、<br>
 - ダイアリー（公開／非公開、画像添付、推しアーティスト紐付け）
 - コメント & いいね（ダイアリー／コメント）
 - フォロー機能（ユーザー間の相互フォロー／フォロワー一覧）
+- ブロック機能（ユーザー間の相互ブロック／ブロックユーザー一覧）
 - ユーザープロフィール（アイコン画像・自己紹介）
 - 通知（既読管理、ベルの未読数、通知リスト／詳細リンク）
 - アーティスト管理（管理者のみ：CRUD）
@@ -37,6 +38,8 @@ erDiagram
     USERS ||--o{ NOTIFICATIONS : "receives"
     USERS ||--o{ FOLLOWS : "follower"
     USERS ||--o{ FOLLOWS : "followed"
+    USERS ||--o{ BLOCKS : "blocker"
+    USERS ||--o{ BLOCKS : "blocked"
 
     ARTISTS ||--o{ DIARIES : "has many"
 
@@ -62,6 +65,14 @@ erDiagram
         bigint id PK
         bigint follower_id FK
         bigint followed_id FK
+        datetime created_at
+        datetime updated_at
+    }
+
+    BLOCKS {
+        bigint id PK
+        bigint blocker_id FK
+        bigint blocked_id FK
         datetime created_at
         datetime updated_at
     }
