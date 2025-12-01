@@ -57,6 +57,10 @@ class DiaryPublicController extends Controller
     public function show(Diary $diary)
     {
         abort_unless($diary->is_public, 403); // 公開フラグがなければ403
+        // ログインユーザーが日記のユーザーからブロックされていれば、日記にアクセス不可。
+        if($diary->user->isBlocking(auth()->user())) {
+            abort(403);
+        }
 
         $diary->load(['user'])
             ->loadCount(['likes','comments'])
@@ -86,6 +90,11 @@ class DiaryPublicController extends Controller
      */
     public function user(User $user, Request $request)
     {
+        // ログインユーザーが日記のユーザーからブロックされていれば、日記にアクセス不可。
+        if ($user->isBlocking($request->user())) {
+            abort(403);
+        }
+
         $year = $request->integer('year');
         $artist = $request->integer('artist');
 
