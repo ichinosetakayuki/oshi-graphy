@@ -7,9 +7,11 @@
         <img src="{{ $user->icon_url }}" alt="アイコン画像" class="inline-block w-8 h-8 rounded-full object-cover border">
         <h2 class="text-lg sm:text-2xl font-semibold">{{ $user->name }}さんの日記一覧</h2>
       </div>
+      @if(auth()->user()->id !== $user->id)
       <div>
         <a href="{{ route('user.profile.show', $user) }}" class="underline">プロフィールを見る</a>
       </div>
+      @endif
     </div>
   </x-slot>
 

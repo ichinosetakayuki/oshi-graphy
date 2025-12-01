@@ -12,6 +12,9 @@ use Illuminate\Validation\ValidationException;
 
 class UserBlockController extends Controller
 {
+    /**
+     * ユーザーをブロックする
+     */
     public function store(Request $request, User $user)
     {
         if($request->user()->isBlocking($user)) {
@@ -54,6 +57,9 @@ class UserBlockController extends Controller
         ]);
     }
 
+    /**
+     * ユーザーのブロックを解除する
+     */
     public function destroy(Request $request, User $user)
     {
         Block::where('blocker_id', $request->user()->id)
@@ -66,5 +72,36 @@ class UserBlockController extends Controller
             'message' => $user->name . 'さんのブロックを解除しました。',
             'status_type' => 'success',
         ]);
+    }
+
+    // ブロックユーザー一覧から複数人まとめてブロック解除するメソッド
+    public function bulkDestroy(Request $request)
+    {
+        $request->validate([
+            'user_ids' => 'required|array',
+            'user_ids.*' => 'integer',
+        ]);
+
+        $userIds = $request->input('user_ids', []);
+        $length = count($userIds);
+        
+        Block::where('blocker_id', $request->user()->id)
+            ->whereIn('blocked_id', $userIds)
+            ->delete();
+
+        return back()
+            ->with('status', $length . '人のブロックを解除しました。')
+            ->with('status_type', 'success');
+    }
+
+    /**
+     * ブロックしているユーザーの一覧
+     */
+    public function blocks(Request $request)
+    {
+        $blocks = $request->user()->blocks()
+            ->orderByPivot('created_at', 'desc')->paginate(20)->withQueryString();
+        
+        return view('user_block.blocks', compact('blocks'));
     }
 }

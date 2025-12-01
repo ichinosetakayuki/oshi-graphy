@@ -82,8 +82,8 @@
                                 {{ __('Profile') }}
                             </x-dropdown-link>
 
-                            <x-dropdown-link :href="route('user.profile.edit')">
-                                プロフィール編集
+                            <x-dropdown-link :href="route('user.profile.show', auth()->user())">
+                                プロフィール
                             </x-dropdown-link>
 
                             <!-- Authentication -->
@@ -148,8 +148,8 @@
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
 
-                <x-responsive-nav-link :href="route('user.profile.edit')">
-                    プロフィール編集
+                <x-responsive-nav-link :href="route('user.profile.show', auth()->user())">
+                    プロフィール
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

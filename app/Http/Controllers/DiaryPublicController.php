@@ -21,8 +21,15 @@ class DiaryPublicController extends Controller
         $month = $request->integer('month');
         $artistId = $request->integer('artist_id');
 
+        // 自分をブロックしているユーザーのidを配列で取得
+        $blockedByUserIds = $request->user()->blockedBy()->pluck('users.id');
+        // 自分がブロックしているユーザーのidを配列で取得
+        $blockingUserIds = $request->user()->blocks()->pluck('users.id');
+
         $diaries =  Diary::query()
             ->where('is_public', true)
+            ->whereNotIn('user_id', $blockedByUserIds) // ブロックされているユーザーの日記を除外
+            ->whereNotIn('user_id', $blockingUserIds) // ブロックしているユーザーの日記を除外 
             ->when($year, fn($q) => $q->whereYear('happened_on', $year))
             ->when($month, fn($q) => $q->whereMonth('happened_on', $month)) 
             ->when($artistId, fn($q) => $q->where('artist_id', $artistId))
