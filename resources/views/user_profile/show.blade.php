@@ -19,7 +19,6 @@ $isBlocking = auth()->user()->isBlocking($user);
             <span>プロフィール</span>
         </div>
         <div x-data @click="history.back()" class="underline cursor-pointer">戻る</div>
-
     </nav>
 
     <div class="max-w-5xl w-full mx-auto px-4 py-4 sm:py-6">
